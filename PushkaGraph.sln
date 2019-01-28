@@ -1,0 +1,43 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.168
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PushkaGraphCore", "PushkaGraphCore\PushkaGraphCore.csproj", "{14079356-117A-4A11-98EE-DA4C1E9F3288}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PushkaGraphGui", "PushkaGraphGui\PushkaGraphGui.csproj", "{272FAA61-1448-4ABE-8460-2920F4E1F9B3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PushkaGraphAlgorithms", "PushkaGraphAlgorithms\PushkaGraphAlgorithms.csproj", "{2D496831-81A4-449A-AC2A-65105D38BAB1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PushkaGraphTests", "PushkaGraphTests\PushkaGraphTests.csproj", "{90D9B7BC-FCA6-4927-80E5-23B3D12F1A73}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{14079356-117A-4A11-98EE-DA4C1E9F3288}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{14079356-117A-4A11-98EE-DA4C1E9F3288}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{14079356-117A-4A11-98EE-DA4C1E9F3288}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{14079356-117A-4A11-98EE-DA4C1E9F3288}.Release|Any CPU.Build.0 = Release|Any CPU
+		{272FAA61-1448-4ABE-8460-2920F4E1F9B3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{272FAA61-1448-4ABE-8460-2920F4E1F9B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{272FAA61-1448-4ABE-8460-2920F4E1F9B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{272FAA61-1448-4ABE-8460-2920F4E1F9B3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2D496831-81A4-449A-AC2A-65105D38BAB1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2D496831-81A4-449A-AC2A-65105D38BAB1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2D496831-81A4-449A-AC2A-65105D38BAB1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2D496831-81A4-449A-AC2A-65105D38BAB1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{90D9B7BC-FCA6-4927-80E5-23B3D12F1A73}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{90D9B7BC-FCA6-4927-80E5-23B3D12F1A73}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{90D9B7BC-FCA6-4927-80E5-23B3D12F1A73}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{90D9B7BC-FCA6-4927-80E5-23B3D12F1A73}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {D09AB0A4-3526-4E45-8AD7-E788909F755F}
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,9 @@
+C:\MEGAsync\CurrentWork\ПТГ\PushkaGraph\PushkaGraphAlgorithms\bin\Debug\PushkaGraphAlgorithms.dll
+C:\MEGAsync\CurrentWork\ПТГ\PushkaGraph\PushkaGraphAlgorithms\bin\Debug\PushkaGraphAlgorithms.pdb
+C:\MEGAsync\CurrentWork\ПТГ\PushkaGraph\PushkaGraphAlgorithms\bin\Debug\PushkaGraphCore.dll
+C:\MEGAsync\CurrentWork\ПТГ\PushkaGraph\PushkaGraphAlgorithms\bin\Debug\PushkaGraphCore.pdb
+C:\MEGAsync\CurrentWork\ПТГ\PushkaGraph\PushkaGraphAlgorithms\obj\Debug\PushkaGraphAlgorithms.csprojAssemblyReference.cache
+C:\MEGAsync\CurrentWork\ПТГ\PushkaGraph\PushkaGraphAlgorithms\obj\Debug\PushkaGraphAlgorithms.csproj.CoreCompileInputs.cache
+C:\MEGAsync\CurrentWork\ПТГ\PushkaGraph\PushkaGraphAlgorithms\obj\Debug\PushkaGraphAlgorithms.csproj.CopyComplete
+C:\MEGAsync\CurrentWork\ПТГ\PushkaGraph\PushkaGraphAlgorithms\obj\Debug\PushkaGraphAlgorithms.dll
+C:\MEGAsync\CurrentWork\ПТГ\PushkaGraph\PushkaGraphAlgorithms\obj\Debug\PushkaGraphAlgorithms.pdb

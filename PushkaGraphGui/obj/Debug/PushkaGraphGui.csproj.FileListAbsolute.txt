@@ -1,0 +1,7 @@
+C:\MEGAsync\CurrentWork\ПТГ\PushkaGraph\PushkaGraphGui\obj\Debug\PushkaGraphGui.csprojAssemblyReference.cache
+C:\MEGAsync\CurrentWork\ПТГ\PushkaGraph\PushkaGraphGui\obj\Debug\PushkaGraphGui.csproj.CoreCompileInputs.cache
+C:\MEGAsync\CurrentWork\ПТГ\PushkaGraph\PushkaGraphGui\bin\Debug\PushkaGraphGui.exe.config
+C:\MEGAsync\CurrentWork\ПТГ\PushkaGraph\PushkaGraphGui\bin\Debug\PushkaGraphGui.exe
+C:\MEGAsync\CurrentWork\ПТГ\PushkaGraph\PushkaGraphGui\bin\Debug\PushkaGraphGui.pdb
+C:\MEGAsync\CurrentWork\ПТГ\PushkaGraph\PushkaGraphGui\obj\Debug\PushkaGraphGui.exe
+C:\MEGAsync\CurrentWork\ПТГ\PushkaGraph\PushkaGraphGui\obj\Debug\PushkaGraphGui.pdb
