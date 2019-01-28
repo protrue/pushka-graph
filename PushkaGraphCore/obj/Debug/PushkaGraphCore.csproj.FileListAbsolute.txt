@@ -1,6 +1,0 @@
-C:\MEGAsync\CurrentWork\ПТГ\PushkaGraph\PushkaGraphCore\bin\Debug\PushkaGraphCore.dll
-C:\MEGAsync\CurrentWork\ПТГ\PushkaGraph\PushkaGraphCore\bin\Debug\PushkaGraphCore.pdb
-C:\MEGAsync\CurrentWork\ПТГ\PushkaGraph\PushkaGraphCore\obj\Debug\PushkaGraphCore.csprojAssemblyReference.cache
-C:\MEGAsync\CurrentWork\ПТГ\PushkaGraph\PushkaGraphCore\obj\Debug\PushkaGraphCore.csproj.CoreCompileInputs.cache
-C:\MEGAsync\CurrentWork\ПТГ\PushkaGraph\PushkaGraphCore\obj\Debug\PushkaGraphCore.dll
-C:\MEGAsync\CurrentWork\ПТГ\PushkaGraph\PushkaGraphCore\obj\Debug\PushkaGraphCore.pdb
