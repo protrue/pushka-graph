@@ -14,7 +14,7 @@ namespace PushkaGraphAlgorithms
         /// <returns>Vertices</returns>
         public static IEnumerable<IVertex> SomeAlgorithm(this Graph graph, IEnumerable<Edge> edges)
         {
-            throw new NotImplementedException();
+            return null;
         }
     }
 }

@@ -11,10 +11,12 @@ namespace PushkaGraphCore
         public IVertex[] Vertices => _vertices.ToArray();
         public Edge[] Edges => _edges.ToArray();
 
-        public Graph()
+        public Graph(int verticesCount = 0)
         {
-            _vertices = new List<Vertex>();
+            _vertices = new List<Vertex>(verticesCount);
             _edges = new List<Edge>();
+
+            AddVertices(verticesCount);
         }
         
         public IVertex AddVertex()
