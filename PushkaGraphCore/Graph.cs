@@ -13,17 +13,25 @@ namespace PushkaGraphCore
 
         public Graph()
         {
-
+            _vertices = new List<Vertex>();
+            _edges = new List<Edge>();
         }
         
         public IVertex AddVertex()
         {
-            throw new NotImplementedException();
+            var vertex = new Vertex();
+            _vertices.Add(vertex);
+
+            return vertex;
         }
 
         public IEnumerable<IVertex> AddVertices(int count)
         {
-            throw new NotImplementedException();
+            var vertices = new IVertex[count];
+            for (var i = 0; i < count; i++)
+                vertices[0] = AddVertex();
+
+            return vertices;
         }
 
         public Edge AddEdge(IVertex firstVertex, IVertex secondVertex)
