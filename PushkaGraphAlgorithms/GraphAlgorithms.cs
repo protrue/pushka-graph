@@ -12,7 +12,7 @@ namespace PushkaGraphAlgorithms
         /// <param name="graph">Graph</param>
         /// <param name="edges">Edges</param>
         /// <returns>Vertices</returns>
-        public static IEnumerable<IVertex> SomeAlgorithm(this Graph graph, IEnumerable<Edge> edges)
+        public static IEnumerable<Vertex> SomeAlgorithm(this Graph graph, IEnumerable<Edge> edges)
         {
             return null;
         }

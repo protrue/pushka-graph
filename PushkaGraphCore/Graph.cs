@@ -3,12 +3,12 @@ using System.Collections.Generic;
 
 namespace PushkaGraphCore
 {
-    public partial class Graph
+    public class Graph
     {
         private List<Vertex> _vertices;
         private List<Edge> _edges;
 
-        public IVertex[] Vertices => _vertices.ToArray();
+        public Vertex[] Vertices => _vertices.ToArray();
         public Edge[] Edges => _edges.ToArray();
 
         public Graph(int verticesCount = 0)
@@ -19,7 +19,7 @@ namespace PushkaGraphCore
             AddVertices(verticesCount);
         }
         
-        public IVertex AddVertex()
+        public Vertex AddVertex()
         {
             var vertex = new Vertex();
             _vertices.Add(vertex);
@@ -27,21 +27,26 @@ namespace PushkaGraphCore
             return vertex;
         }
 
-        public IEnumerable<IVertex> AddVertices(int count)
+        public IEnumerable<Vertex> AddVertices(int count)
         {
-            var vertices = new IVertex[count];
+            var vertices = new Vertex[count];
             for (var i = 0; i < count; i++)
                 vertices[0] = AddVertex();
 
             return vertices;
         }
 
-        public Edge AddEdge(IVertex firstVertex, IVertex secondVertex)
+        public void DeleteVertex(Vertex vertex)
         {
             throw new NotImplementedException();
         }
 
-        public void DeleteVertex(IVertex vertex)
+        public void AddEdge(Edge edge)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Edge AddEdge(Vertex firstVertex, Vertex secondVertex)
         {
             throw new NotImplementedException();
         }
@@ -51,7 +56,7 @@ namespace PushkaGraphCore
             throw new NotImplementedException();
         }
 
-        public void DeleteEdge(IVertex firstVertex, IVertex secondVertex)
+        public void DeleteEdge(Vertex firstVertex, Vertex secondVertex)
         {
             throw new NotImplementedException();
         }

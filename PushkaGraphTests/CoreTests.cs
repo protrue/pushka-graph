@@ -11,33 +11,44 @@ namespace PushkaGraphTests
         [TestMethod]
         public void AddVertexShouldAddOneVertex()
         {
-            var graph = new Graph();
-            graph.AddVertex();
+            var graph = new Graph(1);
 
             graph.Vertices.Length.Should().Be(1);
             graph.Edges.Length.Should().Be(0);
+
+            graph.Vertices[0].AdjacentVertices.Length.Should().Be(0);
+            graph.Vertices[0].IncidentEdges.Length.Should().Be(0);
         }
 
         [TestMethod]
         public void AddVerticesShouldAddMultipleVertices()
         {
-            var graph = new Graph();
-            var addedVertices = graph.AddVertices(3);
+            var graph = new Graph(3);
 
-            addedVertices.Count().Should().Be(3);
             graph.Vertices.Length.Should().Be(3);
             graph.Edges.Length.Should().Be(0);
+
+            foreach (var graphVertex in graph.Vertices)
+            {
+                graphVertex.AdjacentVertices.Length.Should().Be(0);
+                graphVertex.IncidentEdges.Length.Should().Be(0);
+            }
         }
 
         [TestMethod]
         public void AddEdgeShouldAddEdge()
         {
-            var graph = new Graph();
-            graph.AddVertices(2);
+            var graph = new Graph(2);
             graph.AddEdge(graph.Vertices[0], graph.Vertices[1]);
 
             graph.Vertices.Length.Should().Be(2);
             graph.Edges.Length.Should().Be(1);
+
+            graph.Vertices[0].AdjacentVertices[0].Should().Be(graph.Vertices[1]);
+            graph.Vertices[1].AdjacentVertices[0].Should().Be(graph.Vertices[0]);
+
+            graph.Edges[0].FirstVertex.Should().Be(graph.Vertices[0]);
+            graph.Edges[0].SecondVertex.Should().Be(graph.Vertices[1]);
         }
     }
 }
