@@ -5,7 +5,56 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PushkaGraphGUI"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800" MouseLeftButtonDown="CreateVertex">
-    <Canvas Name="Container">
-    </Canvas>
+        Title="MainWindow" Height="600" Width="800">
+    <Window.Resources>
+        <Style x:Key="ToolbarButton">
+            <Setter Property="Control.Width" Value="58" />
+            <Setter Property="Control.Height" Value="58" />
+            <Setter Property="Control.Margin" Value="10 5 0 0" />
+        </Style>
+    </Window.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <StackPanel Height="70"
+                    Orientation="Horizontal"
+                    Background="Beige"
+                    Grid.Row="0"
+                    ZIndex="100">
+            <Button Name="CreateVertexButton"
+                    Click="ToolbarButtonClick"
+                    Style="{StaticResource ToolbarButton}">
+                <Ellipse Width="50"
+                         Height="50"
+                         Fill="White"
+                         Stroke="Black"
+                         StrokeThickness="4">
+                </Ellipse>
+            </Button>
+            <Button Name="CreateEdgeButton"
+                    Click="ToolbarButtonClick"
+                    Style="{StaticResource ToolbarButton}">
+                <Line X1="0" Y1="0" X2="58" Y2="58"
+                      Stroke="Black" 
+                      StrokeThickness="4">
+                </Line>
+            </Button>
+            <Button Style="{StaticResource ToolbarButton}">
+                A1
+            </Button>
+            <Button Style="{StaticResource ToolbarButton}">
+                A2
+            </Button>
+            <Button Style="{StaticResource ToolbarButton}">
+                A3
+            </Button>
+            <Button Style="{StaticResource ToolbarButton}">
+                A4
+            </Button>
+        </StackPanel>
+        <Canvas Name="Container" MouseLeftButtonDown="OnCanvasClick" Grid.Row="1" Background="Transparent">
+        </Canvas>
+    </Grid>
 </Window>
