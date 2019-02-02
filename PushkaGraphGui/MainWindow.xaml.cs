@@ -23,7 +23,7 @@ namespace PushkaGraphGUI
     {
         private readonly Graph _graph;
         private readonly Dictionary<Ellipse, Vertex> _vertices;
-        private readonly Dictionary<Line, Edge> _edges;
+        private readonly Dictionary<Edge, Line> _edges;
         private InterfaceAction _currentAction;
         private CreateEdgeActionState _currentCreateEdgeActionState;
 
@@ -32,16 +32,18 @@ namespace PushkaGraphGUI
         private Line _movingLine;
 
         private bool _isVertexMoving;
-        private Point _previousPosition;
         private Ellipse _movingVertex;
+
+        private readonly string SelectedTag = "Selected";
 
         public MainWindow()
         {
             InitializeComponent();
             _graph = new Graph();
             _vertices = new Dictionary<Ellipse, Vertex>();
-            _edges = new Dictionary<Line, Edge>();
+            _edges = new Dictionary<Edge, Line>();
             _currentAction = InterfaceAction.CreateVertex;
+            CreateVertexButton.Tag = SelectedTag;
             _currentCreateEdgeActionState = CreateEdgeActionState.SelectFirstVertex;
             Container.MouseMove += OnContainerMouseMove;
         }
@@ -76,7 +78,6 @@ namespace PushkaGraphGUI
                     _isVertexMoving = true;
                     Panel.SetZIndex(ellipse, VertexSettings.MovingZIndex);
                     _movingVertex = ellipse;
-                    _previousPosition = Mouse.GetPosition(Container);
                     break;
                 case InterfaceAction.CreateEdge:
                     CreateEdge(sender, e);
@@ -121,9 +122,26 @@ namespace PushkaGraphGUI
             {
                 case InterfaceAction.CreateVertex:
                     if (!_isVertexMoving) break;
-                    // TODO: ребра так же должны двигаться
                     cursorPosition.Y -= VertexSettings.Size / 2;
                     cursorPosition.X -= VertexSettings.Size / 2;
+                    // TODO: ребра так же должны двигаться
+                    //foreach (var edge in _vertices[_movingVertex].IncidentEdges)
+                    //{
+                    //    var line = _edges[edge];
+                    //    if (line.X1 == Canvas.GetLeft(_movingVertex) - VertexSettings.Size / 2 && 
+                    //        line.Y1 == Canvas.GetTop(_movingVertex) - VertexSettings.Size / 2)
+                    //    {
+                    //        line.X1 = cursorPosition.X;
+                    //        line.Y1 = cursorPosition.Y;
+                    //    }
+                    //    if (line.X2 == Canvas.GetLeft(_movingVertex) - VertexSettings.Size / 2 && 
+                    //        line.Y2 == Canvas.GetTop(_movingVertex) - VertexSettings.Size / 2)
+                    //    {
+                    //        line.X2 = cursorPosition.X;
+                    //        line.Y2 = cursorPosition.Y;
+                    //    }
+                    //}
+
                     Canvas.SetTop(_movingVertex, cursorPosition.Y);
                     Canvas.SetLeft(_movingVertex, cursorPosition.X);
                     break;
@@ -156,6 +174,39 @@ namespace PushkaGraphGUI
             };
 
             return line;
+        }
+
+        private void OnEllipseRightMouseButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            var ellipse = (Ellipse)sender;
+            switch (_currentAction)
+            {
+                case InterfaceAction.CreateVertex:
+                    Container.Children.Remove(ellipse);
+                    var vertex = _vertices[ellipse];
+                    // TODO: а так же удалим все инцидентные ребра
+                    //foreach (var edge in vertex.IncidentEdges)
+                    //{
+                    //    var line = _edges[edge];
+                    //    Container.Children.Remove(line);
+                    //}
+                    
+                    _graph.DeleteVertex(vertex);
+                    break;
+            }
+        }
+
+        private void OnLineRightMouseButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            var line = (Line)sender;
+            switch (_currentAction)
+            {
+                case InterfaceAction.CreateVertex:
+                    var edgeLinePair = _edges.First(x => x.Value == line);
+                    Container.Children.Remove(edgeLinePair.Value);
+                    _graph.DeleteEdge(edgeLinePair.Key);
+                    break;
+            }
         }
 
         /// <summary>
@@ -194,6 +245,8 @@ namespace PushkaGraphGUI
             var ellipse = InitializeEllipse(point);
             ellipse.MouseEnter += (o, args) => ((Ellipse)o).StrokeThickness = VertexSettings.BoundThicknessHover;
             ellipse.MouseLeave += (o, args) => ((Ellipse)o).StrokeThickness = VertexSettings.BoundThickness;
+            // TODO: не работает удаление вершин
+            //ellipse.MouseRightButtonDown += OnEllipseRightMouseButtonDown;
             ellipse.MouseLeftButtonDown += OnEllipseLeftMouseButtonDown;
             ellipse.MouseLeftButtonUp += OnEllipseLeftMouseButtonUp;
             Container.Children.Add(ellipse);
@@ -250,6 +303,10 @@ namespace PushkaGraphGUI
         /// <param name="e"></param>
         private void ToolbarButtonClick(object sender, EventArgs e)
         {
+            foreach (var toolbarChild in Toolbar.Children)
+                ((Button) toolbarChild).Tag = null;
+            var button = (Button)sender;
+            button.Tag = "Selected";
             if (sender == CreateVertexButton)
                 _currentAction = InterfaceAction.CreateVertex;
             if (sender == CreateEdgeButton)
