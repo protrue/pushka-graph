@@ -22,7 +22,7 @@ namespace PushkaGraphGUI
     public partial class MainWindow : Window
     {
         private readonly Graph _graph;
-        private readonly Dictionary<Ellipse, IVertex> _vertices;
+        private readonly Dictionary<Ellipse, Vertex> _vertices;
         private readonly Dictionary<Line, Edge> _edges;
         private InterfaceAction _currentAction;
         private CreateEdgeActionState _currentCreateEdgeActionState;
@@ -39,7 +39,7 @@ namespace PushkaGraphGUI
         {
             InitializeComponent();
             _graph = new Graph();
-            _vertices = new Dictionary<Ellipse, IVertex>();
+            _vertices = new Dictionary<Ellipse, Vertex>();
             _edges = new Dictionary<Line, Edge>();
             _currentAction = InterfaceAction.CreateVertex;
             _currentCreateEdgeActionState = CreateEdgeActionState.SelectFirstVertex;
@@ -227,6 +227,7 @@ namespace PushkaGraphGUI
                     _currentCreateEdgeActionState = CreateEdgeActionState.SelectSecondVertex;
                     break;
                 case CreateEdgeActionState.SelectSecondVertex:
+                    // TODO: не создавать ребро, если оно уже есть
                     _edgeFinish = ellipse;
                     var finishX = Canvas.GetLeft(_edgeFinish) + VertexSettings.Size / 2;
                     var finishY = Canvas.GetTop(_edgeFinish) + VertexSettings.Size / 2;
