@@ -1,21 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 using PushkaGraphCore;
 
 namespace PushkaGraphGUI
 {
+    /// <inheritdoc>
+    ///     <cref></cref>
+    /// </inheritdoc>
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
@@ -34,7 +31,7 @@ namespace PushkaGraphGUI
         private bool _isVertexMoving;
         private Ellipse _movingVertex;
 
-        private readonly string SelectedTag = "Selected";
+        private const string SelectedTag = "Selected";
 
         public MainWindow()
         {
@@ -61,6 +58,18 @@ namespace PushkaGraphGUI
                     if (_isVertexMoving) break;
                     CreateVertex(sender, e);
                     break;
+                case InterfaceAction.CreateEdge:
+                    break;
+                case InterfaceAction.AlgorithmA:
+                    break;
+                case InterfaceAction.AlgorithmB:
+                    break;
+                case InterfaceAction.AlgorithmC:
+                    break;
+                case InterfaceAction.AlgorithmD:
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
             }
         }
 
@@ -90,6 +99,8 @@ namespace PushkaGraphGUI
                     break;
                 case InterfaceAction.AlgorithmD:
                     break;
+                default:
+                    throw new ArgumentOutOfRangeException();
             }
         }
         
@@ -107,6 +118,18 @@ namespace PushkaGraphGUI
                     _isVertexMoving = false;
                     Panel.SetZIndex(ellipse, VertexSettings.ZIndex);
                     break;
+                case InterfaceAction.CreateEdge:
+                    break;
+                case InterfaceAction.AlgorithmA:
+                    break;
+                case InterfaceAction.AlgorithmB:
+                    break;
+                case InterfaceAction.AlgorithmC:
+                    break;
+                case InterfaceAction.AlgorithmD:
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
             }
         }
 
@@ -151,6 +174,16 @@ namespace PushkaGraphGUI
                         _movingLine.Y2 = cursorPosition.Y;
                     }
                     break;
+                case InterfaceAction.AlgorithmA:
+                    break;
+                case InterfaceAction.AlgorithmB:
+                    break;
+                case InterfaceAction.AlgorithmC:
+                    break;
+                case InterfaceAction.AlgorithmD:
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
             }
         }
 
@@ -160,7 +193,7 @@ namespace PushkaGraphGUI
         /// <param name="start">Начальная вершина.</param>
         /// <param name="finish">Конечная вершина.</param>
         /// <returns></returns>
-        private Line InitializeLine(Point start, Point finish)
+        private static Line InitializeLine(Point start, Point finish)
         {
             var line = new Line
             {
@@ -192,6 +225,18 @@ namespace PushkaGraphGUI
 
                     _graph.DeleteVertex(vertex);
                     break;
+                case InterfaceAction.CreateEdge:
+                    break;
+                case InterfaceAction.AlgorithmA:
+                    break;
+                case InterfaceAction.AlgorithmB:
+                    break;
+                case InterfaceAction.AlgorithmC:
+                    break;
+                case InterfaceAction.AlgorithmD:
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
             }
         }
 
@@ -201,10 +246,22 @@ namespace PushkaGraphGUI
             switch (_currentAction)
             {
                 case InterfaceAction.CreateVertex:
+                    break;
+                case InterfaceAction.CreateEdge:
                     var edgeLinePair = _edges.First(x => x.Value == line);
                     Container.Children.Remove(edgeLinePair.Value);
                     _graph.DeleteEdge(edgeLinePair.Key);
                     break;
+                case InterfaceAction.AlgorithmA:
+                    break;
+                case InterfaceAction.AlgorithmB:
+                    break;
+                case InterfaceAction.AlgorithmC:
+                    break;
+                case InterfaceAction.AlgorithmD:
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
             }
         }
 
@@ -213,7 +270,7 @@ namespace PushkaGraphGUI
         /// </summary>
         /// <param name="point">Координаты вершины.</param>
         /// <returns></returns>
-        private Ellipse InitializeEllipse(Point point)
+        private static Ellipse InitializeEllipse(Point point)
         {
             var ellipse = new Ellipse
             {
@@ -235,7 +292,7 @@ namespace PushkaGraphGUI
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void CreateVertex(object sender, MouseButtonEventArgs e)
+        private void CreateVertex(object sender, MouseEventArgs e)
         {
             var point = e.GetPosition((Canvas)sender);
             point.Y -= VertexSettings.Size / 2;
@@ -256,8 +313,7 @@ namespace PushkaGraphGUI
         /// <summary>
         /// Обрабатывает событие нажатия на вершину, при добавлении нового ребра.
         /// </summary>
-        /// <param name="ellipse">Контрол вершины.</param>
-        private void CreateEdge(object sender, MouseButtonEventArgs e)
+        private void CreateEdge(object sender, MouseEventArgs e)
         {
             var ellipse = (Ellipse) sender;
             switch (_currentCreateEdgeActionState)
@@ -292,6 +348,8 @@ namespace PushkaGraphGUI
 
                     _movingLine.MouseRightButtonDown += OnLineRightMouseButtonDown;
                     break;
+                default:
+                    throw new ArgumentOutOfRangeException();
             }
         }
 
@@ -306,9 +364,9 @@ namespace PushkaGraphGUI
                 ((Button) toolbarChild).Tag = null;
             var button = (Button)sender;
             button.Tag = "Selected";
-            if (sender == CreateVertexButton)
+            if (Equals(sender, CreateVertexButton))
                 _currentAction = InterfaceAction.CreateVertex;
-            if (sender == CreateEdgeButton)
+            if (Equals(sender, CreateEdgeButton))
                 _currentAction = InterfaceAction.CreateEdge;
             // TODO: алгоритмы
         }
