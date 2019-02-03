@@ -1,20 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace PushkaGraphCore
 {
     public class Graph
     {
-        private List<Vertex> _vertices;
-        private List<Edge> _edges;
+        private HashSet<Vertex> _vertices;
+        private HashSet<Edge> _edges;
 
         public Vertex[] Vertices => _vertices.ToArray();
         public Edge[] Edges => _edges.ToArray();
 
         public Graph(int verticesCount = 0)
         {
-            _vertices = new List<Vertex>(verticesCount);
-            _edges = new List<Edge>();
+            _vertices = new HashSet<Vertex>();
+            _edges = new HashSet<Edge>();
 
             AddVertices(verticesCount);
         }
@@ -22,12 +23,13 @@ namespace PushkaGraphCore
         public Vertex AddVertex()
         {
             var vertex = new Vertex();
+
             _vertices.Add(vertex);
 
             return vertex;
         }
 
-        public IEnumerable<Vertex> AddVertices(int count)
+        public Vertex[] AddVertices(int count)
         {
             var vertices = new Vertex[count];
             for (var i = 0; i < count; i++)
@@ -38,27 +40,45 @@ namespace PushkaGraphCore
 
         public void DeleteVertex(Vertex vertex)
         {
-            throw new NotImplementedException();
+            _vertices.Remove(vertex);
+            _edges.RemoveWhere(e => e.IsIncidentTo(vertex));
+
+            foreach (var adjacentVertex in vertex.AdjacentVertices)
+                adjacentVertex.DeleteAdjacentVertex(vertex);
         }
 
-        public void AddEdge(Edge edge)
+        public Edge AddEdge(Vertex firstVertex, Vertex secondVertex, int weight = 0)
         {
-            throw new NotImplementedException();
-        }
+            if (!_vertices.Contains(firstVertex) || !_vertices.Contains(secondVertex))
+                throw new ArgumentException();
 
-        public Edge AddEdge(Vertex firstVertex, Vertex secondVertex)
-        {
-            throw new NotImplementedException();
+            var edge = new Edge(firstVertex, secondVertex, weight);
+
+            _edges.Add(edge);
+
+            firstVertex.AddAdjacentVertex(secondVertex);
+            secondVertex.AddAdjacentVertex(firstVertex);
+
+            return edge;
         }
 
         public void DeleteEdge(Edge edge)
         {
-            throw new NotImplementedException();
+            _edges.Remove(edge);
+            edge.FirstVertex.DeleteIncidentEdge(edge);
+            edge.SecondVertex.DeleteIncidentEdge(edge);
         }
 
         public void DeleteEdge(Vertex firstVertex, Vertex secondVertex)
         {
-            throw new NotImplementedException();
+            var edge = _edges.FirstOrDefault(e =>
+                e.FirstVertex == firstVertex
+                && e.SecondVertex == secondVertex);
+
+            if (edge == null)
+                throw new ArgumentException();
+
+            DeleteEdge(edge);
         }
 
     }

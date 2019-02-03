@@ -36,7 +36,7 @@ namespace PushkaGraphTests
         }
 
         [TestMethod]
-        public void AddEdgeShouldAddEdge()
+        public void AddEdgeShouldAddOneEdge()
         {
             var graph = new Graph(2);
             graph.AddEdge(graph.Vertices[0], graph.Vertices[1]);

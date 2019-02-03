@@ -6,32 +6,41 @@ namespace PushkaGraphCore
 {
     public class Vertex
     {
-        private readonly List<Vertex> _adjacentVertices;
-        private readonly List<Edge> _incidentEdges;
+        private readonly HashSet<Vertex> _adjacentVertices;
+        private readonly HashSet<Edge> _incidentEdges;
 
         public Vertex[] AdjacentVertices => _adjacentVertices.ToArray();
         public Edge[] IncidentEdges => _incidentEdges.ToArray();
 
-        /// <summary>
-        /// Инициализирует вершину
-        /// </summary>
-        /// <param name="adjacentVertices">Соседние вершины</param>
-        public Vertex(IEnumerable<Vertex> adjacentVertices = null)
+        internal Vertex()
         {
-            if (adjacentVertices == null)
-                adjacentVertices = new Vertex[0];
+            _adjacentVertices = new HashSet<Vertex>();
+            _incidentEdges = new HashSet<Edge>();
+        }
 
-            _adjacentVertices = new List<Vertex>(adjacentVertices);
-            _incidentEdges = new List<Edge>();
-            foreach (var vertex in AdjacentVertices)
-                _incidentEdges.Add(new Edge(this, vertex));
+        public Vertex GetAdjacentVertexBy(Edge edge)
+        {
+            Vertex adjacentVertex = null;
+
+            if (edge.FirstVertex == this)
+                adjacentVertex = edge.SecondVertex;
+
+            if (edge.SecondVertex == this)
+                adjacentVertex = edge.FirstVertex;
+
+            return adjacentVertex;
         }
 
         internal void AddAdjacentVertex(Vertex vertex)
         {
-            vertex.AddAdjacentVertex(this);
             _adjacentVertices.Add(vertex);
             _incidentEdges.Add(new Edge(this, vertex));
+        }
+
+        internal void DeleteAdjacentVertex(Vertex vertex)
+        {
+            _adjacentVertices.Remove(vertex);
+            _incidentEdges.RemoveWhere(e => e.IsIncidentTo(vertex));
         }
 
         internal void AddIncidentEdge(Edge edge)
@@ -39,20 +48,16 @@ namespace PushkaGraphCore
             if (edge.FirstVertex != this && edge.SecondVertex != this)
                 throw new ArgumentException();
 
-            var adjacentVertex = edge.FirstVertex == this ? edge.SecondVertex : edge.FirstVertex;
+            var adjacentVertex = GetAdjacentVertexBy(edge);
 
             _adjacentVertices.Add(adjacentVertex);
             _incidentEdges.Add(edge);
         }
 
-        internal void RemoveAdjacentVertex(Vertex vertex)
+        internal void DeleteIncidentEdge(Edge edge)
         {
-            throw new NotImplementedException();
-        }
-
-        internal void RemoveIncidentEdge(Edge edge)
-        {
-            throw new NotImplementedException();
+             _incidentEdges.Remove(edge);
+            _adjacentVertices.Remove(edge.GetAdjacentVertexTo(this));
         }
     }
 }
