@@ -33,31 +33,22 @@ namespace PushkaGraphCore
 
         internal void AddAdjacentVertex(Vertex vertex)
         {
-            _adjacentVertices.Add(vertex);
-            _incidentEdges.Add(new Edge(this, vertex));
+            _adjacentVertices.Add(vertex);        
         }
 
         internal void DeleteAdjacentVertex(Vertex vertex)
         {
             _adjacentVertices.Remove(vertex);
-            _incidentEdges.RemoveWhere(e => e.IsIncidentTo(vertex));
         }
 
         internal void AddIncidentEdge(Edge edge)
         {
-            if (edge.FirstVertex != this && edge.SecondVertex != this)
-                throw new ArgumentException();
-
-            var adjacentVertex = GetAdjacentVertexBy(edge);
-
-            _adjacentVertices.Add(adjacentVertex);
             _incidentEdges.Add(edge);
         }
 
         internal void DeleteIncidentEdge(Edge edge)
         {
              _incidentEdges.Remove(edge);
-            _adjacentVertices.Remove(edge.GetAdjacentVertexTo(this));
         }
     }
 }

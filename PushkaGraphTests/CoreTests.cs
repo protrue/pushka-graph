@@ -50,5 +50,22 @@ namespace PushkaGraphTests
             graph.Edges[0].FirstVertex.Should().Be(graph.Vertices[0]);
             graph.Edges[0].SecondVertex.Should().Be(graph.Vertices[1]);
         }
+
+        [TestMethod]
+        public void DeleteEdgeShouldDeleteEdge()
+        {
+            var graph = new Graph(2);
+            var edge = graph.AddEdge(graph.Vertices[0], graph.Vertices[1]);
+            graph.DeleteEdge(edge);
+
+            graph.Vertices.Length.Should().Be(2);
+            graph.Edges.Length.Should().Be(0);
+
+            graph.Vertices[0].AdjacentVertices.Length.Should().Be(0);
+            graph.Vertices[0].IncidentEdges.Length.Should().Be(0);
+
+            graph.Vertices[1].AdjacentVertices.Length.Should().Be(0);
+            graph.Vertices[1].IncidentEdges.Length.Should().Be(0);
+        }
     }
 }
