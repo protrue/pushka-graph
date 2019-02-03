@@ -124,23 +124,22 @@ namespace PushkaGraphGUI
                     if (!_isVertexMoving) break;
                     cursorPosition.Y -= VertexSettings.Size / 2;
                     cursorPosition.X -= VertexSettings.Size / 2;
-                    // TODO: ребра так же должны двигаться
-                    //foreach (var edge in _vertices[_movingVertex].IncidentEdges)
-                    //{
-                    //    var line = _edges[edge];
-                    //    if (line.X1 == Canvas.GetLeft(_movingVertex) - VertexSettings.Size / 2 && 
-                    //        line.Y1 == Canvas.GetTop(_movingVertex) - VertexSettings.Size / 2)
-                    //    {
-                    //        line.X1 = cursorPosition.X;
-                    //        line.Y1 = cursorPosition.Y;
-                    //    }
-                    //    if (line.X2 == Canvas.GetLeft(_movingVertex) - VertexSettings.Size / 2 && 
-                    //        line.Y2 == Canvas.GetTop(_movingVertex) - VertexSettings.Size / 2)
-                    //    {
-                    //        line.X2 = cursorPosition.X;
-                    //        line.Y2 = cursorPosition.Y;
-                    //    }
-                    //}
+                    foreach (var edge in _vertices[_movingVertex].IncidentEdges)
+                    {
+                        var line = _edges[edge];
+                        if (line.X1 == Canvas.GetLeft(_movingVertex) - VertexSettings.Size / 2 &&
+                            line.Y1 == Canvas.GetTop(_movingVertex) - VertexSettings.Size / 2)
+                        {
+                            line.X1 = cursorPosition.X;
+                            line.Y1 = cursorPosition.Y;
+                        }
+                        if (line.X2 == Canvas.GetLeft(_movingVertex) - VertexSettings.Size / 2 &&
+                            line.Y2 == Canvas.GetTop(_movingVertex) - VertexSettings.Size / 2)
+                        {
+                            line.X2 = cursorPosition.X;
+                            line.Y2 = cursorPosition.Y;
+                        }
+                    }
 
                     Canvas.SetTop(_movingVertex, cursorPosition.Y);
                     Canvas.SetLeft(_movingVertex, cursorPosition.X);
@@ -184,13 +183,13 @@ namespace PushkaGraphGUI
                 case InterfaceAction.CreateVertex:
                     Container.Children.Remove(ellipse);
                     var vertex = _vertices[ellipse];
-                    // TODO: а так же удалим все инцидентные ребра
-                    //foreach (var edge in vertex.IncidentEdges)
-                    //{
-                    //    var line = _edges[edge];
-                    //    Container.Children.Remove(line);
-                    //}
-                    
+
+                    foreach (var edge in vertex.IncidentEdges)
+                    {
+                        var line = _edges[edge];
+                        Container.Children.Remove(line);
+                    }
+
                     _graph.DeleteVertex(vertex);
                     break;
             }
@@ -245,8 +244,7 @@ namespace PushkaGraphGUI
             var ellipse = InitializeEllipse(point);
             ellipse.MouseEnter += (o, args) => ((Ellipse)o).StrokeThickness = VertexSettings.BoundThicknessHover;
             ellipse.MouseLeave += (o, args) => ((Ellipse)o).StrokeThickness = VertexSettings.BoundThickness;
-            // TODO: не работает удаление вершин
-            //ellipse.MouseRightButtonDown += OnEllipseRightMouseButtonDown;
+            ellipse.MouseRightButtonDown += OnEllipseRightMouseButtonDown;
             ellipse.MouseLeftButtonDown += OnEllipseLeftMouseButtonDown;
             ellipse.MouseLeftButtonUp += OnEllipseLeftMouseButtonUp;
             Container.Children.Add(ellipse);
@@ -287,11 +285,12 @@ namespace PushkaGraphGUI
 
                     _movingLine.X2 = finishX;
                     _movingLine.Y2 = finishY;
-
-                    // TODO: закомментил, пока не работает
-                    // var edge = _graph.AddEdge(_vertices[_edgeStart], _vertices[_edgeFinish]);
-                    // _edges[line] = edge;
+                    
+                    var edge = _graph.AddEdge(_vertices[_edgeStart], _vertices[_edgeFinish]);
+                    _edges[edge] = _movingLine;
                     _currentCreateEdgeActionState = CreateEdgeActionState.SelectFirstVertex;
+
+                    _movingLine.MouseRightButtonDown += OnLineRightMouseButtonDown;
                     break;
             }
         }
