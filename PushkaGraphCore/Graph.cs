@@ -59,14 +59,21 @@ namespace PushkaGraphCore
             firstVertex.AddAdjacentVertex(secondVertex);
             secondVertex.AddAdjacentVertex(firstVertex);
 
+            firstVertex.AddIncidentEdge(edge);
+            secondVertex.AddIncidentEdge(edge);
+
             return edge;
         }
 
         public void DeleteEdge(Edge edge)
         {
             _edges.Remove(edge);
+
             edge.FirstVertex.DeleteIncidentEdge(edge);
             edge.SecondVertex.DeleteIncidentEdge(edge);
+
+            edge.FirstVertex.DeleteAdjacentVertex(edge.SecondVertex);
+            edge.SecondVertex.DeleteAdjacentVertex(edge.FirstVertex);
         }
 
         public void DeleteEdge(Vertex firstVertex, Vertex secondVertex)
