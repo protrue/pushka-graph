@@ -42,7 +42,6 @@ namespace PushkaGraphGUI
             _currentAction = InterfaceAction.CreateVertex;
             CreateVertexButton.Tag = SelectedTag;
             _currentCreateEdgeActionState = CreateEdgeActionState.SelectFirstVertex;
-            Container.MouseMove += OnContainerMouseMove;
         }
 
         /// <summary>
@@ -50,7 +49,7 @@ namespace PushkaGraphGUI
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void OnCanvasClick(object sender, MouseButtonEventArgs e)
+        private void OnContainerClick(object sender, MouseButtonEventArgs e)
         {
             switch (_currentAction)
             {
@@ -145,27 +144,26 @@ namespace PushkaGraphGUI
             {
                 case InterfaceAction.CreateVertex:
                     if (!_isVertexMoving) break;
-                    cursorPosition.Y -= VertexSettings.Size / 2;
-                    cursorPosition.X -= VertexSettings.Size / 2;
                     foreach (var edge in _vertices[_movingVertex].IncidentEdges)
                     {
                         var line = _edges[edge];
-                        if (line.X1 == Canvas.GetLeft(_movingVertex) - VertexSettings.Size / 2 &&
-                            line.Y1 == Canvas.GetTop(_movingVertex) - VertexSettings.Size / 2)
+                        // TODO: убрать сравнение double'ов
+                        if (line.X1 == Canvas.GetLeft(_movingVertex) + VertexSettings.Size / 2 &&
+                            line.Y1 == Canvas.GetTop(_movingVertex) + VertexSettings.Size / 2)
                         {
                             line.X1 = cursorPosition.X;
                             line.Y1 = cursorPosition.Y;
                         }
-                        if (line.X2 == Canvas.GetLeft(_movingVertex) - VertexSettings.Size / 2 &&
-                            line.Y2 == Canvas.GetTop(_movingVertex) - VertexSettings.Size / 2)
+                        if (line.X2 == Canvas.GetLeft(_movingVertex) + VertexSettings.Size / 2 &&
+                            line.Y2 == Canvas.GetTop(_movingVertex) + VertexSettings.Size / 2)
                         {
                             line.X2 = cursorPosition.X;
                             line.Y2 = cursorPosition.Y;
                         }
                     }
 
-                    Canvas.SetTop(_movingVertex, cursorPosition.Y);
-                    Canvas.SetLeft(_movingVertex, cursorPosition.X);
+                    Canvas.SetTop(_movingVertex, cursorPosition.Y - VertexSettings.Size / 2);
+                    Canvas.SetLeft(_movingVertex, cursorPosition.X - VertexSettings.Size / 2);
                     break;
                 case InterfaceAction.CreateEdge:
                     if (_currentCreateEdgeActionState == CreateEdgeActionState.SelectSecondVertex)
@@ -248,7 +246,7 @@ namespace PushkaGraphGUI
                 case InterfaceAction.CreateVertex:
                     break;
                 case InterfaceAction.CreateEdge:
-                    var edgeLinePair = _edges.First(x => x.Value == line);
+                    var edgeLinePair = _edges.First(x => Equals(x.Value, line));
                     Container.Children.Remove(edgeLinePair.Value);
                     _graph.DeleteEdge(edgeLinePair.Key);
                     break;
@@ -334,8 +332,13 @@ namespace PushkaGraphGUI
                     _currentCreateEdgeActionState = CreateEdgeActionState.SelectSecondVertex;
                     break;
                 case CreateEdgeActionState.SelectSecondVertex:
-                    // TODO: не создавать ребро, если оно уже есть
                     _edgeFinish = ellipse;
+                    if (_vertices[_edgeStart].AdjacentVertices.Contains(_vertices[_edgeFinish]))
+                    {
+                        Container.Children.Remove(_movingLine);
+                        _currentCreateEdgeActionState = CreateEdgeActionState.SelectFirstVertex;
+                        break;
+                    }
                     var finishX = Canvas.GetLeft(_edgeFinish) + VertexSettings.Size / 2;
                     var finishY = Canvas.GetTop(_edgeFinish) + VertexSettings.Size / 2;
 

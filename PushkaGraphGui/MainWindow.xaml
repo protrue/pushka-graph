@@ -76,7 +76,11 @@
                 A4
             </Button>
         </StackPanel>
-        <Canvas Name="Container" MouseLeftButtonDown="OnCanvasClick" Grid.Row="1" Background="Transparent">
+        <Canvas Name="Container" 
+                MouseLeftButtonDown="OnContainerClick"
+                MouseMove="OnContainerMouseMove"
+                Grid.Row="1" 
+                Background="Transparent">
         </Canvas>
     </Grid>
 </Window>
