@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 
 namespace PushkaGraphCore
@@ -30,6 +29,13 @@ namespace PushkaGraphCore
 
             return adjacentVertex;
         }
+
+        public Edge GetEdgeBy(Vertex adjacentVertex) =>
+            _incidentEdges.FirstOrDefault(e => e.IsIncidentTo(this)
+                                               && e.IsIncidentTo(adjacentVertex));
+
+        public bool IsAdjacentTo(Vertex otherVertex) =>
+            _adjacentVertices.Contains(otherVertex);
 
         internal void AddAdjacentVertex(Vertex vertex)
         {

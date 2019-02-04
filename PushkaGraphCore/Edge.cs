@@ -20,11 +20,11 @@
         {
             Vertex adjacentVertex = null;
 
-            if (this.FirstVertex == vertex)
-                adjacentVertex = this.SecondVertex;
+            if (FirstVertex == vertex)
+                adjacentVertex = SecondVertex;
 
-            if (this.SecondVertex == vertex)
-                adjacentVertex = this.FirstVertex;
+            if (SecondVertex == vertex)
+                adjacentVertex = FirstVertex;
 
             return adjacentVertex;
         }
