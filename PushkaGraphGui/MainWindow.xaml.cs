@@ -147,15 +147,14 @@ namespace PushkaGraphGUI
                     foreach (var edge in _vertices[_movingVertex].IncidentEdges)
                     {
                         var line = _edges[edge];
-                        // TODO: убрать сравнение double'ов
-                        if (line.X1 == Canvas.GetLeft(_movingVertex) + VertexSettings.Size / 2 &&
-                            line.Y1 == Canvas.GetTop(_movingVertex) + VertexSettings.Size / 2)
+                        if (Math.Abs(line.X1 - (Canvas.GetLeft(_movingVertex) + VertexSettings.Size / 2)) < 0.001 &&
+                            Math.Abs(line.Y1 - (Canvas.GetTop(_movingVertex) + VertexSettings.Size / 2)) < 0.001)
                         {
                             line.X1 = cursorPosition.X;
                             line.Y1 = cursorPosition.Y;
                         }
-                        if (line.X2 == Canvas.GetLeft(_movingVertex) + VertexSettings.Size / 2 &&
-                            line.Y2 == Canvas.GetTop(_movingVertex) + VertexSettings.Size / 2)
+                        if (Math.Abs(line.X2 - (Canvas.GetLeft(_movingVertex) + VertexSettings.Size / 2)) < 0.001 &&
+                            Math.Abs(line.Y2 - (Canvas.GetTop(_movingVertex) + VertexSettings.Size / 2)) < 0.001)
                         {
                             line.X2 = cursorPosition.X;
                             line.Y2 = cursorPosition.Y;
@@ -191,12 +190,11 @@ namespace PushkaGraphGUI
         /// <param name="start">Начальная вершина.</param>
         /// <param name="finish">Конечная вершина.</param>
         /// <returns></returns>
-        private static Line InitializeLine(Point start, Point finish)
+        private Line InitializeLine(Point start, Point finish)
         {
             var line = new Line
             {
-                Stroke = Brushes.Black,
-                StrokeThickness = 4,
+                Style = FindResource("Edge") as Style,
                 X1 = start.X,
                 Y1 = start.Y,
                 X2 = finish.X,
@@ -268,13 +266,11 @@ namespace PushkaGraphGUI
         /// </summary>
         /// <param name="point">Координаты вершины.</param>
         /// <returns></returns>
-        private static Ellipse InitializeEllipse(Point point)
+        private Ellipse InitializeEllipse(Point point)
         {
             var ellipse = new Ellipse
             {
-                Fill = VertexSettings.BackgroundColor,
-                Stroke = VertexSettings.BoundColor,
-                StrokeThickness = VertexSettings.BoundThickness,
+                Style = FindResource("Vertex") as Style,
                 Width = VertexSettings.Size,
                 Height = VertexSettings.Size,
             };
@@ -297,8 +293,6 @@ namespace PushkaGraphGUI
             point.X -= VertexSettings.Size / 2;
 
             var ellipse = InitializeEllipse(point);
-            ellipse.MouseEnter += (o, args) => ((Ellipse)o).StrokeThickness = VertexSettings.BoundThicknessHover;
-            ellipse.MouseLeave += (o, args) => ((Ellipse)o).StrokeThickness = VertexSettings.BoundThickness;
             ellipse.MouseRightButtonDown += OnEllipseRightMouseButtonDown;
             ellipse.MouseLeftButtonDown += OnEllipseLeftMouseButtonDown;
             ellipse.MouseLeftButtonUp += OnEllipseLeftMouseButtonUp;
