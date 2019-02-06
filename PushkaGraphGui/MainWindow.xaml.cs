@@ -4,7 +4,6 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Shapes;
 using PushkaGraphCore;
 
@@ -77,7 +76,7 @@ namespace PushkaGraphGUI
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void OnEllipseLeftMouseButtonDown(object sender, MouseButtonEventArgs e)
+        private void OnEllipseMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             var ellipse = (Ellipse) sender;
             switch (_currentAction)
@@ -108,7 +107,7 @@ namespace PushkaGraphGUI
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void OnEllipseLeftMouseButtonUp(object sender, MouseButtonEventArgs e)
+        private void OnEllipseMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             var ellipse = (Ellipse)sender;
             switch (_currentAction)
@@ -204,7 +203,7 @@ namespace PushkaGraphGUI
             return line;
         }
 
-        private void OnEllipseRightMouseButtonDown(object sender, MouseButtonEventArgs e)
+        private void OnEllipseMouseRightButtonDown(object sender, MouseButtonEventArgs e)
         {
             var ellipse = (Ellipse)sender;
             switch (_currentAction)
@@ -236,7 +235,7 @@ namespace PushkaGraphGUI
             }
         }
 
-        private void OnLineRightMouseButtonDown(object sender, MouseButtonEventArgs e)
+        private void OnLineMouseRightButtonDown(object sender, MouseButtonEventArgs e)
         {
             var line = (Line)sender;
             switch (_currentAction)
@@ -293,9 +292,6 @@ namespace PushkaGraphGUI
             point.X -= VertexSettings.Size / 2;
 
             var ellipse = InitializeEllipse(point);
-            ellipse.MouseRightButtonDown += OnEllipseRightMouseButtonDown;
-            ellipse.MouseLeftButtonDown += OnEllipseLeftMouseButtonDown;
-            ellipse.MouseLeftButtonUp += OnEllipseLeftMouseButtonUp;
             Container.Children.Add(ellipse);
 
             var vertex = _graph.AddVertex();
@@ -342,8 +338,6 @@ namespace PushkaGraphGUI
                     var edge = _graph.AddEdge(_vertices[_edgeStart], _vertices[_edgeFinish]);
                     _edges[edge] = _movingLine;
                     _currentCreateEdgeActionState = CreateEdgeActionState.SelectFirstVertex;
-
-                    _movingLine.MouseRightButtonDown += OnLineRightMouseButtonDown;
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
