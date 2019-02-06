@@ -3,14 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28307.168
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PushkaGraphCore", "PushkaGraphCore\PushkaGraphCore.csproj", "{14079356-117A-4A11-98EE-DA4C1E9F3288}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PushkaGraph.Core", "PushkaGraph.Core\PushkaGraph.Core.csproj", "{14079356-117A-4A11-98EE-DA4C1E9F3288}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PushkaGraphAlgorithms", "PushkaGraphAlgorithms\PushkaGraphAlgorithms.csproj", "{2D496831-81A4-449A-AC2A-65105D38BAB1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PushkaGraph.Algorithms", "PushkaGraph.Algorithms\PushkaGraph.Algorithms.csproj", "{2D496831-81A4-449A-AC2A-65105D38BAB1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PushkaGraphTests", "PushkaGraphTests\PushkaGraphTests.csproj", "{90D9B7BC-FCA6-4927-80E5-23B3D12F1A73}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PushkaGraph.Tests", "PushkaGraph.Tests\PushkaGraph.Tests.csproj", "{90D9B7BC-FCA6-4927-80E5-23B3D12F1A73}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PushkaGraphGUI", "PushkaGraphGUI\PushkaGraphGUI.csproj", "{FAC6ED48-01B3-45EB-AA74-FE834297CB48}"
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PushkaGraphTools", "PushkaGraphTools\PushkaGraphTools.csproj", "{C9FAD02C-025D-4E42-A7A6-4EBFEC87C759}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PushkaGraph.Gui", "PushkaGraph.Gui\PushkaGraph.Gui.csproj", "{FAC6ED48-01B3-45EB-AA74-FE834297CB48}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PushkaGraph.Tools", "PushkaGraph.Tools\PushkaGraph.Tools.csproj", "{C9FAD02C-025D-4E42-A7A6-4EBFEC87C759}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
