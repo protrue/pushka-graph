@@ -47,7 +47,7 @@ namespace PushkaGraphCore
                 adjacentVertex.DeleteAdjacentVertex(vertex);
         }
 
-        public Edge AddEdge(Vertex firstVertex, Vertex secondVertex, int weight = 0)
+        public Edge AddEdge(Vertex firstVertex, Vertex secondVertex, int weight = 1)
         {
             if (firstVertex == null || secondVertex == null)
                 throw new ArgumentException("Одна или обе вершины были null");
