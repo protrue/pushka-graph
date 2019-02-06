@@ -21,13 +21,13 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_83C15B92134A46A09E938665638DD808"
+        "MsmKey" = "8:_124F105F115C4BCEA74BBF3E749DE8D3"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_9E7769ED4711400FB0A4D6BA7DA8F17F"
+        "MsmKey" = "8:_83C15B92134A46A09E938665638DD808"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -40,12 +40,6 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_D8B3DE916163C2B7D96FB4C74D2B4179"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_83C15B92134A46A09E938665638DD808"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -53,6 +47,12 @@
         {
         "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_09E96CA5CAA556D0507138E0BABAB2A9"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_D8B3DE916163C2B7D96FB4C74D2B4179"
         "MsmSig" = "8:_UNDEFINED"
         }
     }
@@ -73,6 +73,14 @@
         "PrivateKeyFile" = "8:"
         "TimeStampServer" = "8:"
         "InstallerBootstrapper" = "3:2"
+            "BootstrapperCfg:{63ACBE69-63AA-4F98-B2B6-99F9E24495F2}"
+            {
+            "Enabled" = "11:TRUE"
+            "PromptEnabled" = "11:TRUE"
+            "PrerequisitesLocation" = "2:1"
+            "Url" = "8:"
+            "ComponentsUrl" = "8:"
+            }
         }
         "Release"
         {
@@ -89,6 +97,14 @@
         "PrivateKeyFile" = "8:"
         "TimeStampServer" = "8:"
         "InstallerBootstrapper" = "3:2"
+            "BootstrapperCfg:{63ACBE69-63AA-4F98-B2B6-99F9E24495F2}"
+            {
+            "Enabled" = "11:TRUE"
+            "PromptEnabled" = "11:TRUE"
+            "PrerequisitesLocation" = "2:1"
+            "Url" = "8:"
+            "ComponentsUrl" = "8:"
+            }
         }
     }
     "Deployable"
@@ -149,9 +165,9 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_9E7769ED4711400FB0A4D6BA7DA8F17F"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_124F105F115C4BCEA74BBF3E749DE8D3"
             {
-            "SourcePath" = "8:..\\..\\icon.ico"
+            "SourcePath" = "8:..\\PushkaGraphGui\\Resources\\icon.ico"
             "TargetName" = "8:icon.ico"
             "Tag" = "8:"
             "Folder" = "8:_05CB9DA28CF94E0FAD39A68197D9A5CC"
@@ -388,7 +404,7 @@
             "Target" = "8:_83C15B92134A46A09E938665638DD808"
             "Folder" = "8:_E1B8034C35E74FFDA74F8426AE08D1EC"
             "WorkingFolder" = "8:_05CB9DA28CF94E0FAD39A68197D9A5CC"
-            "Icon" = "8:_9E7769ED4711400FB0A4D6BA7DA8F17F"
+            "Icon" = "8:_124F105F115C4BCEA74BBF3E749DE8D3"
             "Feature" = "8:"
             }
         }
