@@ -323,6 +323,12 @@ namespace PushkaGraphGUI
                     break;
                 case CreateEdgeActionState.SelectSecondVertex:
                     _edgeFinish = ellipse;
+                    if (Equals(_edgeFinish, _edgeStart))
+                    {
+                        Container.Children.Remove(_movingLine);
+                        _currentCreateEdgeActionState = CreateEdgeActionState.SelectFirstVertex;
+                        break;
+                    }
                     if (_vertices[_edgeStart].AdjacentVertices.Contains(_vertices[_edgeFinish]))
                     {
                         Container.Children.Remove(_movingLine);
