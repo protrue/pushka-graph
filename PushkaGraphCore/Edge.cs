@@ -6,7 +6,7 @@
         public Vertex FirstVertex { get; }
         public Vertex SecondVertex { get; }
 
-        internal Edge(Vertex firstVertex, Vertex secondVertex, int weight = 0)
+        internal Edge(Vertex firstVertex, Vertex secondVertex, int weight = 1)
         {
             FirstVertex = firstVertex;
             SecondVertex = secondVertex;
