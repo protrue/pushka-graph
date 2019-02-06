@@ -94,9 +94,10 @@
             </Button>
         </StackPanel>
         <Canvas Name="Container" 
-                MouseLeftButtonDown="OnContainerClick"
+                MouseLeftButtonDown="OnContainerLeftMouseButtonDown"
+                MouseRightButtonDown="OnContainerRightMouseButtonDown"
                 MouseMove="OnContainerMouseMove"
-                Grid.Row="1" 
+                Grid.Row="1"
                 Background="Transparent">
         </Canvas>
     </Grid>

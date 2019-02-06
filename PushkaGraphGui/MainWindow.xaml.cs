@@ -44,11 +44,11 @@ namespace PushkaGraphGUI
         }
 
         /// <summary>
-        /// Обрабатывает событие нажатия на поле.
+        /// Обрабатывает событие нажатия левой кнопкой мыши на поле.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void OnContainerClick(object sender, MouseButtonEventArgs e)
+        private void OnContainerLeftMouseButtonDown(object sender, MouseButtonEventArgs e)
         {
             switch (_currentAction)
             {
@@ -57,6 +57,89 @@ namespace PushkaGraphGUI
                     CreateVertex(sender, e);
                     break;
                 case InterfaceAction.CreateEdge:
+                    break;
+                case InterfaceAction.AlgorithmA:
+                    break;
+                case InterfaceAction.AlgorithmB:
+                    break;
+                case InterfaceAction.AlgorithmC:
+                    break;
+                case InterfaceAction.AlgorithmD:
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+        }
+
+        /// <summary>
+        /// Обрабатывает событие нажатия правой кнопкой мыши на поле.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void OnContainerRightMouseButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            switch (_currentAction)
+            {
+                case InterfaceAction.CreateVertex:
+                    break;
+                case InterfaceAction.CreateEdge:
+                    if (_currentCreateEdgeActionState == CreateEdgeActionState.SelectSecondVertex)
+                    {
+                        _currentCreateEdgeActionState = CreateEdgeActionState.SelectFirstVertex;
+                        Container.Children.Remove(_movingLine);
+                    }
+                    break;
+                case InterfaceAction.AlgorithmA:
+                    break;
+                case InterfaceAction.AlgorithmB:
+                    break;
+                case InterfaceAction.AlgorithmC:
+                    break;
+                case InterfaceAction.AlgorithmD:
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+        }
+
+        /// <summary>
+        /// Обрабатывает событие движения мыши над полем, где рисуется граф.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void OnContainerMouseMove(object sender, MouseEventArgs e)
+        {
+            var cursorPosition = e.GetPosition(Container);
+            switch (_currentAction)
+            {
+                case InterfaceAction.CreateVertex:
+                    if (!_isVertexMoving) break;
+                    foreach (var edge in _vertices[_movingVertex].IncidentEdges)
+                    {
+                        var line = _edges[edge];
+                        if (Math.Abs(line.X1 - (Canvas.GetLeft(_movingVertex) + VertexSettings.Size / 2)) < 0.001 &&
+                            Math.Abs(line.Y1 - (Canvas.GetTop(_movingVertex) + VertexSettings.Size / 2)) < 0.001)
+                        {
+                            line.X1 = cursorPosition.X;
+                            line.Y1 = cursorPosition.Y;
+                        }
+                        if (Math.Abs(line.X2 - (Canvas.GetLeft(_movingVertex) + VertexSettings.Size / 2)) < 0.001 &&
+                            Math.Abs(line.Y2 - (Canvas.GetTop(_movingVertex) + VertexSettings.Size / 2)) < 0.001)
+                        {
+                            line.X2 = cursorPosition.X;
+                            line.Y2 = cursorPosition.Y;
+                        }
+                    }
+
+                    Canvas.SetTop(_movingVertex, cursorPosition.Y - VertexSettings.Size / 2);
+                    Canvas.SetLeft(_movingVertex, cursorPosition.X - VertexSettings.Size / 2);
+                    break;
+                case InterfaceAction.CreateEdge:
+                    if (_currentCreateEdgeActionState == CreateEdgeActionState.SelectSecondVertex)
+                    {
+                        _movingLine.X2 = cursorPosition.X;
+                        _movingLine.Y2 = cursorPosition.Y;
+                    }
                     break;
                 case InterfaceAction.AlgorithmA:
                     break;
@@ -132,77 +215,10 @@ namespace PushkaGraphGUI
         }
 
         /// <summary>
-        /// Обрабатывает событие движения мыши над полем, где рисуется граф.
+        /// Обрабатывает событие нажатия правой кнопкой мыши на вершину.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void OnContainerMouseMove(object sender, MouseEventArgs e)
-        {
-            var cursorPosition = e.GetPosition(Container);
-            switch (_currentAction)
-            {
-                case InterfaceAction.CreateVertex:
-                    if (!_isVertexMoving) break;
-                    foreach (var edge in _vertices[_movingVertex].IncidentEdges)
-                    {
-                        var line = _edges[edge];
-                        if (Math.Abs(line.X1 - (Canvas.GetLeft(_movingVertex) + VertexSettings.Size / 2)) < 0.001 &&
-                            Math.Abs(line.Y1 - (Canvas.GetTop(_movingVertex) + VertexSettings.Size / 2)) < 0.001)
-                        {
-                            line.X1 = cursorPosition.X;
-                            line.Y1 = cursorPosition.Y;
-                        }
-                        if (Math.Abs(line.X2 - (Canvas.GetLeft(_movingVertex) + VertexSettings.Size / 2)) < 0.001 &&
-                            Math.Abs(line.Y2 - (Canvas.GetTop(_movingVertex) + VertexSettings.Size / 2)) < 0.001)
-                        {
-                            line.X2 = cursorPosition.X;
-                            line.Y2 = cursorPosition.Y;
-                        }
-                    }
-
-                    Canvas.SetTop(_movingVertex, cursorPosition.Y - VertexSettings.Size / 2);
-                    Canvas.SetLeft(_movingVertex, cursorPosition.X - VertexSettings.Size / 2);
-                    break;
-                case InterfaceAction.CreateEdge:
-                    if (_currentCreateEdgeActionState == CreateEdgeActionState.SelectSecondVertex)
-                    {
-                        _movingLine.X2 = cursorPosition.X;
-                        _movingLine.Y2 = cursorPosition.Y;
-                    }
-                    break;
-                case InterfaceAction.AlgorithmA:
-                    break;
-                case InterfaceAction.AlgorithmB:
-                    break;
-                case InterfaceAction.AlgorithmC:
-                    break;
-                case InterfaceAction.AlgorithmD:
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
-        }
-
-        /// <summary>
-        /// Создает контрол ребра с требуемыми параметрами.
-        /// </summary>
-        /// <param name="start">Начальная вершина.</param>
-        /// <param name="finish">Конечная вершина.</param>
-        /// <returns></returns>
-        private Line InitializeLine(Point start, Point finish)
-        {
-            var line = new Line
-            {
-                Style = FindResource("Edge") as Style,
-                X1 = start.X,
-                Y1 = start.Y,
-                X2 = finish.X,
-                Y2 = finish.Y
-            };
-
-            return line;
-        }
-
         private void OnEllipseMouseRightButtonDown(object sender, MouseButtonEventArgs e)
         {
             var ellipse = (Ellipse)sender;
@@ -235,6 +251,11 @@ namespace PushkaGraphGUI
             }
         }
 
+        /// <summary>
+        /// Обрабатывает событие нажатия правой кнопкой мыши на ребро.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void OnLineMouseRightButtonDown(object sender, MouseButtonEventArgs e)
         {
             var line = (Line)sender;
@@ -243,6 +264,12 @@ namespace PushkaGraphGUI
                 case InterfaceAction.CreateVertex:
                     break;
                 case InterfaceAction.CreateEdge:
+                    if (_currentCreateEdgeActionState == CreateEdgeActionState.SelectSecondVertex)
+                    {
+                        _currentCreateEdgeActionState = CreateEdgeActionState.SelectFirstVertex;
+                        Container.Children.Remove(_movingLine);
+                        break;
+                    }
                     var edgeLinePair = _edges.First(x => Equals(x.Value, line));
                     Container.Children.Remove(edgeLinePair.Value);
                     _graph.DeleteEdge(edgeLinePair.Key);
@@ -258,6 +285,26 @@ namespace PushkaGraphGUI
                 default:
                     throw new ArgumentOutOfRangeException();
             }
+        }
+
+        /// <summary>
+        /// Создает контрол ребра с требуемыми параметрами.
+        /// </summary>
+        /// <param name="start">Начальная вершина.</param>
+        /// <param name="finish">Конечная вершина.</param>
+        /// <returns></returns>
+        private Line InitializeLine(Point start, Point finish)
+        {
+            var line = new Line
+            {
+                Style = FindResource("Edge") as Style,
+                X1 = start.X,
+                Y1 = start.Y,
+                X2 = finish.X,
+                Y2 = finish.Y
+            };
+
+            return line;
         }
 
         /// <summary>
@@ -325,8 +372,6 @@ namespace PushkaGraphGUI
                     _edgeFinish = ellipse;
                     if (Equals(_edgeFinish, _edgeStart))
                     {
-                        Container.Children.Remove(_movingLine);
-                        _currentCreateEdgeActionState = CreateEdgeActionState.SelectFirstVertex;
                         break;
                     }
                     if (_vertices[_edgeStart].AdjacentVertices.Contains(_vertices[_edgeFinish]))
