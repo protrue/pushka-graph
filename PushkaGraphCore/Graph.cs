@@ -6,20 +6,26 @@ namespace PushkaGraphCore
 {
     public class Graph
     {
-        private HashSet<Vertex> _vertices;
-        private HashSet<Edge> _edges;
+        private readonly HashSet<Vertex> _vertices;
+        private readonly HashSet<Edge> _edges;
 
         public Vertex[] Vertices => _vertices.ToArray();
         public Edge[] Edges => _edges.ToArray();
 
         public Graph(int verticesCount = 0)
         {
+            if (verticesCount < 0)
+                throw new ArgumentOutOfRangeException(
+                    nameof(verticesCount), verticesCount, 
+                    "Количество вершин должно быть больше нуля");
+
             _vertices = new HashSet<Vertex>();
             _edges = new HashSet<Edge>();
 
-            AddVertices(verticesCount);
+            for (var i = 1; i <= verticesCount; i++)
+                AddVertex();
         }
-        
+
         public Vertex AddVertex()
         {
             var vertex = new Vertex();
@@ -29,17 +35,11 @@ namespace PushkaGraphCore
             return vertex;
         }
 
-        public Vertex[] AddVertices(int count)
-        {
-            var vertices = new Vertex[count];
-            for (var i = 0; i < count; i++)
-                vertices[0] = AddVertex();
-
-            return vertices;
-        }
-
         public void DeleteVertex(Vertex vertex)
         {
+            if (vertex == null)
+                throw new ArgumentException("Вершина была null");
+
             _vertices.Remove(vertex);
             _edges.RemoveWhere(e => e.IsIncidentTo(vertex));
 
@@ -49,8 +49,17 @@ namespace PushkaGraphCore
 
         public Edge AddEdge(Vertex firstVertex, Vertex secondVertex, int weight = 0)
         {
+            if (firstVertex == null || secondVertex == null)
+                throw new ArgumentException("Одна или обе вершины были null");
+
             if (!_vertices.Contains(firstVertex) || !_vertices.Contains(secondVertex))
-                throw new ArgumentException();
+                throw new ArgumentException("Одна или обе вершины не принадлежат графу");
+
+            if (firstVertex == secondVertex)
+                throw new ArgumentException("Петли недопустимы");
+
+            if (firstVertex.IsAdjacentTo(secondVertex))
+                throw new ArgumentException("Кратные рёбра недопустимы");
 
             var edge = new Edge(firstVertex, secondVertex, weight);
 
@@ -67,6 +76,12 @@ namespace PushkaGraphCore
 
         public void DeleteEdge(Edge edge)
         {
+            if (edge == null)
+                throw new ArgumentException("Ребро было null");
+
+            if (!_edges.Contains(edge))
+                throw new ArgumentException("Граф не содержит такого ребра");
+
             _edges.Remove(edge);
 
             edge.FirstVertex.DeleteIncidentEdge(edge);
@@ -78,12 +93,13 @@ namespace PushkaGraphCore
 
         public void DeleteEdge(Vertex firstVertex, Vertex secondVertex)
         {
-            var edge = _edges.FirstOrDefault(e =>
-                e.FirstVertex == firstVertex
-                && e.SecondVertex == secondVertex);
+            if (firstVertex == null || secondVertex == null)
+                throw new ArgumentException("Одна или обе вершины были null");
 
-            if (edge == null)
-                throw new ArgumentException();
+            if (!_vertices.Contains(firstVertex) || !_vertices.Contains(secondVertex))
+                throw new ArgumentException("Одна или обе вершины не принадлежат графу");
+
+            var edge = firstVertex.GetEdgeBy(secondVertex);
 
             DeleteEdge(edge);
         }

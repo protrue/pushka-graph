@@ -1,4 +1,4 @@
-﻿using System.Linq;
+﻿using System;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using PushkaGraphCore;
@@ -8,6 +8,7 @@ namespace PushkaGraphTests
     [TestClass]
     public class CoreTests
     {
+        // TODO: разбить на несколько отдельных тестов
         [TestMethod]
         public void AddVertexShouldAddOneVertex()
         {
@@ -20,6 +21,7 @@ namespace PushkaGraphTests
             graph.Vertices[0].IncidentEdges.Length.Should().Be(0);
         }
 
+        // TODO: разбить на несколько отдельных тестов
         [TestMethod]
         public void AddVerticesShouldAddMultipleVertices()
         {
@@ -35,6 +37,7 @@ namespace PushkaGraphTests
             }
         }
 
+        // TODO: разбить на несколько отдельных тестов
         [TestMethod]
         public void AddEdgeShouldAddOneEdge()
         {
@@ -51,6 +54,7 @@ namespace PushkaGraphTests
             graph.Edges[0].SecondVertex.Should().Be(graph.Vertices[1]);
         }
 
+        // TODO: разбить на несколько отдельных тестов
         [TestMethod]
         public void DeleteEdgeShouldDeleteEdge()
         {
@@ -66,6 +70,47 @@ namespace PushkaGraphTests
 
             graph.Vertices[1].AdjacentVertices.Length.Should().Be(0);
             graph.Vertices[1].IncidentEdges.Length.Should().Be(0);
+        }
+
+        [TestMethod]
+        public void DeleteNullEdgeShouldThrowException()
+        {
+            var graph = new Graph();
+            Action deleteNullEdge = () => graph.DeleteEdge(null);
+            deleteNullEdge.Should().Throw<ArgumentException>();
+        }
+
+        [TestMethod]
+        public void DeleteNullVertexShouldThrowException()
+        {
+            var graph = new Graph();
+            Action deleteNullVertex = () => graph.DeleteVertex(null);
+            deleteNullVertex.Should().Throw<ArgumentException>();
+        }
+
+        [TestMethod]
+        public void CreateGraphWithNegativeVerticesCountShouldThrowException()
+        {
+            Action createGraphWithNegativeVerticesCount = () => new Graph(-1);
+            createGraphWithNegativeVerticesCount.Should().Throw<ArgumentOutOfRangeException>();
+        }
+
+        [TestMethod]
+        public void CreateGraphWithoutArgumentShouldCreateEmptyGraph()
+        {
+            var graph = new Graph();
+
+            graph.Edges.Length.Should().Be(0);
+            graph.Vertices.Length.Should().Be(0);
+        }
+
+        [TestMethod]
+        public void CreateGraphWithArgumentShouldCreateGraphWithVertices()
+        {
+            var graph = new Graph(1);
+
+            graph.Edges.Length.Should().Be(0);
+            graph.Vertices.Length.Should().Be(1);
         }
     }
 }

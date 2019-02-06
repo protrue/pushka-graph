@@ -1,10 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using PushkaGraphCore;
 
 namespace PushkaGraphAlgorithms
 {
-    public static class GraphAlgorithms
+    public static partial class GraphAlgorithms
     {
         /// <summary>
         /// Extension method example
