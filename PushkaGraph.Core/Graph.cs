@@ -38,7 +38,10 @@ namespace PushkaGraph.Core
         public void DeleteVertex(Vertex vertex)
         {
             if (vertex == null)
-                throw new ArgumentException("Вершина была null");
+                throw new ArgumentNullException(nameof(vertex),"Вершина была null");
+
+            if (!_vertices.Contains(vertex))
+                throw new ArgumentException("Граф не содержит такой вершины");
 
             _vertices.Remove(vertex);
             _edges.RemoveWhere(e => e.IsIncidentTo(vertex));
@@ -49,8 +52,11 @@ namespace PushkaGraph.Core
 
         public Edge AddEdge(Vertex firstVertex, Vertex secondVertex, int weight = 1)
         {
-            if (firstVertex == null || secondVertex == null)
-                throw new ArgumentException("Одна или обе вершины были null");
+            if (firstVertex == null)
+                throw new ArgumentNullException(nameof(firstVertex), "Вершина была null");
+
+            if (secondVertex == null)
+                throw new ArgumentNullException(nameof(secondVertex), "Вершина была null");
 
             if (!_vertices.Contains(firstVertex) || !_vertices.Contains(secondVertex))
                 throw new ArgumentException("Одна или обе вершины не принадлежат графу");
@@ -77,7 +83,7 @@ namespace PushkaGraph.Core
         public void DeleteEdge(Edge edge)
         {
             if (edge == null)
-                throw new ArgumentException("Ребро было null");
+                throw new ArgumentNullException(nameof(edge),"Ребро было null");
 
             if (!_edges.Contains(edge))
                 throw new ArgumentException("Граф не содержит такого ребра");
@@ -93,8 +99,11 @@ namespace PushkaGraph.Core
 
         public void DeleteEdge(Vertex firstVertex, Vertex secondVertex)
         {
-            if (firstVertex == null || secondVertex == null)
-                throw new ArgumentException("Одна или обе вершины были null");
+            if (firstVertex == null)
+                throw new ArgumentNullException(nameof(firstVertex),"Вершина была null");
+
+            if (secondVertex == null)
+                throw new ArgumentNullException(nameof(secondVertex), "Вершина была null");
 
             if (!_vertices.Contains(firstVertex) || !_vertices.Contains(secondVertex))
                 throw new ArgumentException("Одна или обе вершины не принадлежат графу");

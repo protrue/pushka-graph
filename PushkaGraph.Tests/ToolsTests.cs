@@ -49,5 +49,30 @@ namespace PushkaGraph.Tests
                     { 0, 3, 0 }
                 });
         }
+
+        [TestMethod]
+        public void CleanEdgesShouldDeleteAllEdges()
+        {
+            var graph = new Graph(3);
+            graph.AddEdge(graph.Vertices[0], graph.Vertices[1], 2);
+            graph.AddEdge(graph.Vertices[1], graph.Vertices[2], 3);
+
+            graph.CleanEdges();
+
+            graph.Edges.Length.Should().Be(0);
+        }
+
+        [TestMethod]
+        public void CleanVerticesShouldDeleteAllVerticesAndEdges()
+        {
+            var graph = new Graph(3);
+            graph.AddEdge(graph.Vertices[0], graph.Vertices[1], 2);
+            graph.AddEdge(graph.Vertices[1], graph.Vertices[2], 3);
+
+            graph.CleanVertices();
+
+            graph.Vertices.Length.Should().Be(0);
+            graph.Edges.Length.Should().Be(0);
+        }
     }
 }
