@@ -157,6 +157,8 @@ namespace PushkaGraph.Gui
                     var edge = _graph.AddEdge(_ellipses[_edgeStart], _ellipses[_edgeFinish]);
                     _edges[edge] = _movingLine;
                     _lines[_movingLine] = edge;
+                    _movingLine.MouseEnter += (sender, args) => ((Line) sender).StrokeThickness = 10;
+                    _movingLine.MouseLeave += (sender, args) => ((Line)sender).StrokeThickness = 5;
 
                     var weightTextBox = InitializeWeightTextBox(_movingLine);
                     _edgeWeightMapping[edge] = weightTextBox;
