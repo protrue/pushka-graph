@@ -61,6 +61,14 @@
     </ApplicationDefinition>
     <Compile Include="CreateEdgeActionState.cs" />
     <Compile Include="InterfaceAction.cs" />
+    <Compile Include="MainWindow.xaml.Edge.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MainWindow.xaml.Vertex.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

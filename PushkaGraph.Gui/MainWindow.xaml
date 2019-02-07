@@ -4,8 +4,20 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="Pushka Graph" Height="600" Width="800">
+        WindowStartupLocation="CenterScreen"
+        Title="Pushka Graph">
     <Window.Resources>
+        <Style TargetType="{x:Type TextBox}" x:Key="Weight">
+            <EventSetter Event="TextChanged" Handler="OnWeightTextChanged"></EventSetter>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="FontSize" Value="15"/>
+            <Style.Triggers>
+                <Trigger Property="IsFocused" Value="True">
+                    <Setter Property="BorderThickness" Value="1" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
         <Style TargetType="{x:Type Line}" x:Key="Edge">
             <EventSetter Event="MouseRightButtonDown" Handler="OnLineMouseRightButtonDown"></EventSetter>
             <Setter Property="Stroke" Value="Black"/>
@@ -13,7 +25,6 @@
         </Style>
         <Style TargetType="{x:Type Ellipse}" x:Key="Vertex">
             <EventSetter Event="MouseLeftButtonDown" Handler="OnEllipseMouseLeftButtonDown"></EventSetter>
-            <EventSetter Event="MouseLeftButtonUp" Handler="OnEllipseMouseLeftButtonUp"></EventSetter>
             <EventSetter Event="MouseRightButtonDown" Handler="OnEllipseMouseRightButtonDown"></EventSetter>
             <Setter Property="Fill" Value="White"/>
             <Setter Property="Stroke" Value="Black"/>
@@ -96,6 +107,7 @@
         <Canvas Name="Container" 
                 MouseLeftButtonDown="OnContainerLeftMouseButtonDown"
                 MouseRightButtonDown="OnContainerRightMouseButtonDown"
+                MouseLeftButtonUp="OnContainerMouseLeftButtonUp"
                 MouseMove="OnContainerMouseMove"
                 Grid.Row="1"
                 Background="Transparent">

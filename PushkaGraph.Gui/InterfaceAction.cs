@@ -2,8 +2,8 @@
 {
     public enum InterfaceAction
     {
-        CreateVertex,
-        CreateEdge,
+        VertexEdit,
+        EdgeEdit,
         AlgorithmA,
         AlgorithmB,
         AlgorithmC,
