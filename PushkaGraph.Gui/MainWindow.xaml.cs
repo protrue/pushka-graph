@@ -25,6 +25,8 @@ namespace PushkaGraph.Gui
         public MainWindow()
         {
             InitializeComponent();
+            MinHeight = SystemParameters.MaximizedPrimaryScreenHeight;
+            MinWidth = SystemParameters.MaximizedPrimaryScreenWidth;
             _graph = new Graph();
             _ellipses = new Dictionary<Ellipse, Vertex>();
             _vertices = new Dictionary<Vertex, Ellipse>(); 
