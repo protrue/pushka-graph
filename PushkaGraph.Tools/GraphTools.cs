@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using PushkaGraph.Core;
 
 namespace PushkaGraph.Tools
@@ -23,6 +22,22 @@ namespace PushkaGraph.Tools
             }
 
             return adjacencyMatrix;
+        }
+
+        public static void CreateFromAdjacencyMatrix(this Graph graph, int[,] adjacencyMatrix)
+        {
+            graph.CleanVertices();
+
+            throw new NotImplementedException();
+        }
+
+        public static Vertex[] AddVertices(this Graph graph, int count)
+        {
+            var vertices = new Vertex[count];
+            for (var i = 0; i < count; i++)
+                vertices[i] = graph.AddVertex();
+
+            return vertices;
         }
         
         public static void DeleteVertices(this Graph graph, IEnumerable<Vertex> verticesToDelete)

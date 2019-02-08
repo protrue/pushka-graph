@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using PushkaGraph.Core;
@@ -111,6 +112,20 @@ namespace PushkaGraph.Tests
 
             graph.Edges.Length.Should().Be(0);
             graph.Vertices.Length.Should().Be(1);
+        }
+
+        [TestMethod]
+        public void GraphIndexesTest()
+        {
+            var graph = new Graph(1);
+            graph.Vertices[0].Index.Should().Be(1);
+            graph.AddVertex();
+            graph.Vertices[1].Index.Should().Be(2);
+            graph.AddVertex();
+            graph.Vertices[2].Index.Should().Be(3);
+            graph.DeleteVertex(graph.Vertices[1]);
+            graph.AddVertex();
+            graph.Vertices.Select(v => v.Index).Should().BeEquivalentTo(new[] {1, 2, 3});
         }
     }
 }

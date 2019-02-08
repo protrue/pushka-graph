@@ -8,6 +8,13 @@
 
         internal Edge(Vertex firstVertex, Vertex secondVertex, int weight = 1)
         {
+            if (firstVertex.Index > secondVertex.Index)
+            {
+                var temporary = firstVertex;
+                firstVertex = secondVertex;
+                secondVertex = temporary;
+            }
+
             FirstVertex = firstVertex;
             SecondVertex = secondVertex;
             Weight = weight;
@@ -28,5 +35,8 @@
 
             return adjacentVertex;
         }
+
+        public override string ToString() =>
+            $"({FirstVertex.Index})-[{Weight}]-({SecondVertex.Index})";
     }
 }

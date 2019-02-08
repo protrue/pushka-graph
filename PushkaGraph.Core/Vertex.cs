@@ -8,11 +8,13 @@ namespace PushkaGraph.Core
         private readonly HashSet<Vertex> _adjacentVertices;
         private readonly HashSet<Edge> _incidentEdges;
 
+        public int Index { get; internal set; }
         public Vertex[] AdjacentVertices => _adjacentVertices.ToArray();
         public Edge[] IncidentEdges => _incidentEdges.ToArray();
 
-        internal Vertex()
+        internal Vertex(int index)
         {
+            Index = index;
             _adjacentVertices = new HashSet<Vertex>();
             _incidentEdges = new HashSet<Edge>();
         }
@@ -48,5 +50,8 @@ namespace PushkaGraph.Core
 
         internal void DeleteIncidentEdge(Edge edge) =>
             _incidentEdges.Remove(edge);
+
+        public override string ToString() =>
+            $"{Index} [{string.Join(" ", _adjacentVertices.Select(v => v.Index))}]";
     }
 }
