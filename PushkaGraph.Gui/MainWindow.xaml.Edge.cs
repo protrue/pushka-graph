@@ -52,8 +52,8 @@ namespace PushkaGraph.Gui
         private void UpdateWeightTextBoxPosition(Line line)
         {
             var weight = _edgeWeightMapping[_lines[line]];
-            Canvas.SetTop(weight, (line.Y1 + line.Y2) / 2 - 10);
-            Canvas.SetLeft(weight, (line.X1 + line.X2) / 2 - 7);
+            Canvas.SetTop(weight, (line.Y1 + line.Y2) / 2 - 15);
+            Canvas.SetLeft(weight, (line.X1 + line.X2) / 2 - 15);
         }
 
         private void UpdateEdgePosition(Edge edge)

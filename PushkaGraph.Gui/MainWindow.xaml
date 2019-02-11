@@ -12,6 +12,16 @@
             <Setter Property="BorderThickness" Value="0"/>
             <Setter Property="Background" Value="White"/>
             <Setter Property="FontSize" Value="15"/>
+            <Setter Property="Width" Value="30"/>
+            <Setter Property="Height" Value="30"/>
+            <Setter Property="TextAlignment" Value="Center"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Padding" Value="0 4 0 0"/>
+            <Style.Resources>
+                <Style TargetType="{x:Type Border}">
+                    <Setter Property="CornerRadius" Value="50" />
+                </Style>
+            </Style.Resources>
             <Style.Triggers>
                 <Trigger Property="IsFocused" Value="True">
                     <Setter Property="BorderThickness" Value="1" />
