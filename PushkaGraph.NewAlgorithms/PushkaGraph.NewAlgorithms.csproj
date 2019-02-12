@@ -43,6 +43,7 @@
   <ItemGroup>
     <Compile Include="ExampleAlgorithm.cs" />
     <Compile Include="GraphAlgorithmParameters.cs" />
+    <Compile Include="GraphAlgorithms.cs" />
     <Compile Include="GraphAlgorithmsContainer.cs" />
     <Compile Include="IGraphAlgorithm.cs" />
     <Compile Include="GraphAlgorithmResult.cs" />

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Reflection;
 
 namespace PushkaGraph.NewAlgorithms
 {
@@ -12,13 +13,16 @@ namespace PushkaGraph.NewAlgorithms
 
         public static IGraphAlgorithm ResolveGraphAlgorithm(string algorithmName)
         {
-            var algorithm = GraphAlgorithms.FirstOrDefault(a => a.Name == algorithmName);
+            var currentAssembly = Assembly.GetExecutingAssembly();
+            var types = currentAssembly.GetTypes();
+            var algorithms = types.Where(t => t.GetInterfaces().Contains(typeof(IGraphAlgorithm)));
+            var algorithm = algorithms.FirstOrDefault(a => a.Name == algorithmName);
 
-            if (algorithm == null)
-                throw new ArgumentOutOfRangeException(nameof(algorithmName),algorithmName,
-                    "Невозможно разрешить");
+            var constructor = algorithm.GetConstructor(new Type[0]);
 
-            return algorithm;
+            var algorithmObject = Convert.ChangeType(constructor.Invoke(new object[0]), algorithm.DeclaringType);
+
+            return algorithmObject;
         }
 
         static GraphAlgorithmsContainer()
