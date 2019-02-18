@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PushkaGraph.Gui", "PushkaGr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PushkaGraph.Tools", "PushkaGraph.Tools\PushkaGraph.Tools.csproj", "{C9FAD02C-025D-4E42-A7A6-4EBFEC87C759}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PushkaGraph.NewAlgorithms", "PushkaGraph.NewAlgorithms\PushkaGraph.NewAlgorithms.csproj", "{626E2C3E-6A77-4F14-BF9C-BA2D54D5BC16}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{C9FAD02C-025D-4E42-A7A6-4EBFEC87C759}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C9FAD02C-025D-4E42-A7A6-4EBFEC87C759}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C9FAD02C-025D-4E42-A7A6-4EBFEC87C759}.Release|Any CPU.Build.0 = Release|Any CPU
+		{626E2C3E-6A77-4F14-BF9C-BA2D54D5BC16}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{626E2C3E-6A77-4F14-BF9C-BA2D54D5BC16}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{626E2C3E-6A77-4F14-BF9C-BA2D54D5BC16}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{626E2C3E-6A77-4F14-BF9C-BA2D54D5BC16}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
