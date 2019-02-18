@@ -1,4 +1,5 @@
-﻿using FluentAssertions;
+﻿using System;
+using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using PushkaGraph.Core;
 using PushkaGraph.Tools;
@@ -73,6 +74,32 @@ namespace PushkaGraph.Tests
 
             graph.Vertices.Length.Should().Be(0);
             graph.Edges.Length.Should().Be(0);
+        }
+
+        [TestMethod]
+        public void CreateGraphFromAdjacencyMatrixTest()
+        {
+            var graph = new Graph();
+
+            Action createFromBadMatrix = () => graph.CreateFromAdjacencyMatrix(new[,]
+            {
+                { 0, 1 },
+                { 0, 0 }
+            });
+
+            createFromBadMatrix.Should().Throw<ArgumentException>();
+
+            graph.CreateFromAdjacencyMatrix(new[,]
+            {
+                { 0, 1 },
+                { 1, 0 }
+            });
+
+            graph.Vertices.Length.Should().Be(2);
+            graph.Edges.Length.Should().Be(1);
+
+            graph.Edges[0].FirstVertex.Should().Be(graph.Vertices[0]);
+            graph.Edges[0].SecondVertex.Should().Be(graph.Vertices[1]);
         }
     }
 }
