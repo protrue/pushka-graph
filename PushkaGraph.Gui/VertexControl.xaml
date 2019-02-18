@@ -20,7 +20,7 @@
                HorizontalContentAlignment="Center"
                VerticalContentAlignment="Center"
                FontSize="15"
-               Name="VertexNumber">
+               Name="VertexIndex">
         </Label>
     </Canvas>
 </UserControl>

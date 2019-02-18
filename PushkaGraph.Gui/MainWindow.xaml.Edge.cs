@@ -176,9 +176,13 @@ namespace PushkaGraph.Gui
         private void OnWeightTextChanged(object sender, EventArgs e)
         {
             var textBox = (TextBox) sender;
-            // TODO: проверка корректности
-            if (_weightEdgeMapping.ContainsKey(textBox))
-                _weightEdgeMapping[textBox].Weight = int.Parse(textBox.Text);
+
+            textBox.Text = textBox.Text.TrimStart('0');
+            var isNumeric = int.TryParse(textBox.Text, out var number);
+            if (isNumeric && _weightEdgeMapping.ContainsKey(textBox))
+                _weightEdgeMapping[textBox].Weight = number;
+            if (!isNumeric)
+                textBox.Text = _weightEdgeMapping[textBox].Weight.ToString();
         }
     }
 }

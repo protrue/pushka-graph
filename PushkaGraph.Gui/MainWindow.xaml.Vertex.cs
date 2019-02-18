@@ -49,13 +49,11 @@ namespace PushkaGraph.Gui
         /// </summary>
         /// <param name="point">Координаты вершины.</param>
         /// <returns></returns>
-        private VertexControl InitializeVertexControl(Point point)
+        private VertexControl InitializeVertexControl(Vertex vertex, Point point)
         {
-            var vertexControl = new VertexControl(1)
+            var vertexControl = new VertexControl(vertex.Index)
             {
-                Style = FindResource("Vertex") as Style,
-                Width = VertexSettings.Size,
-                Height = VertexSettings.Size
+                Style = FindResource("Vertex") as Style
             };
             Panel.SetZIndex(vertexControl, VertexSettings.ZIndex);
             Canvas.SetTop(vertexControl, point.Y);
@@ -75,10 +73,10 @@ namespace PushkaGraph.Gui
             point.Y -= VertexSettings.Size / 2;
             point.X -= VertexSettings.Size / 2;
 
-            var ellipse = InitializeVertexControl(point);
+            var vertex = _graph.AddVertex();
+            var ellipse = InitializeVertexControl(vertex, point);
             Container.Children.Add(ellipse);
 
-            var vertex = _graph.AddVertex();
             _ellipses[ellipse] = vertex;
             _vertices[vertex] = ellipse;
         }

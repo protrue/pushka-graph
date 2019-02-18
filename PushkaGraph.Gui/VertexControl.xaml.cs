@@ -21,11 +21,11 @@ namespace PushkaGraph.Gui
     /// </summary>
     public partial class VertexControl : UserControl
     {
-        // TODO: сделать number свойством
-        public VertexControl(int number)
+        // TODO: сделать index свойством
+        public VertexControl(int index)
         {
             InitializeComponent();
-            VertexNumber.Content = number;
+            VertexIndex.Content = index;
             MouseEnter += (sender, args) => EllipseControl.StrokeThickness = 4;
             MouseLeave += (sender, args) => EllipseControl.StrokeThickness = 2;
         }

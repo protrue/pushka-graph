@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Shapes;
+using Microsoft.Win32;
 using PushkaGraph.Core;
+using PushkaGraph.Tools;
 
 namespace PushkaGraph.Gui
 {
@@ -17,7 +20,7 @@ namespace PushkaGraph.Gui
     /// </summary>
     public partial class MainWindow : Window
     {
-        private readonly Graph _graph;
+        private Graph _graph;
         private InterfaceAction _currentAction;
 
         private const string SelectedTag = "Selected";
@@ -34,6 +37,21 @@ namespace PushkaGraph.Gui
             _lines = new Dictionary<Line, Edge>();
             _edgeWeightMapping = new Dictionary<Edge, TextBox>();
             _weightEdgeMapping = new Dictionary<TextBox, Edge>();
+            _currentAction = InterfaceAction.VertexEdit;
+            CreateVertexButton.Tag = SelectedTag;
+            _currentCreateEdgeActionState = CreateEdgeActionState.SelectFirstVertex;
+        }
+
+        private void ClearStructures()
+        {
+            Container.Children.Clear();
+            _graph = new Graph();
+            _ellipses.Clear();
+            _vertices.Clear();
+            _edges.Clear();
+            _lines.Clear();
+            _edgeWeightMapping.Clear();
+            _weightEdgeMapping.Clear();
             _currentAction = InterfaceAction.VertexEdit;
             CreateVertexButton.Tag = SelectedTag;
             _currentCreateEdgeActionState = CreateEdgeActionState.SelectFirstVertex;
@@ -239,6 +257,48 @@ namespace PushkaGraph.Gui
             }
         }
 
+        private void ImportGraph(string filePath)
+        {
+            var matrix = _graph.GetAdjacencyMatrix();
+            
+            using (var writer = new StreamWriter(filePath))
+            {
+                for (var i = 0; i < _graph.Vertices.Length; i++)
+                {
+                    for (var j = 0; j < _graph.Vertices.Length; j++)
+                    {
+                        writer.Write(matrix[i, j]);
+                        writer.Write(" ");
+                    }
+                    writer.Write("\n");
+                }
+
+                foreach (var vertex in _graph.Vertices)
+                {
+                    var control = _vertices[vertex];
+                    writer.WriteLine($"{Canvas.GetLeft(control)} {Canvas.GetTop(control)}");
+                }
+            }
+        }
+
+        private void ExportGraph(string filePath)
+        {
+            using (var reader = new StreamReader(filePath))
+            {
+                try
+                {
+                    var line = reader.ReadLine();
+                    var weights = line.Split();
+                    var vertexCount = weights.Length;
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show("Неверный формат файла", "Error");
+                }
+                ClearStructures();
+            }
+        }
+
         /// <summary>
         /// Обрабатывает событие нажатия на кнопку тулбара.
         /// </summary>
@@ -255,6 +315,35 @@ namespace PushkaGraph.Gui
             if (Equals(sender, CreateEdgeButton))
                 _currentAction = InterfaceAction.EdgeEdit;
             // TODO: алгоритмы
+            if (Equals(sender, ImportButton))
+            {
+                var saveFileDialog = new SaveFileDialog
+                {
+                    Filter = "Graph Files (*.gr)|*.gr",
+                    DefaultExt = "gr",
+                    FileName = "MyGraph",
+                    AddExtension = true
+                };
+                if (saveFileDialog.ShowDialog() == true)
+                {
+                    ImportGraph(saveFileDialog.FileName);
+                }
+            }
+
+            if (Equals(sender, ExportButton))
+            {
+                // TODO: спросить прежде чем удалять
+                var saveFileDialog = new OpenFileDialog
+                {
+                    Filter = "Graph Files (*.gr)|*.gr",
+                    DefaultExt = "gr",
+                    AddExtension = true
+                };
+                if (saveFileDialog.ShowDialog() == true)
+                {
+                    var filePath = saveFileDialog.FileName;
+                }
+            }
         }
     }
 }
