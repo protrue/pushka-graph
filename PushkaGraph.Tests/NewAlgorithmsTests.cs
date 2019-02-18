@@ -16,10 +16,9 @@ namespace PushkaGraph.Tests
         public void SomeNewAlgorithmsTest()
         {
             var graph = new Graph(1);
-
-            var algorithm = GraphAlgorithmsContainer.ResolveGraphAlgorithm("ExampleAlgorithm");
+            var algorithm = GraphAlgorithmFactory.ResolveGraphAlgorithm(GraphAlgorithmsRegistry.ExampleAlgorithm);
             var parameters = new GraphAlgorithmParameters(graph, edges: new Edge[] { });
-            var result = algorithm.PerformAlgorithm(parameters);
+            var result = algorithm.PerformAlgorithmAsync(parameters);
             var vertices = result.Vertices;
         }
     }

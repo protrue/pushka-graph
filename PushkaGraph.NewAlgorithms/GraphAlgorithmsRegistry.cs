@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace PushkaGraph.NewAlgorithms
 {
-    public static class GraphAlgorithms
+    public static class GraphAlgorithmsRegistry
     {
-        public const string ExampleAlgorithm = "ExampleAlgorithm";
+        public const string ExampleAlgorithm = nameof(ExampleAlgorithm);
     }
 }

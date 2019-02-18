@@ -42,10 +42,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ExampleAlgorithm.cs" />
+    <Compile Include="GraphAlgorithm.cs" />
     <Compile Include="GraphAlgorithmParameters.cs" />
-    <Compile Include="GraphAlgorithms.cs" />
-    <Compile Include="GraphAlgorithmsContainer.cs" />
-    <Compile Include="IGraphAlgorithm.cs" />
+    <Compile Include="GraphAlgorithmsRegistry.cs" />
+    <Compile Include="GraphAlgorithmFactory.cs" />
     <Compile Include="GraphAlgorithmResult.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
