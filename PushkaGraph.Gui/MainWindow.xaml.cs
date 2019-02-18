@@ -28,8 +28,8 @@ namespace PushkaGraph.Gui
             MinHeight = SystemParameters.MaximizedPrimaryScreenHeight;
             MinWidth = SystemParameters.MaximizedPrimaryScreenWidth;
             _graph = new Graph();
-            _ellipses = new Dictionary<Ellipse, Vertex>();
-            _vertices = new Dictionary<Vertex, Ellipse>(); 
+            _ellipses = new Dictionary<VertexControl, Vertex>();
+            _vertices = new Dictionary<Vertex, VertexControl>(); 
             _edges = new Dictionary<Edge, Line>();
             _lines = new Dictionary<Line, Edge>();
             _edgeWeightMapping = new Dictionary<Edge, TextBox>();
@@ -134,7 +134,7 @@ namespace PushkaGraph.Gui
         /// <param name="e"></param>
         private void OnEllipseMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            var ellipse = (Ellipse) sender;
+            var ellipse = (VertexControl) sender;
             switch (_currentAction)
             {
                 case InterfaceAction.VertexEdit:
@@ -188,7 +188,7 @@ namespace PushkaGraph.Gui
             switch (_currentAction)
             {
                 case InterfaceAction.VertexEdit:
-                    var ellipse = (Ellipse)sender;
+                    var ellipse = (VertexControl)sender;
                     RemoveVertexIncidentEdges(ellipse);
                     RemoveVertex(ellipse);
                     break;

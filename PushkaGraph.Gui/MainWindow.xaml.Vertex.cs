@@ -9,13 +9,13 @@ namespace PushkaGraph.Gui
 {
     public partial class MainWindow : Window
     {
-        private readonly Dictionary<Ellipse, Vertex> _ellipses;
-        private readonly Dictionary<Vertex, Ellipse> _vertices;
+        private readonly Dictionary<VertexControl, Vertex> _ellipses;
+        private readonly Dictionary<Vertex, VertexControl> _vertices;
 
         private bool _isVertexMoving;
-        private Ellipse _movingEllipse;
+        private VertexControl _movingEllipse;
 
-        private void RemoveVertex(Ellipse ellipse)
+        private void RemoveVertex(VertexControl ellipse)
         {
             var vertex = _ellipses[ellipse];
             _vertices.Remove(vertex);
@@ -30,7 +30,7 @@ namespace PushkaGraph.Gui
             Canvas.SetLeft(_movingEllipse, cursorPosition.X - VertexSettings.Size / 2);
         }
 
-        private void StartMovingVertex(Ellipse ellipse)
+        private void StartMovingVertex(VertexControl ellipse)
         {
             _isVertexMoving = true;
             Panel.SetZIndex(ellipse, VertexSettings.MovingZIndex);
@@ -49,19 +49,19 @@ namespace PushkaGraph.Gui
         /// </summary>
         /// <param name="point">Координаты вершины.</param>
         /// <returns></returns>
-        private Ellipse InitializeEllipse(Point point)
+        private VertexControl InitializeVertexControl(Point point)
         {
-            var ellipse = new Ellipse
+            var vertexControl = new VertexControl(1)
             {
                 Style = FindResource("Vertex") as Style,
                 Width = VertexSettings.Size,
-                Height = VertexSettings.Size,
+                Height = VertexSettings.Size
             };
-            Panel.SetZIndex(ellipse, VertexSettings.ZIndex);
-            Canvas.SetTop(ellipse, point.Y);
-            Canvas.SetLeft(ellipse, point.X);
+            Panel.SetZIndex(vertexControl, VertexSettings.ZIndex);
+            Canvas.SetTop(vertexControl, point.Y);
+            Canvas.SetLeft(vertexControl, point.X);
 
-            return ellipse;
+            return vertexControl;
         }
 
         /// <summary>
@@ -75,7 +75,7 @@ namespace PushkaGraph.Gui
             point.Y -= VertexSettings.Size / 2;
             point.X -= VertexSettings.Size / 2;
 
-            var ellipse = InitializeEllipse(point);
+            var ellipse = InitializeVertexControl(point);
             Container.Children.Add(ellipse);
 
             var vertex = _graph.AddVertex();

@@ -15,8 +15,8 @@ namespace PushkaGraph.Gui
         private readonly Dictionary<Edge, TextBox> _edgeWeightMapping;
         private readonly Dictionary<TextBox, Edge> _weightEdgeMapping;
         private CreateEdgeActionState _currentCreateEdgeActionState;
-        private Ellipse _edgeStart;
-        private Ellipse _edgeFinish;
+        private VertexControl _edgeStart;
+        private VertexControl _edgeFinish;
         private Line _movingLine;
 
         private void AbortCreateEdgeAction()
@@ -76,7 +76,7 @@ namespace PushkaGraph.Gui
                 UpdateEdgePosition(edge);
         }
 
-        private void RemoveVertexIncidentEdges(Ellipse ellipse)
+        private void RemoveVertexIncidentEdges(VertexControl ellipse)
         {
             foreach (var edge in _ellipses[ellipse].IncidentEdges)
                 RemoveEdge(edge);
@@ -122,7 +122,7 @@ namespace PushkaGraph.Gui
         /// <summary>
         /// Обрабатывает событие нажатия на вершину, при добавлении нового ребра.
         /// </summary>
-        private void CreateEdge(Ellipse ellipse, Point mousePosition)
+        private void CreateEdge(VertexControl ellipse, Point mousePosition)
         {
             switch (_currentCreateEdgeActionState)
             {
