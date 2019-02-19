@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using PushkaGraph.Core;
@@ -18,8 +19,13 @@ namespace PushkaGraph.Tests
             var graph = new Graph(1);
             var algorithm = GraphAlgorithmFactory.ResolveGraphAlgorithm(GraphAlgorithmsRegistry.ExampleAlgorithm);
             var parameters = new GraphAlgorithmParameters(graph, edges: new Edge[] { });
-            var result = algorithm.PerformAlgorithmAsync(parameters);
-            var vertices = result.Vertices;
+            algorithm.PerformAlgorithmAsync(parameters);
+            algorithm.AlgorithmPerformed += OnAlgorithmPerformed;
+        }
+
+        private void OnAlgorithmPerformed(GraphAlgorithmResult result)
+        {
+
         }
     }
 }

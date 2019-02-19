@@ -27,15 +27,15 @@ namespace PushkaGraph.NewAlgorithms
         
         protected abstract GraphAlgorithmResult PerformAlgorithm(GraphAlgorithmParameters parameters);
 
-        public GraphAlgorithmResult PerformAlgorithmAsync(GraphAlgorithmParameters parameters)
+        public void PerformAlgorithmAsync(GraphAlgorithmParameters parameters)
         {
             Parameters = parameters;
 
             _algorithmThread = new Thread(() =>
             {
-                IsPerformed = false;
                 IsPerforming = true;
-
+                IsPerformed = false;
+                
                 Result = PerformAlgorithm(parameters);
 
                 AlgorithmPerformed?.Invoke(Result);
@@ -44,7 +44,7 @@ namespace PushkaGraph.NewAlgorithms
                 IsPerformed = true;
             });
 
-            return Result;
+            _algorithmThread.Start();
         }
 
         [SecurityPermission(SecurityAction.Demand, ControlThread = true)]

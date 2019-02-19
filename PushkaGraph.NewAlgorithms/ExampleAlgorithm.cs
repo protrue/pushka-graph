@@ -16,7 +16,7 @@ namespace PushkaGraph.NewAlgorithms
         
         private Vertex[] ExampleAlgorithmCore(Graph graph, Edge[] edges)
         {
-            throw new NotImplementedException();
+            return new Vertex[0];
         }
 
         protected override GraphAlgorithmResult PerformAlgorithm(GraphAlgorithmParameters parameters)
