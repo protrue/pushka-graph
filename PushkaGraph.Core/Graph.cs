@@ -8,7 +8,7 @@ namespace PushkaGraph.Core
     {
         private readonly HashSet<Vertex> _vertices;
         private readonly HashSet<Edge> _edges;
-        private readonly Queue<int> _deletedIndexes;
+        private readonly SortedSet<int> _deletedIndexes;
 
         public Vertex[] Vertices => _vertices.ToArray();
         public Edge[] Edges => _edges.ToArray();
@@ -23,7 +23,7 @@ namespace PushkaGraph.Core
             _vertices = new HashSet<Vertex>();
             _edges = new HashSet<Edge>();
 
-            _deletedIndexes = new Queue<int>();
+            _deletedIndexes = new SortedSet<int>();
 
             for (var i = 1; i <= verticesCount; i++)
                 AddVertex();
@@ -34,7 +34,9 @@ namespace PushkaGraph.Core
             if (_deletedIndexes.Count == 0)
                 return _vertices.Count + 1;
 
-            return _deletedIndexes.Dequeue();
+            var result = _deletedIndexes.Min;
+            _deletedIndexes.Remove(_deletedIndexes.Min);
+            return result;
         }
 
         public Vertex AddVertex()
@@ -56,7 +58,7 @@ namespace PushkaGraph.Core
                     "Граф не содержит такой вершины");
 
             _vertices.Remove(vertex);
-            _deletedIndexes.Enqueue(vertex.Index);
+            _deletedIndexes.Add(vertex.Index);
             _edges.RemoveWhere(e => e.IsIncidentTo(vertex));
 
             foreach (var adjacentVertex in vertex.AdjacentVertices)
