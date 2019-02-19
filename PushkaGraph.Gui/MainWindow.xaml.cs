@@ -5,9 +5,12 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
 using System.Windows.Shapes;
 using Microsoft.Win32;
 using PushkaGraph.Core;
+using PushkaGraph.NewAlgorithms;
+using PushkaGraph.NewAlgorithms.Wrapper;
 using PushkaGraph.Tools;
 
 namespace PushkaGraph.Gui
@@ -40,6 +43,56 @@ namespace PushkaGraph.Gui
             _currentAction = InterfaceAction.VertexEdit;
             CreateVertexButton.Tag = SelectedTag;
             _currentCreateEdgeActionState = CreateEdgeActionState.SelectFirstVertex;
+            InitializeAlgorithmButtons();
+        }
+
+        private void ColorizeEdges(IEnumerable<Edge> edges, Brush brush)
+        {
+            foreach (var edge in edges)
+            {
+                _edges[edge].Fill = brush;
+            }
+        }
+
+        private void ColorizeVertices(IEnumerable<Vertex> vertices, Brush brush)
+        {
+            foreach (var vertex in vertices)
+            {
+                _vertices[vertex].Fill = brush;
+            }
+        }
+
+        // TODO: алгоритм запускается в отдельном потоке, надо предусмотреть блокировку формы
+        private void InitializeAlgorithmButtons()
+        {
+            var algorithms = GraphAlgorithmFactory.CreateAllGraphAlgorithms();
+            var i = 1;
+            foreach (var algorithm in algorithms)
+            {
+                algorithm.Performed += result =>
+                {
+                    MessageBox.Show(result.Number.HasValue ? result.Number.ToString() : result.StringResult,
+                        "Результат");
+                    if (result.Edges != null)
+                        ColorizeEdges(result.Edges, Brushes.Blue);
+                    if (result.Vertices != null)
+                        ColorizeVertices(result.Vertices, Brushes.Red);
+                };
+                var button = new Button
+                {
+                    Style = FindResource("ToolbarButton") as Style,
+                    Content = $"A{i++}",
+                    ToolTip = algorithm.Name
+                };
+                button.Click += (sender, args) =>
+                {
+                    ColorizeEdges(_graph.Edges, Brushes.Black);
+                    ColorizeVertices(_graph.Vertices, Brushes.White);
+                    var parameters = new GraphAlgorithmParameters(_graph);
+                    algorithm.PerformAlgorithmAsync(parameters);
+                };
+                Toolbar.Children.Add(button);
+            }
         }
 
         private void CleanStructures(bool cleanGraph = false)
@@ -354,7 +407,6 @@ namespace PushkaGraph.Gui
                 CreateVertexButton.Tag = null;
                 button.Tag = "Selected";
             }
-            // TODO: алгоритмы
 
             if (Equals(sender, ImportButton))
             {
