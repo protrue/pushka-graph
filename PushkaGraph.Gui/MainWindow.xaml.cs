@@ -8,6 +8,8 @@ using System.Windows.Input;
 using System.Windows.Shapes;
 using Microsoft.Win32;
 using PushkaGraph.Core;
+using PushkaGraph.NewAlgorithms;
+using PushkaGraph.NewAlgorithms.Wrapper;
 using PushkaGraph.Tools;
 
 namespace PushkaGraph.Gui
@@ -355,6 +357,14 @@ namespace PushkaGraph.Gui
                 button.Tag = "Selected";
             }
             // TODO: алгоритмы
+
+            if (Equals(sender, ConnectedComponentsCountButton))
+            {
+                var algorithm = GraphAlgorithmFactory.ResolveGraphAlgorithm(GraphAlgorithmsRegistry.ConnectedComponentsCount);
+                var parameters = new GraphAlgorithmParameters(_graph);
+                algorithm.Performed += result => MessageBox.Show(result.Number.ToString(), "Результат");
+                algorithm.PerformAlgorithmAsync(parameters);
+            }
 
             if (Equals(sender, ImportButton))
             {

@@ -98,7 +98,8 @@
                       StrokeThickness="4">
                 </Line>
             </Button>
-            <Button Style="{StaticResource ToolbarButton}">
+            <Button Style="{StaticResource ToolbarButton}"
+                    Name="ConnectedComponentsCountButton">
                 A1
             </Button>
             <Button Style="{StaticResource ToolbarButton}">
