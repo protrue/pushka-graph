@@ -42,6 +42,29 @@ namespace PushkaGraph.Gui
             _currentAction = InterfaceAction.VertexEdit;
             CreateVertexButton.Tag = SelectedTag;
             _currentCreateEdgeActionState = CreateEdgeActionState.SelectFirstVertex;
+            InitializeAlgorithmButtons();
+        }
+
+        private void InitializeAlgorithmButtons()
+        {
+            var list = new List<GraphAlgorithm> { GraphAlgorithmFactory.ResolveGraphAlgorithm(GraphAlgorithmsRegistry.ConnectedComponentsCount) };
+            var i = 1;
+            foreach (var algorithm in list)
+            {
+                algorithm.Performed += result => MessageBox.Show(result.Number.ToString(), "Результат");
+                var button = new Button
+                {
+                    Style = FindResource("ToolbarButton") as Style,
+                    Content = $"A{i++}",
+                    ToolTip = algorithm.Name
+                };
+                button.Click += (sender, args) =>
+                {
+                    var parameters = new GraphAlgorithmParameters(_graph);
+                    algorithm.PerformAlgorithmAsync(parameters);
+                };
+                Toolbar.Children.Add(button);
+            }
         }
 
         private void CleanStructures(bool cleanGraph = false)
@@ -355,15 +378,6 @@ namespace PushkaGraph.Gui
                 _currentAction = InterfaceAction.EdgeEdit;
                 CreateVertexButton.Tag = null;
                 button.Tag = "Selected";
-            }
-            // TODO: алгоритмы
-
-            if (Equals(sender, ConnectedComponentsCountButton))
-            {
-                var algorithm = GraphAlgorithmFactory.ResolveGraphAlgorithm(GraphAlgorithmsRegistry.ConnectedComponentsCount);
-                var parameters = new GraphAlgorithmParameters(_graph);
-                algorithm.Performed += result => MessageBox.Show(result.Number.ToString(), "Результат");
-                algorithm.PerformAlgorithmAsync(parameters);
             }
 
             if (Equals(sender, ImportButton))
