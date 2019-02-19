@@ -58,6 +58,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CoreTests.cs" />
+    <Compile Include="NewAlgorithmsTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="AlgorithmsTests.cs" />
     <Compile Include="ToolsTests.cs" />
@@ -73,6 +74,10 @@
     <ProjectReference Include="..\PushkaGraph.Core\PushkaGraph.Core.csproj">
       <Project>{14079356-117a-4a11-98ee-da4c1e9f3288}</Project>
       <Name>PushkaGraph.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PushkaGraph.NewAlgorithms\PushkaGraph.NewAlgorithms.csproj">
+      <Project>{626e2c3e-6a77-4f14-bf9c-ba2d54d5bc16}</Project>
+      <Name>PushkaGraph.NewAlgorithms</Name>
     </ProjectReference>
     <ProjectReference Include="..\PushkaGraph.Tools\PushkaGraph.Tools.csproj">
       <Project>{c9fad02c-025d-4e42-a7a6-4ebfec87c759}</Project>
