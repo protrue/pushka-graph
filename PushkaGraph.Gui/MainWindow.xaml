@@ -99,19 +99,6 @@
                 </Line>
             </Button>
             <Button Style="{StaticResource ToolbarButton}"
-                    Name="ConnectedComponentsCountButton">
-                A1
-            </Button>
-            <Button Style="{StaticResource ToolbarButton}">
-                A2
-            </Button>
-            <Button Style="{StaticResource ToolbarButton}">
-                A3
-            </Button>
-            <Button Style="{StaticResource ToolbarButton}">
-                A4
-            </Button>
-            <Button Style="{StaticResource ToolbarButton}"
                     ToolTipService.ShowDuration="2000"
                     ToolTip="Импорт"
                     Name="ImportButton">

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
 using System.Windows.Shapes;
 using Microsoft.Win32;
 using PushkaGraph.Core;
@@ -45,13 +46,38 @@ namespace PushkaGraph.Gui
             InitializeAlgorithmButtons();
         }
 
+        private void ColorizeEdges(IEnumerable<Edge> edges, Brush brush)
+        {
+            foreach (var edge in edges)
+            {
+                _edges[edge].Fill = brush;
+            }
+        }
+
+        private void ColorizeVertices(IEnumerable<Vertex> vertices, Brush brush)
+        {
+            foreach (var vertex in vertices)
+            {
+                _vertices[vertex].Fill = brush;
+            }
+        }
+
+        // TODO: алгоритм запускается в отдельном потоке, надо предусмотреть блокировку формы
         private void InitializeAlgorithmButtons()
         {
-            var list = new List<GraphAlgorithm> { GraphAlgorithmFactory.ResolveGraphAlgorithm(GraphAlgorithmsRegistry.ConnectedComponentsCount) };
+            var algorithms = GraphAlgorithmFactory.CreateAllGraphAlgorithms();
             var i = 1;
-            foreach (var algorithm in list)
+            foreach (var algorithm in algorithms)
             {
-                algorithm.Performed += result => MessageBox.Show(result.Number.ToString(), "Результат");
+                algorithm.Performed += result =>
+                {
+                    MessageBox.Show(result.Number.HasValue ? result.Number.ToString() : result.StringResult,
+                        "Результат");
+                    if (result.Edges != null)
+                        ColorizeEdges(result.Edges, Brushes.Blue);
+                    if (result.Vertices != null)
+                        ColorizeVertices(result.Vertices, Brushes.Red);
+                };
                 var button = new Button
                 {
                     Style = FindResource("ToolbarButton") as Style,
@@ -60,6 +86,8 @@ namespace PushkaGraph.Gui
                 };
                 button.Click += (sender, args) =>
                 {
+                    ColorizeEdges(_graph.Edges, Brushes.Black);
+                    ColorizeVertices(_graph.Vertices, Brushes.White);
                     var parameters = new GraphAlgorithmParameters(_graph);
                     algorithm.PerformAlgorithmAsync(parameters);
                 };

@@ -21,6 +21,12 @@ namespace PushkaGraph.Gui
     /// </summary>
     public partial class VertexControl : UserControl
     {
+        public Brush Fill
+        {
+            get => EllipseControl.Fill;
+            set => EllipseControl.Fill = value;
+        }
+
         // TODO: сделать index свойством
         public VertexControl(int index)
         {
