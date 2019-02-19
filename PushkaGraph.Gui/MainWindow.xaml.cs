@@ -20,7 +20,7 @@ namespace PushkaGraph.Gui
     /// </summary>
     public partial class MainWindow : Window
     {
-        private Graph _graph;
+        private readonly Graph _graph;
         private InterfaceAction _currentAction;
 
         private const string SelectedTag = "Selected";
@@ -42,18 +42,17 @@ namespace PushkaGraph.Gui
             _currentCreateEdgeActionState = CreateEdgeActionState.SelectFirstVertex;
         }
 
-        private void ClearStructures()
+        private void CleanStructures(bool cleanGraph = false)
         {
+            if (cleanGraph)
+                _graph.CleanVertices();
             Container.Children.Clear();
-            _graph = new Graph();
             _ellipses.Clear();
             _vertices.Clear();
             _edges.Clear();
             _lines.Clear();
             _edgeWeightMapping.Clear();
             _weightEdgeMapping.Clear();
-            _currentAction = InterfaceAction.VertexEdit;
-            CreateVertexButton.Tag = SelectedTag;
             _currentCreateEdgeActionState = CreateEdgeActionState.SelectFirstVertex;
         }
 
@@ -257,12 +256,14 @@ namespace PushkaGraph.Gui
             }
         }
 
+        // TODO: рефакторинг
         private void ImportGraph(string filePath)
         {
             var matrix = _graph.GetAdjacencyMatrix();
             
             using (var writer = new StreamWriter(filePath))
             {
+                writer.WriteLine(_graph.Vertices.Length);
                 for (var i = 0; i < _graph.Vertices.Length; i++)
                 {
                     for (var j = 0; j < _graph.Vertices.Length; j++)
@@ -281,6 +282,7 @@ namespace PushkaGraph.Gui
             }
         }
 
+        // TODO: рефакторинг
         private void ExportGraph(string filePath)
         {
             using (var reader = new StreamReader(filePath))
@@ -288,14 +290,46 @@ namespace PushkaGraph.Gui
                 try
                 {
                     var line = reader.ReadLine();
-                    var weights = line.Split();
-                    var vertexCount = weights.Length;
+                    if (!int.TryParse(line, out var vertexCount))
+                        throw new ArgumentException("Ошибка в формате файла.");
+
+                    var matrix = new int[vertexCount, vertexCount];
+
+                    for (var i = 0; i < vertexCount; i++)
+                    {
+                        line = reader.ReadLine();
+                        if (line == null)
+                            throw new ArgumentException("Ошибка в формате файла.");
+                        var matrixRow = line.Trim().Split().Select(int.Parse).ToArray();
+                        for (var j = 0; j < vertexCount; j++)
+                            matrix[i, j] = matrixRow[j];
+                    }
+
+                    _graph.CreateFromAdjacencyMatrix(matrix);
+
+                    // Если граф создался и все ОК, то можно удалить старые контролы.
+                    CleanStructures();
+
+                    for (var i = 0; i < vertexCount; i++)
+                    {
+                        line = reader.ReadLine();
+                        if (line == null)
+                            throw new ArgumentException("Ошибка в формате файла.");
+                        var point = Point.Parse(line.Trim());
+                        CreateVertexControl(_graph.Vertices[i], point);
+                    }
+
+                    foreach (var edge in _graph.Edges)
+                        CreateEdgeControl(edge);
                 }
-                catch (Exception e)
+                catch (ArgumentException e)
+                {
+                    MessageBox.Show(e.Message, "Error");
+                }
+                catch (Exception)
                 {
                     MessageBox.Show("Неверный формат файла", "Error");
                 }
-                ClearStructures();
             }
         }
 
@@ -306,15 +340,22 @@ namespace PushkaGraph.Gui
         /// <param name="e"></param>
         private void ToolbarButtonClick(object sender, EventArgs e)
         {
-            foreach (var toolbarChild in Toolbar.Children)
-                ((Button) toolbarChild).Tag = null;
             var button = (Button)sender;
-            button.Tag = "Selected";
             if (Equals(sender, CreateVertexButton))
+            {
                 _currentAction = InterfaceAction.VertexEdit;
+                CreateEdgeButton.Tag = null;
+                button.Tag = "Selected";
+            }
+
             if (Equals(sender, CreateEdgeButton))
+            {
                 _currentAction = InterfaceAction.EdgeEdit;
+                CreateVertexButton.Tag = null;
+                button.Tag = "Selected";
+            }
             // TODO: алгоритмы
+
             if (Equals(sender, ImportButton))
             {
                 var saveFileDialog = new SaveFileDialog
@@ -325,9 +366,7 @@ namespace PushkaGraph.Gui
                     AddExtension = true
                 };
                 if (saveFileDialog.ShowDialog() == true)
-                {
                     ImportGraph(saveFileDialog.FileName);
-                }
             }
 
             if (Equals(sender, ExportButton))
@@ -342,8 +381,12 @@ namespace PushkaGraph.Gui
                 if (saveFileDialog.ShowDialog() == true)
                 {
                     var filePath = saveFileDialog.FileName;
+                    ExportGraph(filePath);
                 }
             }
+
+            if (Equals(sender, CleanButton))
+                CleanStructures(true);
         }
     }
 }

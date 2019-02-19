@@ -43,10 +43,11 @@ namespace PushkaGraph.Gui
             if (_movingEllipse != null)
                 Panel.SetZIndex(_movingEllipse, VertexSettings.ZIndex);
         }
-        
+
         /// <summary>
         /// Создает контрол вершины с требуемыми параметрами.
         /// </summary>
+        /// <param name="vertex"></param>
         /// <param name="point">Координаты вершины.</param>
         /// <returns></returns>
         private VertexControl InitializeVertexControl(Vertex vertex, Point point)
@@ -62,6 +63,21 @@ namespace PushkaGraph.Gui
             return vertexControl;
         }
 
+        private void CreateVertexControl(Point point)
+        {
+            var vertex = _graph.AddVertex();
+            CreateVertexControl(vertex, point);
+        }
+
+        private void CreateVertexControl(Vertex vertex, Point point)
+        {
+            var ellipse = InitializeVertexControl(vertex, point);
+            Container.Children.Add(ellipse);
+
+            _ellipses[ellipse] = vertex;
+            _vertices[vertex] = ellipse;
+        }
+
         /// <summary>
         /// Обрабатывает событие нажатия на поле, при создании новой вершины.
         /// </summary>
@@ -73,12 +89,7 @@ namespace PushkaGraph.Gui
             point.Y -= VertexSettings.Size / 2;
             point.X -= VertexSettings.Size / 2;
 
-            var vertex = _graph.AddVertex();
-            var ellipse = InitializeVertexControl(vertex, point);
-            Container.Children.Add(ellipse);
-
-            _ellipses[ellipse] = vertex;
-            _vertices[vertex] = ellipse;
+            CreateVertexControl(point);
         }
     }
 }

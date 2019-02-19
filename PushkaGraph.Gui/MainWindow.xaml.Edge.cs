@@ -119,6 +119,34 @@ namespace PushkaGraph.Gui
             return textBox;
         }
 
+        private void CreateEdgeControl(Edge edge)
+        {
+            var firstVertex = _vertices[edge.FirstVertex];
+            var secondVertex = _vertices[edge.SecondVertex];
+
+            var startX = Canvas.GetLeft(firstVertex) + VertexSettings.Size / 2;
+            var startY = Canvas.GetTop(firstVertex) + VertexSettings.Size / 2;
+            var finishX = Canvas.GetLeft(secondVertex) + VertexSettings.Size / 2;
+            var finishY = Canvas.GetTop(secondVertex) + VertexSettings.Size / 2;
+
+            var startPoint = new Point(startX, startY);
+            var endPoint = new Point(finishX, finishY);
+
+            var line = InitializeLine(startPoint, endPoint);
+            Container.Children.Add(line);
+
+            _edges[edge] = line;
+            _lines[line] = edge;
+            line.MouseEnter += (sender, args) => ((Line)sender).StrokeThickness = 10;
+            line.MouseLeave += (sender, args) => ((Line)sender).StrokeThickness = 5;
+
+            var weightTextBox = InitializeWeightTextBox(line);
+            _edgeWeightMapping[edge] = weightTextBox;
+            _weightEdgeMapping[weightTextBox] = edge;
+            UpdateWeightTextBoxPosition(line);
+            Container.Children.Add(weightTextBox);
+        }
+
         /// <summary>
         /// Обрабатывает событие нажатия на вершину, при добавлении нового ребра.
         /// </summary>

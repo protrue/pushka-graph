@@ -57,6 +57,10 @@
                 <Trigger Property="IsMouseOver" Value="True">
                     <Setter Property="Background" Value="#B2DBBF"/>
                 </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style TargetType="{x:Type Button}" BasedOn="{StaticResource ToolbarButton}" x:Key="CreateGraphElementButton">
+            <Style.Triggers>
                 <Trigger Property="Tag" Value="Selected">
                     <Setter Property="Background" Value="#F3FFBD"/>
                 </Trigger>
@@ -75,7 +79,7 @@
                     Grid.Row="0"
                     ZIndex="100">
             <Button Name="CreateVertexButton"
-                    Style="{StaticResource ToolbarButton}"
+                    Style="{StaticResource CreateGraphElementButton}"
                     ToolTipService.ShowDuration="2000"
                     ToolTip="Редактирование вершин">
                 <Ellipse Width="50"
@@ -86,7 +90,7 @@
                 </Ellipse>
             </Button>
             <Button Name="CreateEdgeButton"
-                    Style="{StaticResource ToolbarButton}"
+                    Style="{StaticResource CreateGraphElementButton}"
                     ToolTipService.ShowDuration="2000"
                     ToolTip="Редактирование ребер">
                 <Line X1="0" Y1="0" X2="58" Y2="58"
@@ -117,6 +121,21 @@
                     ToolTip="Экспорт"
                     Name="ExportButton">
                 <TextBlock Text="&#x2193;" FontSize="40"/>
+            </Button>
+            <Button Style="{StaticResource ToolbarButton}"
+                    ToolTipService.ShowDuration="2000"
+                    ToolTip="Очистить все"
+                    Name="CleanButton">
+                <Canvas>
+                    <Line X1="-28" Y1="-28" X2="28" Y2="28"
+                          Stroke="Black" 
+                          StrokeThickness="4">
+                    </Line>
+                    <Line X1="28" Y1="-28" X2="-28" Y2="28"
+                          Stroke="Black" 
+                          StrokeThickness="4">
+                    </Line>
+                </Canvas>
             </Button>
         </StackPanel>
         <Canvas Name="Container" 
