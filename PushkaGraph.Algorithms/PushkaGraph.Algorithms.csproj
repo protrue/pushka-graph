@@ -46,7 +46,6 @@
     <Compile Include="GraphAlgorithms.MinimumSpanningTree.cs" />
     <Compile Include="GraphAlgorithms.ShortestPath.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="GraphAlgorithms.Example.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PushkaGraph.Core\PushkaGraph.Core.csproj">

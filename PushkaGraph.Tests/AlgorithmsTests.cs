@@ -11,16 +11,6 @@ namespace PushkaGraph.Tests
     public class AlgorithmsTests
     {
         [TestMethod]
-        public void ExampleExtensionMethodShouldDoNothing()
-        {
-            var graph = new Graph();
-
-            graph.SomeAlgorithm(null).Should().BeNull();
-
-            (2 + 2).Should().Be(4);
-        }
-
-        [TestMethod]
         public void ConnectedComponents_EmptyGraph()
         {
             var graph = new Graph();

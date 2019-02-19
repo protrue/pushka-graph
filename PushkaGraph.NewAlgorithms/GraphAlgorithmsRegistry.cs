@@ -8,7 +8,6 @@ namespace PushkaGraph.NewAlgorithms
 {
     public static class GraphAlgorithmsRegistry
     {
-        public const string ExampleAlgorithm = nameof(ExampleAlgorithm);
         public const string ConnectedComponentsCount = nameof(ConnectedComponentsCount);
     }
 }

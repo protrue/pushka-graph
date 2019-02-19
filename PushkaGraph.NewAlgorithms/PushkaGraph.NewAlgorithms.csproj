@@ -42,7 +42,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Implementations\ConnectedComponentsCount.cs" />
-    <Compile Include="Implementations\ExampleAlgorithm.cs" />
     <Compile Include="Wrapper\GraphAlgorithm.cs" />
     <Compile Include="Wrapper\GraphAlgorithmParameters.cs" />
     <Compile Include="GraphAlgorithmsRegistry.cs" />

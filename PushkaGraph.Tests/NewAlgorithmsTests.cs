@@ -17,21 +17,6 @@ namespace PushkaGraph.Tests
     public class NewAlgorithmsTests
     {
         [TestMethod]
-        public void SomeNewAlgorithmsTest()
-        {
-            var graph = new Graph(1);
-            var algorithm = GraphAlgorithmFactory.ResolveGraphAlgorithm(GraphAlgorithmsRegistry.ExampleAlgorithm);
-            var parameters = new GraphAlgorithmParameters(graph, edges: new Edge[] { });
-            algorithm.PerformAlgorithmAsync(parameters);
-            algorithm.Performed += OnAlgorithmPerformed;
-        }
-
-        private void OnAlgorithmPerformed(GraphAlgorithmResult result)
-        {
-
-        }
-
-        [TestMethod]
         public void ConnectedComponentsCountTest()
         {
             var graph = new Graph(3);
