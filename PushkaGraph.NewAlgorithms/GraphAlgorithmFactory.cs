@@ -14,16 +14,34 @@ namespace PushkaGraph.NewAlgorithms
         {
             var currentAssembly = Assembly.GetExecutingAssembly();
             var types = currentAssembly.GetTypes();
-            var algorithms = types.Where(t => t.BaseType == typeof(GraphAlgorithm));
-            var algorithm = algorithms.FirstOrDefault(a => a.Name == algorithmName);
+            var algorithmTypes = types.Where(t => t.BaseType == typeof(GraphAlgorithm));
+            var algorithmType = algorithmTypes.FirstOrDefault(a => a.Name == algorithmName);
 
-            if (algorithm == null)
-                throw new ArgumentException("Такой алгоритм не зарегистрирован");
+            if (algorithmType == null)
+                throw new ArgumentException("Алгоритма с таким названием нет в сборке");
 
-            var constructor = algorithm.GetConstructor(new Type[0]);
-            var algorithmObject = constructor.Invoke(new object[0]) as GraphAlgorithm;
+            var constructor = algorithmType.GetConstructor(new Type[0]);
+            var algorithm = constructor.Invoke(new object[0]) as GraphAlgorithm;
 
-            return algorithmObject;
+            return algorithm;
+        }
+        
+        public static GraphAlgorithm[] CreateAllGraphAlgorithms()
+        {
+            var currentAssembly = Assembly.GetExecutingAssembly();
+            var types = currentAssembly.GetTypes();
+            var algorithmTypes = types.Where(t => t.BaseType == typeof(GraphAlgorithm)).ToArray();
+
+            var algorithms = new List<GraphAlgorithm>();
+
+            foreach (var algorithmType in algorithmTypes)
+            {
+                var constructor = algorithmType.GetConstructor(new Type[0]);
+                var algorithm = constructor.Invoke(new object[0]) as GraphAlgorithm;
+                algorithms.Add(algorithm);
+            }
+
+            return algorithms.ToArray();
         }
     }
 }
