@@ -16,6 +16,8 @@ namespace PushkaGraph.Tests
             var graph = new Graph();
 
             graph.SomeAlgorithm(null).Should().BeNull();
+
+            (2 + 2).Should().Be(4);
         }
 
         [TestMethod]

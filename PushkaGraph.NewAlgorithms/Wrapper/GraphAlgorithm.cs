@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Security.Permissions;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 
-namespace PushkaGraph.NewAlgorithms
+namespace PushkaGraph.NewAlgorithms.Wrapper
 {
     public abstract class GraphAlgorithm
     {
@@ -21,7 +17,7 @@ namespace PushkaGraph.NewAlgorithms
         public bool IsPerforming { get; private set; }
         public bool IsPerformed { get; private set; }
 
-        public event Action<GraphAlgorithmResult> AlgorithmPerformed; 
+        public event Action<GraphAlgorithmResult> Performed; 
 
         private Thread _algorithmThread;
         
@@ -29,21 +25,18 @@ namespace PushkaGraph.NewAlgorithms
 
         public void PerformAlgorithmAsync(GraphAlgorithmParameters parameters)
         {
+            IsPerforming = true;
             Parameters = parameters;
-
+            
             _algorithmThread = new Thread(() =>
             {
-                IsPerforming = true;
-                IsPerformed = false;
-                
                 Result = PerformAlgorithm(parameters);
 
-                AlgorithmPerformed?.Invoke(Result);
+                Performed?.Invoke(Result);
 
                 IsPerforming = false;
                 IsPerformed = true;
             });
-
             _algorithmThread.Start();
         }
 

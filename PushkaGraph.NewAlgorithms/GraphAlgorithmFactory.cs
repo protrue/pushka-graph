@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Reflection;
+using PushkaGraph.NewAlgorithms.Wrapper;
 
 namespace PushkaGraph.NewAlgorithms
 {
@@ -17,7 +18,7 @@ namespace PushkaGraph.NewAlgorithms
             var algorithm = algorithms.FirstOrDefault(a => a.Name == algorithmName);
 
             if (algorithm == null)
-                throw new ArgumentException("Нет алгоритма с таким названием");
+                throw new ArgumentException("Такой алгоритм не зарегистрирован");
 
             var constructor = algorithm.GetConstructor(new Type[0]);
             var algorithmObject = constructor.Invoke(new object[0]) as GraphAlgorithm;

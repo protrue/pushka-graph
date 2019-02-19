@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using PushkaGraph.Core;
+﻿using PushkaGraph.Core;
 
-namespace PushkaGraph.NewAlgorithms
+namespace PushkaGraph.NewAlgorithms.Wrapper
 {
     public class GraphAlgorithmParameters
     {

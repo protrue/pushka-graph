@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using PushkaGraph.Core;
+using PushkaGraph.NewAlgorithms.Wrapper;
 
-namespace PushkaGraph.NewAlgorithms
+namespace PushkaGraph.NewAlgorithms.Implementations
 {
     class ExampleAlgorithm : GraphAlgorithm
     {
