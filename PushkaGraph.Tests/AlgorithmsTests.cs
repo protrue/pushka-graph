@@ -205,7 +205,7 @@ namespace PushkaGraph.Tests
             graph.AddEdge(graph.Vertices[0], graph.Vertices[2]);
             graph.AddEdge(graph.Vertices[1], graph.Vertices[2]);
 
-            graph.ShortestPath(graph.Vertices[2], graph.Vertices[1]).Should().BeNullOrEmpty();
+            graph.ShortestPath(graph.Vertices[2], graph.Vertices[1]).Should().BeEquivalentTo(graph.Vertices[2], graph.Vertices[1]);
         }
         [TestMethod]
         public void ShortestPath_largegraph()
@@ -225,7 +225,7 @@ namespace PushkaGraph.Tests
             graph.AddEdge(graph.Vertices[3], graph.Vertices[4], 5);
             graph.AddEdge(graph.Vertices[4], graph.Vertices[5], 4);
 
-            graph.ShortestPath(graph.Vertices[2], graph.Vertices[1]).Should().BeNullOrEmpty();
+            graph.ShortestPath(graph.Vertices[0], graph.Vertices[3]).Should().BeEquivalentTo(graph.Vertices[0], graph.Vertices[2], graph.Vertices[3]);
         }
         [TestMethod]
         public void ShortestPath_fullgraph()
@@ -250,7 +250,7 @@ namespace PushkaGraph.Tests
             graph.AddEdge(graph.Vertices[1], graph.Vertices[8], 4);
             graph.AddEdge(graph.Vertices[1], graph.Vertices[9], 4);
             graph.AddEdge(graph.Vertices[2], graph.Vertices[3], 1);
-            graph.AddEdge(graph.Vertices[2], graph.Vertices[4], 4);
+            graph.AddEdge(graph.Vertices[2], graph.Vertices[4], 3);
             graph.AddEdge(graph.Vertices[2], graph.Vertices[5], 4);
             graph.AddEdge(graph.Vertices[2], graph.Vertices[6], 4);
             graph.AddEdge(graph.Vertices[2], graph.Vertices[7], 4);
@@ -278,14 +278,41 @@ namespace PushkaGraph.Tests
             graph.AddEdge(graph.Vertices[7], graph.Vertices[9], 4);
             graph.AddEdge(graph.Vertices[8], graph.Vertices[9], 4);
 
+            graph.ShortestPath(graph.Vertices[2], graph.Vertices[9]).Should().BeEquivalentTo(graph.Vertices[2], graph.Vertices[3], graph.Vertices[9]);
+        }
+        [TestMethod]
+        public void ShortestPath_Disconnectedgraph()
+        {
+            var graph = new Graph(10);
+
             graph.ShortestPath(graph.Vertices[2], graph.Vertices[9]).Should().BeNullOrEmpty();
         }
         [TestMethod]
         public void ShortestPath_Emptygraph()
         {
-            var graph = new Graph(10);
+            var graph = new Graph(0);
 
-            graph.ShortestPath(graph.Vertices[2], graph.Vertices[9]).Should().BeNullOrEmpty();
+            graph.ShortestPath(null, null).Should().BeNullOrEmpty();
+        }
+        [TestMethod]
+        public void ShortestPath_NoWay()
+        {
+            var graph = new Graph(3);
+
+            graph.AddEdge(graph.Vertices[0], graph.Vertices[1], 4);
+
+            graph.ShortestPath(graph.Vertices[2], graph.Vertices[1]).Should().BeNullOrEmpty();
+        }
+
+        [TestMethod]
+        public void ShortestPath_NoWayLarge()
+        {
+            var graph = new Graph(5);
+
+            graph.AddEdge(graph.Vertices[0], graph.Vertices[1], 4);
+            graph.AddEdge(graph.Vertices[2], graph.Vertices[4], 4);
+
+            graph.ShortestPath(graph.Vertices[2], graph.Vertices[1]).Should().BeNullOrEmpty();
         }
     }
 }
