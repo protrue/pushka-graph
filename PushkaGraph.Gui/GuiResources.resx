@@ -133,4 +133,7 @@
   <data name="WarningMessageBoxTitle" xml:space="preserve">
     <value>Предупреждение</value>
   </data>
+  <data name="ResultMessageBoxTitle" xml:space="preserve">
+    <value>Результат</value>
+  </data>
 </root>

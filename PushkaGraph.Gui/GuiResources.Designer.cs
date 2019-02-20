@@ -89,6 +89,15 @@ namespace PushkaGraph.Gui {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Результат.
+        /// </summary>
+        internal static string ResultMessageBoxTitle {
+            get {
+                return ResourceManager.GetString("ResultMessageBoxTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Вы уверены, что хотите перезаписать текущий граф?.
         /// </summary>
         internal static string RewriteFileWarning {

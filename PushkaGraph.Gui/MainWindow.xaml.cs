@@ -50,15 +50,27 @@ namespace PushkaGraph.Gui
 
         public string GetStringResource(string name) => GuiResources.ResourceManager.GetString(name);
 
+        private void ColorizedEdgesAnimation(IEnumerable<Edge> edges, Brush brush)
+        {
+            var thread = new Thread(() =>
+            {
+                foreach (var edge in edges)
+                {
+                    Thread.Sleep(500);
+                    Dispatcher.Invoke(DispatcherPriority.Render,
+                        (ThreadStart) delegate { _edges[edge].Stroke = brush; });
+                }
+            });
+
+            thread.Start();
+        }
         private void ColorizeEdges(IEnumerable<Edge> edges, Brush brush)
         {
-
             foreach (var edge in edges)
             {
                 Dispatcher.Invoke(DispatcherPriority.Render,
-                    (ThreadStart)delegate () { _edges[edge].Stroke = brush; });
+                    (ThreadStart)delegate { _edges[edge].Stroke = brush; });
             }
-
         }
 
         private void ColorizeVertices(IEnumerable<Vertex> vertices, Brush brush)
@@ -66,7 +78,7 @@ namespace PushkaGraph.Gui
             foreach (var vertex in vertices)
             {
                 Dispatcher.Invoke(DispatcherPriority.Render,
-                    (ThreadStart)delegate () { _vertices[vertex].Fill = brush; });
+                    (ThreadStart)delegate { _vertices[vertex].Fill = brush; });
             }
         }
 
@@ -80,9 +92,9 @@ namespace PushkaGraph.Gui
                 algorithm.Performed += result =>
                 {
                     MessageBox.Show(result.Number.HasValue ? result.Number.ToString() : result.StringResult,
-                        "Результат");
+                        GetStringResource("ResultMessageBoxTitle"));
                     if (result.Edges != null)
-                        ColorizeEdges(result.Edges, Brushes.Blue);
+                        ColorizedEdgesAnimation(result.Edges, Brushes.Blue);
                     if (result.Vertices != null)
                         ColorizeVertices(result.Vertices, Brushes.Red);
                 };
