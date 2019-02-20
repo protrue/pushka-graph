@@ -211,6 +211,7 @@ namespace PushkaGraph.Gui
                 textBox.Text = 1.ToString();
                 textBox.CaretIndex = textBox.Text.Length;
             }
+            textBox.Text = textBox.Text.Trim(' ');
             textBox.Text = textBox.Text.TrimStart('0');
             var isNumeric = int.TryParse(textBox.Text, out var number);
             if (isNumeric && _weightEdgeMapping.ContainsKey(textBox))
