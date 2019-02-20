@@ -19,17 +19,17 @@ namespace PushkaGraph.Gui {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class Resources {
+    internal class GuiResources {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal Resources() {
+        internal GuiResources() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace PushkaGraph.Gui {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("PushkaGraph.Gui.Resources", typeof(Resources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("PushkaGraph.Gui.GuiResources", typeof(GuiResources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,12 +61,57 @@ namespace PushkaGraph.Gui {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Ошибка.
+        /// </summary>
+        internal static string ErrorMessageBoxTitle {
+            get {
+                return ResourceManager.GetString("ErrorMessageBoxTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
         /// </summary>
         internal static System.Drawing.Icon icon {
             get {
                 object obj = ResourceManager.GetObject("icon", resourceCulture);
                 return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ошибка в формате файла..
+        /// </summary>
+        internal static string ImportFormatError {
+            get {
+                return ResourceManager.GetString("ImportFormatError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Результат.
+        /// </summary>
+        internal static string ResultMessageBoxTitle {
+            get {
+                return ResourceManager.GetString("ResultMessageBoxTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Вы уверены, что хотите перезаписать текущий граф?.
+        /// </summary>
+        internal static string RewriteFileWarning {
+            get {
+                return ResourceManager.GetString("RewriteFileWarning", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Предупреждение.
+        /// </summary>
+        internal static string WarningMessageBoxTitle {
+            get {
+                return ResourceManager.GetString("WarningMessageBoxTitle", resourceCulture);
             }
         }
     }

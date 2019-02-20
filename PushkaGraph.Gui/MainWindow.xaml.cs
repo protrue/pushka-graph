@@ -1,11 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
 using System.Windows.Shapes;
+using System.Windows.Threading;
+using Microsoft.Win32;
 using PushkaGraph.Core;
+using PushkaGraph.NewAlgorithms;
+using PushkaGraph.NewAlgorithms.Wrapper;
+using PushkaGraph.Tools;
 
 namespace PushkaGraph.Gui
 {
@@ -18,28 +26,111 @@ namespace PushkaGraph.Gui
     public partial class MainWindow : Window
     {
         private readonly Graph _graph;
-        private readonly Dictionary<Ellipse, Vertex> _vertices;
-        private readonly Dictionary<Edge, Line> _edges;
         private InterfaceAction _currentAction;
-        private CreateEdgeActionState _currentCreateEdgeActionState;
-
-        private Ellipse _edgeStart;
-        private Ellipse _edgeFinish;
-        private Line _movingLine;
-
-        private bool _isVertexMoving;
-        private Ellipse _movingVertex;
 
         private const string SelectedTag = "Selected";
 
         public MainWindow()
         {
             InitializeComponent();
+            MinHeight = SystemParameters.MaximizedPrimaryScreenHeight;
+            MinWidth = SystemParameters.MaximizedPrimaryScreenWidth;
             _graph = new Graph();
-            _vertices = new Dictionary<Ellipse, Vertex>();
+            _ellipses = new Dictionary<VertexControl, Vertex>();
+            _vertices = new Dictionary<Vertex, VertexControl>();
             _edges = new Dictionary<Edge, Line>();
-            _currentAction = InterfaceAction.CreateVertex;
+            _lines = new Dictionary<Line, Edge>();
+            _edgeWeightMapping = new Dictionary<Edge, TextBox>();
+            _weightEdgeMapping = new Dictionary<TextBox, Edge>();
+            _currentAction = InterfaceAction.VertexEdit;
             CreateVertexButton.Tag = SelectedTag;
+            _currentCreateEdgeActionState = CreateEdgeActionState.SelectFirstVertex;
+            InitializeAlgorithmButtons();
+        }
+
+        public string GetStringResource(string name) => GuiResources.ResourceManager.GetString(name);
+
+        private void ColorizedEdgesAnimation(IEnumerable<Edge> edges, Brush brush)
+        {
+            var thread = new Thread(() =>
+            {
+                foreach (var edge in edges)
+                {
+                    Thread.Sleep(500);
+                    Dispatcher.Invoke(DispatcherPriority.Render,
+                        (ThreadStart) delegate { _edges[edge].Stroke = brush; });
+                }
+            });
+
+            thread.Start();
+        }
+        private void ColorizeEdges(IEnumerable<Edge> edges, Brush brush)
+        {
+            foreach (var edge in edges)
+            {
+                Dispatcher.Invoke(DispatcherPriority.Render,
+                    (ThreadStart)delegate { _edges[edge].Stroke = brush; });
+            }
+        }
+
+        private void ColorizeVertices(IEnumerable<Vertex> vertices, Brush brush)
+        {
+            foreach (var vertex in vertices)
+            {
+                Dispatcher.Invoke(DispatcherPriority.Render,
+                    (ThreadStart)delegate { _vertices[vertex].Fill = brush; });
+            }
+        }
+
+        // TODO: алгоритм запускается в отдельном потоке, надо предусмотреть блокировку формы
+        private void InitializeAlgorithmButtons()
+        {
+            var algorithms = GraphAlgorithmFactory.CreateAllGraphAlgorithms();
+            var i = 1;
+            foreach (var algorithm in algorithms)
+            {
+                algorithm.Performed += result =>
+                {
+                    MessageBox.Show(
+                        !string.IsNullOrWhiteSpace(result.StringResult)
+                            ? result.StringResult
+                            : (result.Number.HasValue
+                                ? result.Number.Value.ToString()
+                                : string.Empty),
+                        GetStringResource("ResultMessageBoxTitle"));
+                    if (result.Edges != null)
+                        ColorizedEdgesAnimation(result.Edges, Brushes.Blue);
+                    if (result.Vertices != null)
+                        ColorizeVertices(result.Vertices, Brushes.Red);
+                };
+                var button = new Button
+                {
+                    Style = FindResource("ToolbarButton") as Style,
+                    Content = $"A{i++}",
+                    ToolTip = algorithm.Name
+                };
+                button.Click += (sender, args) =>
+                {
+                    ColorizeEdges(_graph.Edges, Brushes.Black);
+                    ColorizeVertices(_graph.Vertices, Brushes.White);
+                    var parameters = new GraphAlgorithmParameters(_graph);
+                    algorithm.PerformAlgorithmAsync(parameters);
+                };
+                Toolbar.Children.Add(button);
+            }
+        }
+
+        private void CleanStructures(bool cleanGraph = false)
+        {
+            if (cleanGraph)
+                _graph.CleanVertices();
+            Container.Children.Clear();
+            _ellipses.Clear();
+            _vertices.Clear();
+            _edges.Clear();
+            _lines.Clear();
+            _edgeWeightMapping.Clear();
+            _weightEdgeMapping.Clear();
             _currentCreateEdgeActionState = CreateEdgeActionState.SelectFirstVertex;
         }
 
@@ -52,19 +143,11 @@ namespace PushkaGraph.Gui
         {
             switch (_currentAction)
             {
-                case InterfaceAction.CreateVertex:
+                case InterfaceAction.VertexEdit:
                     if (_isVertexMoving) break;
                     CreateVertex(sender, e);
                     break;
-                case InterfaceAction.CreateEdge:
-                    break;
-                case InterfaceAction.AlgorithmA:
-                    break;
-                case InterfaceAction.AlgorithmB:
-                    break;
-                case InterfaceAction.AlgorithmC:
-                    break;
-                case InterfaceAction.AlgorithmD:
+                case InterfaceAction.EdgeEdit:
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
@@ -80,22 +163,11 @@ namespace PushkaGraph.Gui
         {
             switch (_currentAction)
             {
-                case InterfaceAction.CreateVertex:
+                case InterfaceAction.VertexEdit:
                     break;
-                case InterfaceAction.CreateEdge:
+                case InterfaceAction.EdgeEdit:
                     if (_currentCreateEdgeActionState == CreateEdgeActionState.SelectSecondVertex)
-                    {
-                        _currentCreateEdgeActionState = CreateEdgeActionState.SelectFirstVertex;
-                        Container.Children.Remove(_movingLine);
-                    }
-                    break;
-                case InterfaceAction.AlgorithmA:
-                    break;
-                case InterfaceAction.AlgorithmB:
-                    break;
-                case InterfaceAction.AlgorithmC:
-                    break;
-                case InterfaceAction.AlgorithmD:
+                        AbortCreateEdgeAction();
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
@@ -112,42 +184,14 @@ namespace PushkaGraph.Gui
             var cursorPosition = e.GetPosition(Container);
             switch (_currentAction)
             {
-                case InterfaceAction.CreateVertex:
+                case InterfaceAction.VertexEdit:
                     if (!_isVertexMoving) break;
-                    foreach (var edge in _vertices[_movingVertex].IncidentEdges)
-                    {
-                        var line = _edges[edge];
-                        if (Math.Abs(line.X1 - (Canvas.GetLeft(_movingVertex) + VertexSettings.Size / 2)) < 0.001 &&
-                            Math.Abs(line.Y1 - (Canvas.GetTop(_movingVertex) + VertexSettings.Size / 2)) < 0.001)
-                        {
-                            line.X1 = cursorPosition.X;
-                            line.Y1 = cursorPosition.Y;
-                        }
-                        if (Math.Abs(line.X2 - (Canvas.GetLeft(_movingVertex) + VertexSettings.Size / 2)) < 0.001 &&
-                            Math.Abs(line.Y2 - (Canvas.GetTop(_movingVertex) + VertexSettings.Size / 2)) < 0.001)
-                        {
-                            line.X2 = cursorPosition.X;
-                            line.Y2 = cursorPosition.Y;
-                        }
-                    }
-
-                    Canvas.SetTop(_movingVertex, cursorPosition.Y - VertexSettings.Size / 2);
-                    Canvas.SetLeft(_movingVertex, cursorPosition.X - VertexSettings.Size / 2);
+                    UpdateMovingVertexPosition(cursorPosition);
+                    UpdateEdgesPosition(_ellipses[_movingEllipse].IncidentEdges);
                     break;
-                case InterfaceAction.CreateEdge:
+                case InterfaceAction.EdgeEdit:
                     if (_currentCreateEdgeActionState == CreateEdgeActionState.SelectSecondVertex)
-                    {
-                        _movingLine.X2 = cursorPosition.X;
-                        _movingLine.Y2 = cursorPosition.Y;
-                    }
-                    break;
-                case InterfaceAction.AlgorithmA:
-                    break;
-                case InterfaceAction.AlgorithmB:
-                    break;
-                case InterfaceAction.AlgorithmC:
-                    break;
-                case InterfaceAction.AlgorithmD:
+                        UpdateEdgeEndPosition(cursorPosition);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
@@ -161,53 +205,28 @@ namespace PushkaGraph.Gui
         /// <param name="e"></param>
         private void OnEllipseMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            var ellipse = (Ellipse) sender;
+            var ellipse = (VertexControl)sender;
             switch (_currentAction)
             {
-                case InterfaceAction.CreateVertex:
-                    _isVertexMoving = true;
-                    Panel.SetZIndex(ellipse, VertexSettings.MovingZIndex);
-                    _movingVertex = ellipse;
+                case InterfaceAction.VertexEdit:
+                    StartMovingVertex(ellipse);
                     break;
-                case InterfaceAction.CreateEdge:
-                    CreateEdge(sender, e);
-                    break;
-                case InterfaceAction.AlgorithmA:
-                    break;
-                case InterfaceAction.AlgorithmB:
-                    break;
-                case InterfaceAction.AlgorithmC:
-                    break;
-                case InterfaceAction.AlgorithmD:
+                case InterfaceAction.EdgeEdit:
+                    CreateEdge(ellipse, e.GetPosition(Container));
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
         }
-        
-        /// <summary>
-        /// Обрабатывает событие поднятия левой кнопки мыши над вершиной.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void OnEllipseMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+
+        private void OnContainerMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            var ellipse = (Ellipse)sender;
             switch (_currentAction)
             {
-                case InterfaceAction.CreateVertex:
-                    _isVertexMoving = false;
-                    Panel.SetZIndex(ellipse, VertexSettings.ZIndex);
+                case InterfaceAction.VertexEdit:
+                    StopMovingVertex();
                     break;
-                case InterfaceAction.CreateEdge:
-                    break;
-                case InterfaceAction.AlgorithmA:
-                    break;
-                case InterfaceAction.AlgorithmB:
-                    break;
-                case InterfaceAction.AlgorithmC:
-                    break;
-                case InterfaceAction.AlgorithmD:
+                case InterfaceAction.EdgeEdit:
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
@@ -221,30 +240,14 @@ namespace PushkaGraph.Gui
         /// <param name="e"></param>
         private void OnEllipseMouseRightButtonDown(object sender, MouseButtonEventArgs e)
         {
-            var ellipse = (Ellipse)sender;
             switch (_currentAction)
             {
-                case InterfaceAction.CreateVertex:
-                    Container.Children.Remove(ellipse);
-                    var vertex = _vertices[ellipse];
-
-                    foreach (var edge in vertex.IncidentEdges)
-                    {
-                        var line = _edges[edge];
-                        Container.Children.Remove(line);
-                    }
-
-                    _graph.DeleteVertex(vertex);
+                case InterfaceAction.VertexEdit:
+                    var ellipse = (VertexControl)sender;
+                    RemoveVertexIncidentEdges(ellipse);
+                    RemoveVertex(ellipse);
                     break;
-                case InterfaceAction.CreateEdge:
-                    break;
-                case InterfaceAction.AlgorithmA:
-                    break;
-                case InterfaceAction.AlgorithmB:
-                    break;
-                case InterfaceAction.AlgorithmC:
-                    break;
-                case InterfaceAction.AlgorithmD:
+                case InterfaceAction.EdgeEdit:
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
@@ -258,140 +261,101 @@ namespace PushkaGraph.Gui
         /// <param name="e"></param>
         private void OnLineMouseRightButtonDown(object sender, MouseButtonEventArgs e)
         {
-            var line = (Line)sender;
             switch (_currentAction)
             {
-                case InterfaceAction.CreateVertex:
+                case InterfaceAction.VertexEdit:
                     break;
-                case InterfaceAction.CreateEdge:
+                case InterfaceAction.EdgeEdit:
                     if (_currentCreateEdgeActionState == CreateEdgeActionState.SelectSecondVertex)
                     {
-                        _currentCreateEdgeActionState = CreateEdgeActionState.SelectFirstVertex;
-                        Container.Children.Remove(_movingLine);
+                        AbortCreateEdgeAction();
                         break;
                     }
-                    var edgeLinePair = _edges.First(x => Equals(x.Value, line));
-                    Container.Children.Remove(edgeLinePair.Value);
-                    _graph.DeleteEdge(edgeLinePair.Key);
-                    break;
-                case InterfaceAction.AlgorithmA:
-                    break;
-                case InterfaceAction.AlgorithmB:
-                    break;
-                case InterfaceAction.AlgorithmC:
-                    break;
-                case InterfaceAction.AlgorithmD:
+                    RemoveEdge((Line)sender);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
         }
 
-        /// <summary>
-        /// Создает контрол ребра с требуемыми параметрами.
-        /// </summary>
-        /// <param name="start">Начальная вершина.</param>
-        /// <param name="finish">Конечная вершина.</param>
-        /// <returns></returns>
-        private Line InitializeLine(Point start, Point finish)
+        // TODO: рефакторинг
+        private void ExportGraph(string filePath)
         {
-            var line = new Line
+            var matrix = _graph.GetAdjacencyMatrix();
+
+            using (var writer = new StreamWriter(filePath))
             {
-                Style = FindResource("Edge") as Style,
-                X1 = start.X,
-                Y1 = start.Y,
-                X2 = finish.X,
-                Y2 = finish.Y
-            };
-
-            return line;
-        }
-
-        /// <summary>
-        /// Создает контрол вершины с требуемыми параметрами.
-        /// </summary>
-        /// <param name="point">Координаты вершины.</param>
-        /// <returns></returns>
-        private Ellipse InitializeEllipse(Point point)
-        {
-            var ellipse = new Ellipse
-            {
-                Style = FindResource("Vertex") as Style,
-                Width = VertexSettings.Size,
-                Height = VertexSettings.Size,
-            };
-            Panel.SetZIndex(ellipse, VertexSettings.ZIndex);
-            Canvas.SetTop(ellipse, point.Y);
-            Canvas.SetLeft(ellipse, point.X);
-
-            return ellipse;
-        }
-
-        /// <summary>
-        /// Обрабатывает событие нажатия на поле, при создании новой вершины.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void CreateVertex(object sender, MouseEventArgs e)
-        {
-            var point = e.GetPosition((Canvas)sender);
-            point.Y -= VertexSettings.Size / 2;
-            point.X -= VertexSettings.Size / 2;
-
-            var ellipse = InitializeEllipse(point);
-            Container.Children.Add(ellipse);
-
-            var vertex = _graph.AddVertex();
-            _vertices[ellipse] = vertex;
-        }
-
-        /// <summary>
-        /// Обрабатывает событие нажатия на вершину, при добавлении нового ребра.
-        /// </summary>
-        private void CreateEdge(object sender, MouseEventArgs e)
-        {
-            var ellipse = (Ellipse) sender;
-            switch (_currentCreateEdgeActionState)
-            {
-                case CreateEdgeActionState.SelectFirstVertex:
-                    _edgeStart = ellipse;
-                    var startPointX = Canvas.GetLeft(_edgeStart) + VertexSettings.Size / 2;
-                    var startPointY = Canvas.GetTop(_edgeStart) + VertexSettings.Size / 2;
-                    var finishPointX = e.GetPosition(Container).X + VertexSettings.Size / 2;
-                    var finishPointY = e.GetPosition(Container).Y + VertexSettings.Size / 2;
-
-                    var startPoint = new Point(startPointX, startPointY);
-                    var endPoint = new Point(finishPointX, finishPointY);
-
-                    _movingLine = InitializeLine(startPoint, endPoint);
-                    Container.Children.Add(_movingLine);
-
-                    _currentCreateEdgeActionState = CreateEdgeActionState.SelectSecondVertex;
-                    break;
-                case CreateEdgeActionState.SelectSecondVertex:
-                    _edgeFinish = ellipse;
-                    if (Equals(_edgeFinish, _edgeStart))
+                writer.WriteLine(_graph.Vertices.Length);
+                for (var i = 0; i < _graph.Vertices.Length; i++)
+                {
+                    for (var j = 0; j < _graph.Vertices.Length; j++)
                     {
-                        break;
+                        writer.Write(matrix[i, j]);
+                        writer.Write(" ");
                     }
-                    if (_vertices[_edgeStart].AdjacentVertices.Contains(_vertices[_edgeFinish]))
-                    {
-                        Container.Children.Remove(_movingLine);
-                        _currentCreateEdgeActionState = CreateEdgeActionState.SelectFirstVertex;
-                        break;
-                    }
-                    var finishX = Canvas.GetLeft(_edgeFinish) + VertexSettings.Size / 2;
-                    var finishY = Canvas.GetTop(_edgeFinish) + VertexSettings.Size / 2;
+                    writer.Write("\n");
+                }
 
-                    _movingLine.X2 = finishX;
-                    _movingLine.Y2 = finishY;
-                    
-                    var edge = _graph.AddEdge(_vertices[_edgeStart], _vertices[_edgeFinish]);
-                    _edges[edge] = _movingLine;
-                    _currentCreateEdgeActionState = CreateEdgeActionState.SelectFirstVertex;
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
+                foreach (var vertex in _graph.Vertices)
+                {
+                    var control = _vertices[vertex];
+                    writer.WriteLine($"{Canvas.GetLeft(control)} {Canvas.GetTop(control)}");
+                }
+            }
+        }
+
+        // TODO: рефакторинг
+        private void ImportGraph(string filePath)
+        {
+            using (var reader = new StreamReader(filePath))
+            {
+                try
+                {
+                    var line = reader.ReadLine();
+                    if (!int.TryParse(line, out var vertexCount))
+                        throw new ArgumentException(GetStringResource("ImportFormatError"));
+
+                    var matrix = new int[vertexCount, vertexCount];
+
+                    for (var i = 0; i < vertexCount; i++)
+                    {
+                        line = reader.ReadLine();
+                        if (line == null)
+                            throw new ArgumentException(GetStringResource("ImportFormatError"));
+                        var matrixRow = line.Trim().Split().Select(int.Parse).ToArray();
+                        for (var j = 0; j < vertexCount; j++)
+                            matrix[i, j] = matrixRow[j];
+                    }
+
+                    _graph.CreateFromAdjacencyMatrix(matrix);
+
+                    if (MessageBox.Show(GetStringResource("RewriteFileWarning"), GetStringResource("WarningMessageBoxTitle"),
+                            MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.No)
+                        return;
+
+                    // Если граф создался и все ОК, то можно удалить старые контролы.
+                    CleanStructures();
+
+                    for (var i = 0; i < vertexCount; i++)
+                    {
+                        line = reader.ReadLine();
+                        if (line == null)
+                            throw new ArgumentException(GetStringResource("ImportFormatError"));
+                        var point = Point.Parse(line.Trim());
+                        CreateVertexControl(_graph.Vertices[i], point);
+                    }
+
+                    foreach (var edge in _graph.Edges)
+                        CreateEdgeControl(edge);
+                }
+                catch (ArgumentException e)
+                {
+                    MessageBox.Show(e.Message, GetStringResource("ErrorMessageBoxTitle"));
+                }
+                catch (Exception)
+                {
+                    MessageBox.Show(GetStringResource("ImportFormatError"), GetStringResource("ErrorMessageBoxTitle"));
+                }
             }
         }
 
@@ -402,15 +366,53 @@ namespace PushkaGraph.Gui
         /// <param name="e"></param>
         private void ToolbarButtonClick(object sender, EventArgs e)
         {
-            foreach (var toolbarChild in Toolbar.Children)
-                ((Button) toolbarChild).Tag = null;
             var button = (Button)sender;
-            button.Tag = "Selected";
             if (Equals(sender, CreateVertexButton))
-                _currentAction = InterfaceAction.CreateVertex;
+            {
+                _currentAction = InterfaceAction.VertexEdit;
+                CreateEdgeButton.Tag = null;
+                _currentCreateEdgeActionState = CreateEdgeActionState.SelectFirstVertex;
+                Container.Children.Remove(_movingLine);
+                button.Tag = "Selected";
+            }
+
             if (Equals(sender, CreateEdgeButton))
-                _currentAction = InterfaceAction.CreateEdge;
-            // TODO: алгоритмы
+            {
+                _currentAction = InterfaceAction.EdgeEdit;
+                CreateVertexButton.Tag = null;
+                button.Tag = "Selected";
+            }
+
+            if (Equals(sender, ExportButton))
+            {
+                var saveFileDialog = new SaveFileDialog
+                {
+                    Filter = "Graph Files (*.gr)|*.gr",
+                    DefaultExt = "gr",
+                    FileName = "MyGraph",
+                    AddExtension = true
+                };
+                if (saveFileDialog.ShowDialog() == true)
+                    ExportGraph(saveFileDialog.FileName);
+            }
+
+            if (Equals(sender, ImportButton))
+            {
+                var saveFileDialog = new OpenFileDialog
+                {
+                    Filter = "Graph Files (*.gr)|*.gr",
+                    DefaultExt = "gr",
+                    AddExtension = true
+                };
+                if (saveFileDialog.ShowDialog() == true)
+                {
+                    var filePath = saveFileDialog.FileName;
+                    ImportGraph(filePath);
+                }
+            }
+
+            if (Equals(sender, CleanButton))
+                CleanStructures(true);
         }
     }
 }

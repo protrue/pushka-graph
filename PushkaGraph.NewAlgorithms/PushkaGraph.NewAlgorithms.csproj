@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{2D496831-81A4-449A-AC2A-65105D38BAB1}</ProjectGuid>
+    <ProjectGuid>{626E2C3E-6A77-4F14-BF9C-BA2D54D5BC16}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>PushkaGraph.Algorithms</RootNamespace>
-    <AssemblyName>PushkaGraph.Algorithms</AssemblyName>
+    <RootNamespace>PushkaGraph.NewAlgorithms</RootNamespace>
+    <AssemblyName>PushkaGraph.NewAlgorithms</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -41,20 +41,23 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="GraphAlgorithms.EulerianPath.cs" />
-    <Compile Include="GraphAlgorithms.ConnectedComponentsCount.cs" />
-    <Compile Include="GraphAlgorithms.MinimumSpanningTree.cs" />
-    <Compile Include="GraphAlgorithms.ShortestPath.cs" />
+    <Compile Include="Implementations\EulerianPath.cs" />
+    <Compile Include="Implementations\ConnectedComponentsCount.cs" />
+    <Compile Include="Wrapper\GraphAlgorithm.cs" />
+    <Compile Include="Wrapper\GraphAlgorithmParameters.cs" />
+    <Compile Include="GraphAlgorithmsRegistry.cs" />
+    <Compile Include="GraphAlgorithmFactory.cs" />
+    <Compile Include="Wrapper\GraphAlgorithmResult.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\PushkaGraph.Core\PushkaGraph.Core.csproj">
-      <Project>{14079356-117a-4a11-98ee-da4c1e9f3288}</Project>
-      <Name>PushkaGraph.Core</Name>
+    <ProjectReference Include="..\PushkaGraph.Algorithms\PushkaGraph.Algorithms.csproj">
+      <Project>{2d496831-81a4-449a-ac2a-65105d38bab1}</Project>
+      <Name>PushkaGraph.Algorithms</Name>
     </ProjectReference>
-    <ProjectReference Include="..\PushkaGraph.Tools\PushkaGraph.Tools.csproj">
-      <Project>{c9fad02c-025d-4e42-a7a6-4ebfec87c759}</Project>
-      <Name>PushkaGraph.Tools</Name>
+    <ProjectReference Include="..\PushkaGraph.Core\PushkaGraph.Core.csproj">
+      <Project>{14079356-117A-4A11-98EE-DA4C1E9F3288}</Project>
+      <Name>PushkaGraph.Core</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
