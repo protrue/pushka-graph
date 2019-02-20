@@ -204,13 +204,22 @@ namespace PushkaGraph.Gui
         private void OnWeightTextChanged(object sender, EventArgs e)
         {
             var textBox = (TextBox) sender;
+            var currentCaretIndex = textBox.CaretIndex - 1;
 
+            if (string.IsNullOrEmpty(textBox.Text))
+            {
+                textBox.Text = 1.ToString();
+                textBox.CaretIndex = textBox.Text.Length;
+            }
             textBox.Text = textBox.Text.TrimStart('0');
             var isNumeric = int.TryParse(textBox.Text, out var number);
             if (isNumeric && _weightEdgeMapping.ContainsKey(textBox))
                 _weightEdgeMapping[textBox].Weight = number;
             if (!isNumeric)
+            {
                 textBox.Text = _weightEdgeMapping[textBox].Weight.ToString();
+                textBox.CaretIndex = currentCaretIndex;
+            }
         }
     }
 }
