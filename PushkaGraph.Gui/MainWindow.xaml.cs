@@ -91,7 +91,12 @@ namespace PushkaGraph.Gui
             {
                 algorithm.Performed += result =>
                 {
-                    MessageBox.Show(result.Number.HasValue ? result.Number.ToString() : result.StringResult,
+                    MessageBox.Show(
+                        !string.IsNullOrWhiteSpace(result.StringResult)
+                            ? result.StringResult
+                            : (result.Number.HasValue
+                                ? result.Number.Value.ToString()
+                                : string.Empty),
                         GetStringResource("ResultMessageBoxTitle"));
                     if (result.Edges != null)
                         ColorizedEdgesAnimation(result.Edges, Brushes.Blue);
