@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 using Microsoft.Win32;
 using PushkaGraph.Core;
 using PushkaGraph.NewAlgorithms;
@@ -35,7 +37,7 @@ namespace PushkaGraph.Gui
             MinWidth = SystemParameters.MaximizedPrimaryScreenWidth;
             _graph = new Graph();
             _ellipses = new Dictionary<VertexControl, Vertex>();
-            _vertices = new Dictionary<Vertex, VertexControl>(); 
+            _vertices = new Dictionary<Vertex, VertexControl>();
             _edges = new Dictionary<Edge, Line>();
             _lines = new Dictionary<Line, Edge>();
             _edgeWeightMapping = new Dictionary<Edge, TextBox>();
@@ -50,17 +52,21 @@ namespace PushkaGraph.Gui
 
         private void ColorizeEdges(IEnumerable<Edge> edges, Brush brush)
         {
+
             foreach (var edge in edges)
             {
-                _edges[edge].Fill = brush;
+                Dispatcher.Invoke(DispatcherPriority.Render,
+                    (ThreadStart)delegate () { _edges[edge].Stroke = brush; });
             }
+
         }
 
         private void ColorizeVertices(IEnumerable<Vertex> vertices, Brush brush)
         {
             foreach (var vertex in vertices)
             {
-                _vertices[vertex].Fill = brush;
+                Dispatcher.Invoke(DispatcherPriority.Render,
+                    (ThreadStart)delegate () { _vertices[vertex].Fill = brush; });
             }
         }
 
@@ -182,7 +188,7 @@ namespace PushkaGraph.Gui
         /// <param name="e"></param>
         private void OnEllipseMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            var ellipse = (VertexControl) sender;
+            var ellipse = (VertexControl)sender;
             switch (_currentAction)
             {
                 case InterfaceAction.VertexEdit:
@@ -259,7 +265,7 @@ namespace PushkaGraph.Gui
         private void ExportGraph(string filePath)
         {
             var matrix = _graph.GetAdjacencyMatrix();
-            
+
             using (var writer = new StreamWriter(filePath))
             {
                 writer.WriteLine(_graph.Vertices.Length);
