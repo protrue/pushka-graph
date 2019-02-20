@@ -48,15 +48,29 @@ namespace PushkaGraph.Gui
             InitializeAlgorithmButtons();
         }
 
+        public string GetStringResource(string name) => GuiResources.ResourceManager.GetString(name);
+
+        private void ColorizedEdgesAnimation(IEnumerable<Edge> edges, Brush brush)
+        {
+            var thread = new Thread(() =>
+            {
+                foreach (var edge in edges)
+                {
+                    Thread.Sleep(500);
+                    Dispatcher.Invoke(DispatcherPriority.Render,
+                        (ThreadStart) delegate { _edges[edge].Stroke = brush; });
+                }
+            });
+
+            thread.Start();
+        }
         private void ColorizeEdges(IEnumerable<Edge> edges, Brush brush)
         {
-
             foreach (var edge in edges)
             {
                 Dispatcher.Invoke(DispatcherPriority.Render,
-                    (ThreadStart)delegate () { _edges[edge].Stroke = brush; });
+                    (ThreadStart)delegate { _edges[edge].Stroke = brush; });
             }
-
         }
 
         private void ColorizeVertices(IEnumerable<Vertex> vertices, Brush brush)
@@ -64,7 +78,7 @@ namespace PushkaGraph.Gui
             foreach (var vertex in vertices)
             {
                 Dispatcher.Invoke(DispatcherPriority.Render,
-                    (ThreadStart)delegate () { _vertices[vertex].Fill = brush; });
+                    (ThreadStart)delegate { _vertices[vertex].Fill = brush; });
             }
         }
 
@@ -78,9 +92,9 @@ namespace PushkaGraph.Gui
                 algorithm.Performed += result =>
                 {
                     MessageBox.Show(result.Number.HasValue ? result.Number.ToString() : result.StringResult,
-                        "Результат");
+                        GetStringResource("ResultMessageBoxTitle"));
                     if (result.Edges != null)
-                        ColorizeEdges(result.Edges, Brushes.Blue);
+                        ColorizedEdgesAnimation(result.Edges, Brushes.Blue);
                     if (result.Vertices != null)
                         ColorizeVertices(result.Vertices, Brushes.Red);
                 };
@@ -130,14 +144,6 @@ namespace PushkaGraph.Gui
                     break;
                 case InterfaceAction.EdgeEdit:
                     break;
-                case InterfaceAction.AlgorithmA:
-                    break;
-                case InterfaceAction.AlgorithmB:
-                    break;
-                case InterfaceAction.AlgorithmC:
-                    break;
-                case InterfaceAction.AlgorithmD:
-                    break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
@@ -157,14 +163,6 @@ namespace PushkaGraph.Gui
                 case InterfaceAction.EdgeEdit:
                     if (_currentCreateEdgeActionState == CreateEdgeActionState.SelectSecondVertex)
                         AbortCreateEdgeAction();
-                    break;
-                case InterfaceAction.AlgorithmA:
-                    break;
-                case InterfaceAction.AlgorithmB:
-                    break;
-                case InterfaceAction.AlgorithmC:
-                    break;
-                case InterfaceAction.AlgorithmD:
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
@@ -190,14 +188,6 @@ namespace PushkaGraph.Gui
                     if (_currentCreateEdgeActionState == CreateEdgeActionState.SelectSecondVertex)
                         UpdateEdgeEndPosition(cursorPosition);
                     break;
-                case InterfaceAction.AlgorithmA:
-                    break;
-                case InterfaceAction.AlgorithmB:
-                    break;
-                case InterfaceAction.AlgorithmC:
-                    break;
-                case InterfaceAction.AlgorithmD:
-                    break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
@@ -219,14 +209,6 @@ namespace PushkaGraph.Gui
                 case InterfaceAction.EdgeEdit:
                     CreateEdge(ellipse, e.GetPosition(Container));
                     break;
-                case InterfaceAction.AlgorithmA:
-                    break;
-                case InterfaceAction.AlgorithmB:
-                    break;
-                case InterfaceAction.AlgorithmC:
-                    break;
-                case InterfaceAction.AlgorithmD:
-                    break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
@@ -240,14 +222,6 @@ namespace PushkaGraph.Gui
                     StopMovingVertex();
                     break;
                 case InterfaceAction.EdgeEdit:
-                    break;
-                case InterfaceAction.AlgorithmA:
-                    break;
-                case InterfaceAction.AlgorithmB:
-                    break;
-                case InterfaceAction.AlgorithmC:
-                    break;
-                case InterfaceAction.AlgorithmD:
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
@@ -269,14 +243,6 @@ namespace PushkaGraph.Gui
                     RemoveVertex(ellipse);
                     break;
                 case InterfaceAction.EdgeEdit:
-                    break;
-                case InterfaceAction.AlgorithmA:
-                    break;
-                case InterfaceAction.AlgorithmB:
-                    break;
-                case InterfaceAction.AlgorithmC:
-                    break;
-                case InterfaceAction.AlgorithmD:
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
@@ -302,21 +268,13 @@ namespace PushkaGraph.Gui
                     }
                     RemoveEdge((Line)sender);
                     break;
-                case InterfaceAction.AlgorithmA:
-                    break;
-                case InterfaceAction.AlgorithmB:
-                    break;
-                case InterfaceAction.AlgorithmC:
-                    break;
-                case InterfaceAction.AlgorithmD:
-                    break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
         }
 
         // TODO: рефакторинг
-        private void ImportGraph(string filePath)
+        private void ExportGraph(string filePath)
         {
             var matrix = _graph.GetAdjacencyMatrix();
 
@@ -342,7 +300,7 @@ namespace PushkaGraph.Gui
         }
 
         // TODO: рефакторинг
-        private void ExportGraph(string filePath)
+        private void ImportGraph(string filePath)
         {
             using (var reader = new StreamReader(filePath))
             {
@@ -350,7 +308,7 @@ namespace PushkaGraph.Gui
                 {
                     var line = reader.ReadLine();
                     if (!int.TryParse(line, out var vertexCount))
-                        throw new ArgumentException("Ошибка в формате файла.");
+                        throw new ArgumentException(GetStringResource("ImportFormatError"));
 
                     var matrix = new int[vertexCount, vertexCount];
 
@@ -358,7 +316,7 @@ namespace PushkaGraph.Gui
                     {
                         line = reader.ReadLine();
                         if (line == null)
-                            throw new ArgumentException("Ошибка в формате файла.");
+                            throw new ArgumentException(GetStringResource("ImportFormatError"));
                         var matrixRow = line.Trim().Split().Select(int.Parse).ToArray();
                         for (var j = 0; j < vertexCount; j++)
                             matrix[i, j] = matrixRow[j];
@@ -366,7 +324,7 @@ namespace PushkaGraph.Gui
 
                     _graph.CreateFromAdjacencyMatrix(matrix);
 
-                    if (MessageBox.Show("Вы уверены, что хотите перезаписать текущий граф?", "Предупреждение",
+                    if (MessageBox.Show(GetStringResource("RewriteFileWarning"), GetStringResource("WarningMessageBoxTitle"),
                             MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.No)
                         return;
 
@@ -377,7 +335,7 @@ namespace PushkaGraph.Gui
                     {
                         line = reader.ReadLine();
                         if (line == null)
-                            throw new ArgumentException("Ошибка в формате файла.");
+                            throw new ArgumentException(GetStringResource("ImportFormatError"));
                         var point = Point.Parse(line.Trim());
                         CreateVertexControl(_graph.Vertices[i], point);
                     }
@@ -387,11 +345,11 @@ namespace PushkaGraph.Gui
                 }
                 catch (ArgumentException e)
                 {
-                    MessageBox.Show(e.Message, "Error");
+                    MessageBox.Show(e.Message, GetStringResource("ErrorMessageBoxTitle"));
                 }
                 catch (Exception)
                 {
-                    MessageBox.Show("Неверный формат файла", "Error");
+                    MessageBox.Show(GetStringResource("ImportFormatError"), GetStringResource("ErrorMessageBoxTitle"));
                 }
             }
         }
@@ -418,7 +376,7 @@ namespace PushkaGraph.Gui
                 button.Tag = "Selected";
             }
 
-            if (Equals(sender, ImportButton))
+            if (Equals(sender, ExportButton))
             {
                 var saveFileDialog = new SaveFileDialog
                 {
@@ -428,10 +386,10 @@ namespace PushkaGraph.Gui
                     AddExtension = true
                 };
                 if (saveFileDialog.ShowDialog() == true)
-                    ImportGraph(saveFileDialog.FileName);
+                    ExportGraph(saveFileDialog.FileName);
             }
 
-            if (Equals(sender, ExportButton))
+            if (Equals(sender, ImportButton))
             {
                 var saveFileDialog = new OpenFileDialog
                 {
@@ -442,7 +400,7 @@ namespace PushkaGraph.Gui
                 if (saveFileDialog.ShowDialog() == true)
                 {
                     var filePath = saveFileDialog.FileName;
-                    ExportGraph(filePath);
+                    ImportGraph(filePath);
                 }
             }
 
