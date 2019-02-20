@@ -21,7 +21,7 @@ namespace PushkaGraph.NewAlgorithms.Implementations
 
             var eulerianPath = GraphAlgorithms.EulerianPath(graph);
 
-            var result = new GraphAlgorithmResult(edges: eulerianPath.ToArray());
+            var result = new GraphAlgorithmResult(edges: eulerianPath?.ToArray());
 
             return result;
         }
