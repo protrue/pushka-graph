@@ -371,6 +371,8 @@ namespace PushkaGraph.Gui
             {
                 _currentAction = InterfaceAction.VertexEdit;
                 CreateEdgeButton.Tag = null;
+                _currentCreateEdgeActionState = CreateEdgeActionState.SelectFirstVertex;
+                Container.Children.Remove(_movingLine);
                 button.Tag = "Selected";
             }
 
