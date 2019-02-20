@@ -360,6 +360,10 @@ namespace PushkaGraph.Gui
 
                     _graph.CreateFromAdjacencyMatrix(matrix);
 
+                    if (MessageBox.Show("Вы уверены, что хотите перезаписать текущий граф?", "Предупреждение",
+                            MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.No)
+                        return;
+
                     // Если граф создался и все ОК, то можно удалить старые контролы.
                     CleanStructures();
 
@@ -423,7 +427,6 @@ namespace PushkaGraph.Gui
 
             if (Equals(sender, ExportButton))
             {
-                // TODO: спросить прежде чем удалять
                 var saveFileDialog = new OpenFileDialog
                 {
                     Filter = "Graph Files (*.gr)|*.gr",
