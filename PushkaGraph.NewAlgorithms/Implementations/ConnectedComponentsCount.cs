@@ -27,7 +27,9 @@ namespace PushkaGraph.NewAlgorithms.Implementations
             var connectedComponentsCount = GraphAlgorithms.ConnectedComponentsCount(graph);
 
             // Оборачиваем результат выполнения
-            var result = new GraphAlgorithmResult(number: connectedComponentsCount);
+            var result = new GraphAlgorithmResult(
+                number: connectedComponentsCount,
+                stringResult: $"Количество компонент связности: {connectedComponentsCount}");
 
             // Возвращаем
             return result;
