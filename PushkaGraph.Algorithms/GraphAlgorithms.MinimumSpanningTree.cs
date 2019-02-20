@@ -6,44 +6,44 @@ namespace PushkaGraph.Algorithms
 {
     public static partial class GraphAlgorithms
     {
-        public static Edge minedge_for_allusedvertices(List <Vertex> used_vertices_list, List<Edge> used_edges_list, Graph graph)
+        public static Edge minEdgeForAllUsedVertices(List<Vertex> usedVerticesList, List<Edge> usedEdgesList, Graph graph)
         {
-            double min_edge = 9999999.9;
-            Edge edge=null;
-            for (int i=0; i<used_vertices_list.Count; i++)
+            double minEdge =double.MaxValue;
+            Edge edge = null;
+            for (int i = 0; i < usedVerticesList.Count; i++)
             {
-                var edges = used_vertices_list[i].IncidentEdges;
-                for (int j=0; j<used_vertices_list.Count;j++)
+                var edges = usedVerticesList[i].IncidentEdges;
+                for (int j = 0; j < usedVerticesList.Count; j++)
                 {
-                    if(edges[j].Weight<min_edge && !used_edges_list.Contains(edges[j]))
+                    if ((edges[j].Weight < minEdge) && !usedEdgesList.Contains(edges[j]))
                     {
-                        min_edge = edges[j].Weight;
+                        minEdge = edges[j].Weight;
                         edge = edges[j];
                     }
                 }
             }
             return edge;
         }
+
         public static IEnumerable<Edge> MST(this Graph graph)
         {   //Реализация алгоритма Прима
-            if( GraphAlgorithms.ConnectedComponentsCount(graph) !=1) return null; //компонента связности отличная от 1 - искать ничего не будем
-            Vertex [] unused_vertices = graph.Vertices; //получили все вершины графа
-            List <Vertex> used_vertices_list= new List<Vertex>(unused_vertices.Length); //список использованных вершин
-            List<Vertex> unused_vertices_list = (unused_vertices).OfType<Vertex>().ToList();
-            List < Edge > answer= new List<Edge>(unused_vertices.Length-1); //ответ (список ребер) ,количество ребер на 1 меньше чем вершин (1)
-            used_vertices_list.Add(unused_vertices[0]); // добавили 1-ую вершину( нам без разницы какая она)
-            for (int i=0; i<unused_vertices.Length-1;i++) //выполним n-1 раз см. (1)
+
+            if (GraphAlgorithms.ConnectedComponentsCount(graph) != 1) return null; //компонента связности отличная от 1 - искать ничего не будем
+
+            Vertex[] unusedVertices = graph.Vertices; //получили все вершины графа
+            var usedVerticesList = new List<Vertex>(unusedVertices.Length); //список использованных вершин
+            var unusedVertices_list = (unusedVertices).OfType<Vertex>().ToList();
+            var answer = new List<Edge>(unusedVertices.Length - 1); //ответ (список ребер) ,количество ребер на 1 меньше чем вершин (1)
+            usedVerticesList.Add(unusedVertices[0]); // добавили 1-ую вершину( нам без разницы какая она)
+
+            for (int i = 0; i < unusedVertices.Length - 1; i++) //выполним n-1 раз см. (1)
             {
-               var minedge = minedge_for_allusedvertices(used_vertices_list, answer, graph);
-               answer.Add(minedge);
-                if (!used_vertices_list.Contains(minedge.FirstVertex))
-                {
-                    used_vertices_list.Add(minedge.FirstVertex);
-                }
-                else used_vertices_list.Add(minedge.SecondVertex);
-                
+                var minEdge = minEdgeForAllUsedVertices(usedVerticesList, answer, graph);
+                answer.Add(minEdge);
+                if (!usedVerticesList.Contains(minEdge.FirstVertex)) usedVerticesList.Add(minEdge.FirstVertex);
+                else usedVerticesList.Add(minEdge.SecondVertex);
             }
             return answer;
-        }       
+        }
     }
 }
