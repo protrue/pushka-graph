@@ -7,18 +7,21 @@ namespace PushkaGraph.NewAlgorithms.Wrapper
     {
         public Graph Graph { get; }
 
-        public Tuple<Vertex,Vertex> VerticesPair { get; set; }
+        public int RequiredVerticesCount { get; }
+
+        public int RequiredEdgesCount { get; }
 
         public Vertex[] Vertices { get; }
 
         public Edge[] Edges { get; }
 
-        public GraphAlgorithmParameters(Graph graph = null, Tuple<Vertex, Vertex> verticesPair = null, Vertex[] vertices = null, Edge[] edges = null)
+        public GraphAlgorithmParameters(Graph graph = null, Vertex[] vertices = null, int requiredVerticesCount = 0, Edge[] edges = null, int requiredEdgesCount = 0)
         {
             Graph = graph;
-            VerticesPair = verticesPair;
             Vertices = vertices;
+            RequiredVerticesCount = requiredVerticesCount;
             Edges = edges;
+            RequiredEdgesCount = requiredEdgesCount;
         }
     }
 }
