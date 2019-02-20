@@ -3,26 +3,40 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:gui="clr-namespace:PushkaGraph.Gui"
         mc:Ignorable="d"
-        Title="Pushka Graph" Height="600" Width="800">
+        WindowStartupLocation="CenterScreen"
+        Title="Pushka Graph">
     <Window.Resources>
+        <Style TargetType="{x:Type TextBox}" x:Key="Weight">
+            <EventSetter Event="TextChanged" Handler="OnWeightTextChanged"></EventSetter>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="FontSize" Value="15"/>
+            <Setter Property="Width" Value="30"/>
+            <Setter Property="Height" Value="30"/>
+            <Setter Property="TextAlignment" Value="Center"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Padding" Value="0 4 0 0"/>
+            <Style.Resources>
+                <Style TargetType="{x:Type Border}">
+                    <Setter Property="CornerRadius" Value="50" />
+                </Style>
+            </Style.Resources>
+            <Style.Triggers>
+                <Trigger Property="IsFocused" Value="True">
+                    <Setter Property="BorderThickness" Value="1" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
         <Style TargetType="{x:Type Line}" x:Key="Edge">
             <EventSetter Event="MouseRightButtonDown" Handler="OnLineMouseRightButtonDown"></EventSetter>
             <Setter Property="Stroke" Value="Black"/>
             <Setter Property="StrokeThickness" Value="4"/>
         </Style>
-        <Style TargetType="{x:Type Ellipse}" x:Key="Vertex">
+        <Style TargetType="{x:Type gui:VertexControl}" x:Key="Vertex">
             <EventSetter Event="MouseLeftButtonDown" Handler="OnEllipseMouseLeftButtonDown"></EventSetter>
-            <EventSetter Event="MouseLeftButtonUp" Handler="OnEllipseMouseLeftButtonUp"></EventSetter>
             <EventSetter Event="MouseRightButtonDown" Handler="OnEllipseMouseRightButtonDown"></EventSetter>
-            <Setter Property="Fill" Value="White"/>
-            <Setter Property="Stroke" Value="Black"/>
-            <Setter Property="StrokeThickness" Value="2"/>
-            <Style.Triggers>
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="StrokeThickness" Value="4" />
-                </Trigger>
-            </Style.Triggers>
         </Style>
         <Style TargetType="{x:Type Button}" x:Key="ToolbarButton">
             <EventSetter Event="Click" Handler="ToolbarButtonClick"></EventSetter>
@@ -43,6 +57,10 @@
                 <Trigger Property="IsMouseOver" Value="True">
                     <Setter Property="Background" Value="#B2DBBF"/>
                 </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style TargetType="{x:Type Button}" BasedOn="{StaticResource ToolbarButton}" x:Key="CreateGraphElementButton">
+            <Style.Triggers>
                 <Trigger Property="Tag" Value="Selected">
                     <Setter Property="Background" Value="#F3FFBD"/>
                 </Trigger>
@@ -61,7 +79,7 @@
                     Grid.Row="0"
                     ZIndex="100">
             <Button Name="CreateVertexButton"
-                    Style="{StaticResource ToolbarButton}"
+                    Style="{StaticResource CreateGraphElementButton}"
                     ToolTipService.ShowDuration="2000"
                     ToolTip="Редактирование вершин">
                 <Ellipse Width="50"
@@ -72,7 +90,7 @@
                 </Ellipse>
             </Button>
             <Button Name="CreateEdgeButton"
-                    Style="{StaticResource ToolbarButton}"
+                    Style="{StaticResource CreateGraphElementButton}"
                     ToolTipService.ShowDuration="2000"
                     ToolTip="Редактирование ребер">
                 <Line X1="0" Y1="0" X2="58" Y2="58"
@@ -80,22 +98,38 @@
                       StrokeThickness="4">
                 </Line>
             </Button>
-            <Button Style="{StaticResource ToolbarButton}">
-                A1
+            <Button Style="{StaticResource ToolbarButton}"
+                    ToolTipService.ShowDuration="2000"
+                    ToolTip="Экспорт"
+                    Name="ImportButton">
+                <TextBlock Text="&#x2191;" FontSize="40"/>
             </Button>
-            <Button Style="{StaticResource ToolbarButton}">
-                A2
+            <Button Style="{StaticResource ToolbarButton}"
+                    ToolTipService.ShowDuration="2000"
+                    ToolTip="Импорт"
+                    Name="ExportButton">
+                <TextBlock Text="&#x2193;" FontSize="40"/>
             </Button>
-            <Button Style="{StaticResource ToolbarButton}">
-                A3
-            </Button>
-            <Button Style="{StaticResource ToolbarButton}">
-                A4
+            <Button Style="{StaticResource ToolbarButton}"
+                    ToolTipService.ShowDuration="2000"
+                    ToolTip="Очистить все"
+                    Name="CleanButton">
+                <Canvas>
+                    <Line X1="-28" Y1="-28" X2="28" Y2="28"
+                          Stroke="Black" 
+                          StrokeThickness="4">
+                    </Line>
+                    <Line X1="28" Y1="-28" X2="-28" Y2="28"
+                          Stroke="Black" 
+                          StrokeThickness="4">
+                    </Line>
+                </Canvas>
             </Button>
         </StackPanel>
         <Canvas Name="Container" 
                 MouseLeftButtonDown="OnContainerLeftMouseButtonDown"
                 MouseRightButtonDown="OnContainerRightMouseButtonDown"
+                MouseLeftButtonUp="OnContainerMouseLeftButtonUp"
                 MouseMove="OnContainerMouseMove"
                 Grid.Row="1"
                 Background="Transparent">

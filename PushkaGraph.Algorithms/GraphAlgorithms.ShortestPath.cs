@@ -5,13 +5,6 @@ namespace PushkaGraph.Algorithms
 {
     public static partial class GraphAlgorithms
     {
-        /// <summary>
-        /// Extension method example
-        /// </summary>
-        /// <param name="graph">Graph</param>
-        /// <param name="begin">Vertex at start of the Path</param>
-        /// <param name="end">Vertex at end of the Path</param>
-        /// <returns>Vertices</returns>
         public static IEnumerable<Vertex> ShortestPath(this Graph graph, Vertex begin, Vertex end)
         {
             List<Vertex> path = new List<Vertex>();

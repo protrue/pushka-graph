@@ -41,15 +41,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ExampleAlgorithm.cs" />
-    <Compile Include="GraphAlgorithm.cs" />
-    <Compile Include="GraphAlgorithmParameters.cs" />
+    <Compile Include="Implementations\ConnectedComponentsCount.cs" />
+    <Compile Include="Implementations\ShortestPath.cs" />
+    <Compile Include="Wrapper\GraphAlgorithm.cs" />
+    <Compile Include="Wrapper\GraphAlgorithmParameters.cs" />
     <Compile Include="GraphAlgorithmsRegistry.cs" />
     <Compile Include="GraphAlgorithmFactory.cs" />
-    <Compile Include="GraphAlgorithmResult.cs" />
+    <Compile Include="Wrapper\GraphAlgorithmResult.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\PushkaGraph.Algorithms\PushkaGraph.Algorithms.csproj">
+      <Project>{2d496831-81a4-449a-ac2a-65105d38bab1}</Project>
+      <Name>PushkaGraph.Algorithms</Name>
+    </ProjectReference>
     <ProjectReference Include="..\PushkaGraph.Core\PushkaGraph.Core.csproj">
       <Project>{14079356-117A-4A11-98EE-DA4C1E9F3288}</Project>
       <Name>PushkaGraph.Core</Name>

@@ -61,10 +61,21 @@
     </ApplicationDefinition>
     <Compile Include="CreateEdgeActionState.cs" />
     <Compile Include="InterfaceAction.cs" />
+    <Compile Include="MainWindow.xaml.Edge.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MainWindow.xaml.Vertex.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="VertexControl.xaml.cs">
+      <DependentUpon>VertexControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="VertexSettings.cs" />
     <Page Include="MainWindow.xaml">
@@ -79,6 +90,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="VertexControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -120,6 +135,14 @@
     <ProjectReference Include="..\PushkaGraph.Core\PushkaGraph.Core.csproj">
       <Project>{14079356-117a-4a11-98ee-da4c1e9f3288}</Project>
       <Name>PushkaGraph.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PushkaGraph.NewAlgorithms\PushkaGraph.NewAlgorithms.csproj">
+      <Project>{626E2C3E-6A77-4F14-BF9C-BA2D54D5BC16}</Project>
+      <Name>PushkaGraph.NewAlgorithms</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PushkaGraph.Tools\PushkaGraph.Tools.csproj">
+      <Project>{C9FAD02C-025D-4E42-A7A6-4EBFEC87C759}</Project>
+      <Name>PushkaGraph.Tools</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
