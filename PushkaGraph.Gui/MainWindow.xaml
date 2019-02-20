@@ -100,13 +100,13 @@
             </Button>
             <Button Style="{StaticResource ToolbarButton}"
                     ToolTipService.ShowDuration="2000"
-                    ToolTip="Импорт"
+                    ToolTip="Экспорт"
                     Name="ImportButton">
                 <TextBlock Text="&#x2191;" FontSize="40"/>
             </Button>
             <Button Style="{StaticResource ToolbarButton}"
                     ToolTipService.ShowDuration="2000"
-                    ToolTip="Экспорт"
+                    ToolTip="Импорт"
                     Name="ExportButton">
                 <TextBlock Text="&#x2193;" FontSize="40"/>
             </Button>
