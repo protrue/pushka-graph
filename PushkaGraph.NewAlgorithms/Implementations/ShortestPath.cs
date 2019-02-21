@@ -24,8 +24,8 @@ namespace PushkaGraph.NewAlgorithms.Implementations
         {
             // Извлекаем из параметров нужные штуки
             var graph = parameters.Graph;
-            var begin = graph.Vertices[0];
-            var end = graph.Vertices[3];
+            var begin = parameters.Vertices[0];
+            var end = parameters.Vertices[1];
 
             // Вызываем написанный extension метод
             var EdgePath = GraphAlgorithms.ShortestPath(graph,begin,end);
