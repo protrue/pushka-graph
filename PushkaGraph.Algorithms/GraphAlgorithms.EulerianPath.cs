@@ -93,12 +93,11 @@ namespace PushkaGraph.Algorithms
             
             for (int i = 1; i < verticies.Count; i++)
             {
+                if (oddDegreeVertices.Count > 0 && i == verticies.Count - 1)
+                    break;
                 eulerianPath.Add(graph.Edges.First(x => x.IsIncidentTo(verticies[i - 1]) && x.IsIncidentTo(verticies[i])));
             }
-            
-            if (oddDegreeVertices.Count > 0)
-                eulerianPath.RemoveAt(eulerianPath.Count - 1);
-            
+                 
             // Return null in case some edges weren't reached (in case of disconnected graphs)
             return eulerianPath.Count == graph.Edges.Length ? eulerianPath : null;
         }
