@@ -28,7 +28,7 @@ namespace PushkaGraph.NewAlgorithms.Implementations
 
             var stringResult =
                 minimumSpanningTree != null
-                ? $"Минимальное остновное дерево: {string.Join<Edge>(Environment.NewLine, minimumSpanningTree.ToArray())}"
+                ? $"Минимальное остновное дерево:\n{string.Join<Edge>(Environment.NewLine, minimumSpanningTree.ToArray())}"
                 : "Для данного графа невозможно построить минимальное остовное дерево";
 
             // Оборачиваем результат выполнения

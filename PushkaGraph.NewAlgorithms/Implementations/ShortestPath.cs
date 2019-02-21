@@ -36,7 +36,7 @@ namespace PushkaGraph.NewAlgorithms.Implementations
 
             var stringResult =
                 shortestPath != null
-                ? $"Кратчайший путь: {string.Join<Vertex>(Environment.NewLine, shortestPath)}"
+                ? $"Кратчайший путь:\n{string.Join<Vertex>(Environment.NewLine, shortestPath)}"
                 : "Нет пути";
 
             // Оборачиваем результат выполнения
