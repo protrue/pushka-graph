@@ -9,13 +9,17 @@ using System.Threading.Tasks;
 
 namespace PushkaGraph.NewAlgorithms.Implementations
 {
-    class ShortestPath : GraphAlgorithm
+    public class ShortestPath : GraphAlgorithm
     {
         public override string Name => "Кратчайший путь";
         public override string Description => "Поиск кратчайшего пути между точками в графе";
 
         // Указываем типы, которые алгоритм принимает на вход как аргументы
-        public override Tuple<Type, int>[] RequiredParameters => new[] { Tuple.Create(typeof(Graph), 1) , Tuple.Create(typeof(Vertex[]),2) };
+        public override Tuple<Type, int>[] RequiredParameters => new[]
+        {
+            Tuple.Create(typeof(Graph), 1),
+            Tuple.Create(typeof(Vertex), 2)
+        };
 
         // Указываем типы, которые алгоритм возвращает как результат своего выполнения
         public override Type[] ResultTypes => new[] { typeof(IEnumerable<Edge>) };
@@ -28,10 +32,15 @@ namespace PushkaGraph.NewAlgorithms.Implementations
             var end = parameters.Vertices[1];
 
             // Вызываем написанный extension метод
-            var EdgePath = GraphAlgorithms.ShortestPath(graph,begin,end);
+            var edgePath = graph.ShortestPath(begin, end)?.ToArray();
+
+            var stringResult =
+                edgePath != null
+                ? $"Кратчайший путь:\n{string.Join<Edge>(Environment.NewLine, edgePath)}"
+                : "Нет пути";
 
             // Оборачиваем результат выполнения
-            var result = new GraphAlgorithmResult(edges: EdgePath.ToArray());
+            var result = new GraphAlgorithmResult(edges: edgePath.ToArray(), stringResult: stringResult);
 
             // Возвращаем
             return result;
