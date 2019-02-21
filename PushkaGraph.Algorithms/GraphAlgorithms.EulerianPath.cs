@@ -28,6 +28,9 @@ namespace PushkaGraph.Algorithms
          */
         public static IEnumerable<Edge> EulerianPath(this Graph graph)
         {
+            if (graph.Vertices.Length == 0)
+                return null;
+
             var oddDegreeVertices = graph.Vertices.Where(v => v.IncidentEdges.Length % 2 != 0).ToList();
 
             // The graph with more than two odd degree vertices can't have eulerian path

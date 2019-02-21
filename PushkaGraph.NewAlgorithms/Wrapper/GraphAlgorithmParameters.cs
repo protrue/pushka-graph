@@ -1,4 +1,5 @@
-﻿using PushkaGraph.Core;
+﻿using System;
+using PushkaGraph.Core;
 
 namespace PushkaGraph.NewAlgorithms.Wrapper
 {

@@ -8,7 +8,7 @@ namespace PushkaGraph.NewAlgorithms.Wrapper
     {
         public abstract string Name { get; }
         public abstract string Description { get; }
-        public abstract Type[] RequiredParameterTypes { get; }
+        public abstract Tuple<Type, int>[] RequiredParameters { get; }
         public abstract Type[] ResultTypes { get; }
 
         public GraphAlgorithmResult Result { get; private set; }

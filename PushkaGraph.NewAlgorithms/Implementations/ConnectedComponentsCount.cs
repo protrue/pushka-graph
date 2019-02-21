@@ -13,10 +13,10 @@ namespace PushkaGraph.NewAlgorithms.Implementations
         public override string Description => "Поиск количества компонент связности в графе";
 
         // Указываем типы, которые алгоритм принимает на вход как аргументы
-        public override Type[] RequiredParameterTypes => new[] {typeof(Graph)};
+        public override Tuple<Type, int>[] RequiredParameters => new[] { Tuple.Create(typeof(Graph), 1) };
 
         // Указываем типы, которые алгоритм возвращает как результат своего выполнения
-        public override Type[] ResultTypes => new[] {typeof(int)};
+        public override Type[] ResultTypes => new[] { typeof(int) };
 
         protected override GraphAlgorithmResult PerformAlgorithm(GraphAlgorithmParameters parameters)
         {
@@ -27,7 +27,9 @@ namespace PushkaGraph.NewAlgorithms.Implementations
             var connectedComponentsCount = GraphAlgorithms.ConnectedComponentsCount(graph);
 
             // Оборачиваем результат выполнения
-            var result = new GraphAlgorithmResult(number: connectedComponentsCount);
+            var result = new GraphAlgorithmResult(
+                number: connectedComponentsCount,
+                stringResult: $"Количество компонент связности: {connectedComponentsCount}");
 
             // Возвращаем
             return result;
