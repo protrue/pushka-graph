@@ -6,7 +6,7 @@ using PushkaGraph.NewAlgorithms.Wrapper;
 
 namespace PushkaGraph.NewAlgorithms.Implementations
 {
-    class MinimumSpanningTree : GraphAlgorithm
+    public class MinimumSpanningTree : GraphAlgorithm
     {
         // Указываем название алгоритма и его описание, которые будут отображаться на интерфейсе
         public override string Name => "Минимальное остовное дерево";
@@ -24,15 +24,15 @@ namespace PushkaGraph.NewAlgorithms.Implementations
             var graph = parameters.Graph;
 
             // Вызываем написанный extension метод
-            var minimumSpanningTree = GraphAlgorithms.MST(graph);
+            var minimumSpanningTree = graph.MST()?.ToArray();
 
             var stringResult =
                 minimumSpanningTree != null
-                ? $"Минимальное остновное дерево: {string.Join<Edge>(Environment.NewLine, minimumSpanningTree.ToArray())}"
-                : "Для данного графа невозможно построить миниамльное остовное дерево";
+                ? $"Минимальное остновное дерево:\n{string.Join<Edge>(Environment.NewLine, minimumSpanningTree.ToArray())}"
+                : "Для данного графа невозможно построить минимальное остовное дерево";
 
             // Оборачиваем результат выполнения
-            var result = new GraphAlgorithmResult(edges: minimumSpanningTree?.ToArray());
+            var result = new GraphAlgorithmResult(edges: minimumSpanningTree, stringResult: stringResult);
 
             // Возвращаем
             return result;

@@ -43,8 +43,8 @@
   <ItemGroup>
     <Compile Include="Implementations\EulerianPath.cs" />
     <Compile Include="Implementations\ConnectedComponentsCount.cs" />
-    <Compile Include="Implementations\ShortestPath.cs" />
     <Compile Include="Implementations\MinimumSpanningTree.cs" />
+    <Compile Include="Implementations\ShortestPath.cs" />
     <Compile Include="Wrapper\GraphAlgorithm.cs" />
     <Compile Include="Wrapper\GraphAlgorithmParameters.cs" />
     <Compile Include="GraphAlgorithmsRegistry.cs" />
