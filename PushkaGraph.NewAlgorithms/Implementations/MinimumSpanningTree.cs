@@ -26,6 +26,11 @@ namespace PushkaGraph.NewAlgorithms.Implementations
             // Вызываем написанный extension метод
             var minimumSpanningTree = GraphAlgorithms.MST(graph);
 
+            var stringResult =
+                minimumSpanningTree != null
+                ? $"Минимальное остновное дерево: {string.Join<Edge>(Environment.NewLine, minimumSpanningTree.ToArray())}"
+                : "Для данного графа невозможно построить миниамльное остовное дерево";
+
             // Оборачиваем результат выполнения
             var result = new GraphAlgorithmResult(edges: minimumSpanningTree?.ToArray());
 
