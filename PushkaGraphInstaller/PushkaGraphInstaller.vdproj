@@ -15,14 +15,26 @@
     {
         "Entry"
         {
-        "MsmKey" = "8:_09E96CA5CAA556D0507138E0BABAB2A9"
+        "MsmKey" = "8:_3CAB0059A53C7DEA459150CFF6BF9350"
         "OwnerKey" = "8:_83C15B92134A46A09E938665638DD808"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_124F105F115C4BCEA74BBF3E749DE8D3"
-        "OwnerKey" = "8:_UNDEFINED"
+        "MsmKey" = "8:_3CAB0059A53C7DEA459150CFF6BF9350"
+        "OwnerKey" = "8:_85BA255857804DF70ABC0FA80FC8A78F"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_3CAB0059A53C7DEA459150CFF6BF9350"
+        "OwnerKey" = "8:_87673EEABF858B9E60B57E9FE2A15859"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_3CAB0059A53C7DEA459150CFF6BF9350"
+        "OwnerKey" = "8:_AE480CF2083E8DA3F163ECB27CAD980C"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -33,26 +45,62 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_D8B3DE916163C2B7D96FB4C74D2B4179"
+        "MsmKey" = "8:_85BA255857804DF70ABC0FA80FC8A78F"
+        "OwnerKey" = "8:_83C15B92134A46A09E938665638DD808"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_87673EEABF858B9E60B57E9FE2A15859"
+        "OwnerKey" = "8:_83C15B92134A46A09E938665638DD808"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_AE480CF2083E8DA3F163ECB27CAD980C"
+        "OwnerKey" = "8:_83C15B92134A46A09E938665638DD808"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_AE480CF2083E8DA3F163ECB27CAD980C"
+        "OwnerKey" = "8:_87673EEABF858B9E60B57E9FE2A15859"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_C2D5175D983A44B988B449E39FA62E32"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_83C15B92134A46A09E938665638DD808"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_83C15B92134A46A09E938665638DD808"
+        "OwnerKey" = "8:_85BA255857804DF70ABC0FA80FC8A78F"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_09E96CA5CAA556D0507138E0BABAB2A9"
+        "OwnerKey" = "8:_87673EEABF858B9E60B57E9FE2A15859"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_D8B3DE916163C2B7D96FB4C74D2B4179"
+        "OwnerKey" = "8:_AE480CF2083E8DA3F163ECB27CAD980C"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_3CAB0059A53C7DEA459150CFF6BF9350"
         "MsmSig" = "8:_UNDEFINED"
         }
     }
@@ -80,6 +128,14 @@
             "PrerequisitesLocation" = "2:1"
             "Url" = "8:"
             "ComponentsUrl" = "8:"
+                "Items"
+                {
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:.NETFramework,Version=v4.6.1"
+                    {
+                    "Name" = "8:Microsoft .NET Framework 4.6.1 (x86 and x64)"
+                    "ProductCode" = "8:.NETFramework,Version=v4.6.1"
+                    }
+                }
             }
         }
         "Release"
@@ -104,6 +160,14 @@
             "PrerequisitesLocation" = "2:1"
             "Url" = "8:"
             "ComponentsUrl" = "8:"
+                "Items"
+                {
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:.NETFramework,Version=v4.6.1"
+                    {
+                    "Name" = "8:Microsoft .NET Framework 4.6.1 (x86 and x64)"
+                    "ProductCode" = "8:.NETFramework,Version=v4.6.1"
+                    }
+                }
             }
         }
     }
@@ -134,20 +198,20 @@
         }
         "File"
         {
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_09E96CA5CAA556D0507138E0BABAB2A9"
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_3CAB0059A53C7DEA459150CFF6BF9350"
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:PushkaGraphCore, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
+            "AssemblyAsmDisplayName" = "8:PushkaGraph.Core, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_09E96CA5CAA556D0507138E0BABAB2A9"
+                    "_3CAB0059A53C7DEA459150CFF6BF9350"
                     {
-                    "Name" = "8:PushkaGraphCore.dll"
+                    "Name" = "8:PushkaGraph.Core.dll"
                     "Attributes" = "3:512"
                     }
                 }
-            "SourcePath" = "8:PushkaGraphCore.dll"
+            "SourcePath" = "8:PushkaGraph.Core.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_05CB9DA28CF94E0FAD39A68197D9A5CC"
@@ -165,9 +229,102 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_124F105F115C4BCEA74BBF3E749DE8D3"
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_85BA255857804DF70ABC0FA80FC8A78F"
             {
-            "SourcePath" = "8:..\\PushkaGraphGui\\Resources\\icon.ico"
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:PushkaGraph.Tools, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_85BA255857804DF70ABC0FA80FC8A78F"
+                    {
+                    "Name" = "8:PushkaGraph.Tools.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:PushkaGraph.Tools.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_05CB9DA28CF94E0FAD39A68197D9A5CC"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_87673EEABF858B9E60B57E9FE2A15859"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:PushkaGraph.NewAlgorithms, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_87673EEABF858B9E60B57E9FE2A15859"
+                    {
+                    "Name" = "8:PushkaGraph.NewAlgorithms.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:PushkaGraph.NewAlgorithms.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_05CB9DA28CF94E0FAD39A68197D9A5CC"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_AE480CF2083E8DA3F163ECB27CAD980C"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:PushkaGraph.Algorithms, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_AE480CF2083E8DA3F163ECB27CAD980C"
+                    {
+                    "Name" = "8:PushkaGraph.Algorithms.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:PushkaGraph.Algorithms.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_05CB9DA28CF94E0FAD39A68197D9A5CC"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_C2D5175D983A44B988B449E39FA62E32"
+            {
+            "SourcePath" = "8:..\\PushkaGraph.Gui\\Resources\\icon.ico"
             "TargetName" = "8:icon.ico"
             "Tag" = "8:"
             "Folder" = "8:_05CB9DA28CF94E0FAD39A68197D9A5CC"
@@ -183,37 +340,6 @@
             "Register" = "3:1"
             "Exclude" = "11:FALSE"
             "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_D8B3DE916163C2B7D96FB4C74D2B4179"
-            {
-            "AssemblyRegister" = "3:1"
-            "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:System.Net.Http, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a"
-                "ScatterAssemblies"
-                {
-                    "_D8B3DE916163C2B7D96FB4C74D2B4179"
-                    {
-                    "Name" = "8:System.Net.Http.dll"
-                    "Attributes" = "3:512"
-                    }
-                }
-            "SourcePath" = "8:System.Net.Http.dll"
-            "TargetName" = "8:"
-            "Tag" = "8:"
-            "Folder" = "8:_05CB9DA28CF94E0FAD39A68197D9A5CC"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
         }
@@ -237,7 +363,7 @@
             "{1525181F-901A-416C-8A58-119130FE478E}:_E1B8034C35E74FFDA74F8426AE08D1EC"
             {
             "Name" = "8:#1916"
-            "AlwaysCreate" = "11:FALSE"
+            "AlwaysCreate" = "11:TRUE"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Property" = "8:DesktopFolder"
@@ -273,7 +399,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Pushka Graph"
         "ProductCode" = "8:{339012C1-94E9-4EAF-A0E9-026FC7CDAA33}"
-        "PackageCode" = "8:{B9D57E69-7E71-4AFB-A0FC-D2D6C0B8D356}"
+        "PackageCode" = "8:{84F99BF8-ED54-4836-BA67-A126CFCB99DD}"
         "UpgradeCode" = "8:{FA8FA7F7-9F87-4827-A3DC-436A6E37E1EB}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
@@ -393,7 +519,7 @@
         }
         "Shortcut"
         {
-            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_7F7D85B4F8C94AD1AAA706080F911D78"
+            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_07C0B6BE07D24FF2A9B0AA1DFB8B0A1E"
             {
             "Name" = "8:Pushka Graph"
             "Arguments" = "8:"
@@ -401,10 +527,10 @@
             "ShowCmd" = "3:1"
             "IconIndex" = "3:0"
             "Transitive" = "11:FALSE"
-            "Target" = "8:_83C15B92134A46A09E938665638DD808"
+            "Target" = "8:_05CB9DA28CF94E0FAD39A68197D9A5CC"
             "Folder" = "8:_E1B8034C35E74FFDA74F8426AE08D1EC"
             "WorkingFolder" = "8:_05CB9DA28CF94E0FAD39A68197D9A5CC"
-            "Icon" = "8:_124F105F115C4BCEA74BBF3E749DE8D3"
+            "Icon" = "8:_C2D5175D983A44B988B449E39FA62E32"
             "Feature" = "8:"
             }
         }
@@ -808,7 +934,7 @@
         {
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_83C15B92134A46A09E938665638DD808"
             {
-            "SourcePath" = "8:..\\PushkaGraphGUI\\obj\\Debug\\PushkaGraphGUI.exe"
+            "SourcePath" = "8:..\\PushkaGraph.Gui\\obj\\Debug\\PushkaGraph.Gui.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_05CB9DA28CF94E0FAD39A68197D9A5CC"
