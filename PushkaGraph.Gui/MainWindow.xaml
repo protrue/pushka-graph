@@ -125,6 +125,17 @@
                     </Line>
                 </Canvas>
             </Button>
+            <Button Style="{StaticResource ToolbarButton}"
+                    ToolTipService.ShowDuration="2000"
+                    ToolTip="Сбросить раскраску"
+                    Name="ResetColorButton">
+                <Ellipse Width="50"
+                         Height="50"
+                         Fill="White"
+                         Stroke="Black"
+                         StrokeThickness="0">
+                </Ellipse>
+            </Button>
         </StackPanel>
         <Canvas Name="Container" 
                 MouseLeftButtonDown="OnContainerLeftMouseButtonDown"
