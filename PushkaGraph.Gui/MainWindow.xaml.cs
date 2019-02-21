@@ -146,7 +146,7 @@ namespace PushkaGraph.Gui
                 };
                 button.Click += (sender, args) =>
                 {
-                    if (_currentAction == InterfaceAction.PerformAlgorithm)
+                    if (_currentAction == InterfaceAction.PerformAlgorithm && _algorithmVerticesCount == 0)
                         return;
                     ColorizeEdges(_graph.Edges, Brushes.Black);
                     ColorizeVertices(_graph.Vertices, Brushes.White);
