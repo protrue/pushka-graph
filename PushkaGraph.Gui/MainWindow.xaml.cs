@@ -130,8 +130,14 @@ namespace PushkaGraph.Gui
                         MessageBox.Show(result.Number.ToString(),
                             GetStringResource("ResultMessageBoxTitle"));
                     }
+
                     if (result.Edges != null)
-                        ColorizedEdgesAnimation(result.Edges, Brushes.Blue);
+                    {
+                        if (result.IsSequential)
+                            ColorizedEdgesAnimation(result.Edges, Brushes.Blue);
+                        else
+                            ColorizeEdges(result.Edges, Brushes.Blue);
+                    }
                     if (result.Vertices != null)
                         ColorizeVertices(result.Vertices, Brushes.Red);
                     Dispatcher.Invoke(DispatcherPriority.Normal,
@@ -444,7 +450,7 @@ namespace PushkaGraph.Gui
         /// <param name="e"></param>
         private void ToolbarButtonClick(object sender, EventArgs e)
         {
-            if (_currentAction == InterfaceAction.PerformAlgorithm)
+            if (_currentAction == InterfaceAction.PerformAlgorithm && _algorithmVerticesCount == 0)
                 return;
             var button = (Button)sender;
             if (Equals(sender, CreateVertexButton))

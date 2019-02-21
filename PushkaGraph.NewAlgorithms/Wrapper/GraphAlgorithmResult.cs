@@ -15,12 +15,13 @@ namespace PushkaGraph.NewAlgorithms.Wrapper
         public string StringResult { get; }
 
         public GraphAlgorithmResult(int? number = null, Vertex[] vertices = null,
-            Edge[] edges = null, string stringResult = null)
+            Edge[] edges = null, string stringResult = null, bool isSequential = false)
         {
             Number = number;
             Vertices = vertices;
             Edges = edges;
             StringResult = stringResult;
+            IsSequential = isSequential;
         }
     }
 }

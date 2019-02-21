@@ -25,7 +25,7 @@ namespace PushkaGraph.NewAlgorithms.Implementations
                 ? "Граф не содержит эйлеров путь"
                 : $"Эйлеров путь:\n{string.Join("\n", eulerianPath)}";
 
-            var result = new GraphAlgorithmResult(edges: eulerianPath?.ToArray(), stringResult: stringResult);
+            var result = new GraphAlgorithmResult(edges: eulerianPath?.ToArray(), stringResult: stringResult, isSequential: true);
 
             return result;
         }

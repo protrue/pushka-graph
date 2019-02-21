@@ -40,7 +40,7 @@ namespace PushkaGraph.NewAlgorithms.Implementations
                 : "Нет пути";
 
             // Оборачиваем результат выполнения
-            var result = new GraphAlgorithmResult(edges: edgePath, stringResult: stringResult);
+            var result = new GraphAlgorithmResult(edges: edgePath, stringResult: stringResult, isSequential: true);
 
             // Возвращаем
             return result;
