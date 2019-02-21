@@ -383,7 +383,8 @@ namespace PushkaGraph.Gui
                 foreach (var vertex in _graph.Vertices)
                 {
                     var control = _vertices[vertex];
-                    writer.WriteLine($"{Canvas.GetLeft(control)} {Canvas.GetTop(control)}");
+                    writer.WriteLine(
+                        $"{Canvas.GetLeft(control).ToString("0.00", System.Globalization.CultureInfo.InvariantCulture)} {Canvas.GetTop(control).ToString("0.00", System.Globalization.CultureInfo.InvariantCulture)}");
                 }
             }
         }
@@ -436,7 +437,7 @@ namespace PushkaGraph.Gui
                 {
                     MessageBox.Show(e.Message, GetStringResource("ErrorMessageBoxTitle"));
                 }
-                catch (Exception)
+                catch (Exception e)
                 {
                     MessageBox.Show(GetStringResource("ImportFormatError"), GetStringResource("ErrorMessageBoxTitle"));
                 }

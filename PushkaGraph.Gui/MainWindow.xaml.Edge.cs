@@ -209,6 +209,12 @@ namespace PushkaGraph.Gui
 
             if (string.IsNullOrEmpty(textBox.Text))
             {
+                if (_weightEdgeMapping[textBox].Weight.ToString().Length == 1)
+                {
+                    textBox.Text = _weightEdgeMapping[textBox].Weight.ToString();
+                    textBox.SelectionLength = 1;
+                    return;
+                }
                 textBox.Text = 1.ToString();
                 textBox.CaretIndex = textBox.Text.Length;
             }
@@ -220,7 +226,7 @@ namespace PushkaGraph.Gui
             if (!isNumeric)
             {
                 textBox.Text = _weightEdgeMapping[textBox].Weight.ToString();
-                textBox.CaretIndex = currentCaretIndex;
+                textBox.CaretIndex = currentCaretIndex == 0 ? 1 : currentCaretIndex;
             }
         }
     }
