@@ -22,7 +22,7 @@ namespace PushkaGraph.NewAlgorithms.Implementations
         };
 
         // Указываем типы, которые алгоритм возвращает как результат своего выполнения
-        public override Type[] ResultTypes => new[] { typeof(Vertex[]) };
+        public override Type[] ResultTypes => new[] { typeof(IEnumerable<Edge>) };
 
         protected override GraphAlgorithmResult PerformAlgorithm(GraphAlgorithmParameters parameters)
         {
@@ -32,15 +32,15 @@ namespace PushkaGraph.NewAlgorithms.Implementations
             var end = parameters.Vertices[1];
 
             // Вызываем написанный extension метод
-            var shortestPath = graph.ShortestPath(begin, end)?.ToArray();
+            var edgePath = graph.ShortestPath(begin, end)?.ToArray();
 
             var stringResult =
-                shortestPath != null
-                ? $"Кратчайший путь:\n{string.Join<Vertex>(Environment.NewLine, shortestPath)}"
+                edgePath != null
+                ? $"Кратчайший путь:\n{string.Join<Edge>(Environment.NewLine, edgePath)}"
                 : "Нет пути";
 
             // Оборачиваем результат выполнения
-            var result = new GraphAlgorithmResult(vertices: shortestPath, stringResult: stringResult);
+            var result = new GraphAlgorithmResult(edges: edgePath.ToArray(), stringResult: stringResult);
 
             // Возвращаем
             return result;

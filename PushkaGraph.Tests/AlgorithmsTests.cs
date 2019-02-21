@@ -285,7 +285,7 @@ namespace PushkaGraph.Tests
             graph.AddEdge(graph.Vertices[0], graph.Vertices[2]);
             graph.AddEdge(graph.Vertices[1], graph.Vertices[2]);
 
-            graph.ShortestPath(graph.Vertices[2], graph.Vertices[1]).Should().BeEquivalentTo(graph.Vertices[2], graph.Vertices[1]);
+            graph.ShortestPath(graph.Vertices[2], graph.Vertices[1]).Should().BeEquivalentTo(graph.Vertices[2].GetEdgeBy(graph.Vertices[1]));
         }
         [TestMethod]
         public void ShortestPath_largegraph()
@@ -305,7 +305,7 @@ namespace PushkaGraph.Tests
             graph.AddEdge(graph.Vertices[3], graph.Vertices[4], 5);
             graph.AddEdge(graph.Vertices[4], graph.Vertices[5], 4);
 
-            graph.ShortestPath(graph.Vertices[0], graph.Vertices[3]).Should().BeEquivalentTo(graph.Vertices[0], graph.Vertices[2], graph.Vertices[3]);
+            graph.ShortestPath(graph.Vertices[0], graph.Vertices[3]).Should().BeEquivalentTo(graph.Vertices[0].GetEdgeBy(graph.Vertices[2]), graph.Vertices[2].GetEdgeBy(graph.Vertices[3]));
         }
         [TestMethod]
         public void ShortestPath_fullgraph()
@@ -358,7 +358,7 @@ namespace PushkaGraph.Tests
             graph.AddEdge(graph.Vertices[7], graph.Vertices[9], 4);
             graph.AddEdge(graph.Vertices[8], graph.Vertices[9], 4);
 
-            graph.ShortestPath(graph.Vertices[2], graph.Vertices[9]).Should().BeEquivalentTo(graph.Vertices[2], graph.Vertices[3], graph.Vertices[9]);
+            graph.ShortestPath(graph.Vertices[2], graph.Vertices[9]).Should().BeEquivalentTo(graph.Vertices[2].GetEdgeBy(graph.Vertices[3]), graph.Vertices[3].GetEdgeBy(graph.Vertices[9]));
         }
         [TestMethod]
         public void ShortestPath_Disconnectedgraph()

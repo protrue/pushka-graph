@@ -5,7 +5,7 @@ namespace PushkaGraph.Algorithms
 {
     public static partial class GraphAlgorithms
     {
-        public static IEnumerable<Vertex> ShortestPath(this Graph graph, Vertex begin, Vertex end)
+        public static IEnumerable<Edge> ShortestPath(this Graph graph, Vertex begin, Vertex end)
         {
             if (begin == null || end == null || graph.Edges.Length == 0 || begin.IncidentEdges.Length == 0 || end.IncidentEdges.Length == 0)
                 return null;            
@@ -62,12 +62,16 @@ namespace PushkaGraph.Algorithms
                     }
                 }
             }
+            List<Edge> EdgePath = null;
             if (path != null)
             {
                 path.Add(begin);
                 path.Reverse();
+                EdgePath = new List<Edge>();
+                for (int i = 0; i < path.Count - 1; i++)
+                    EdgePath.Add(path[i].GetEdgeBy(path[i + 1]));
             }
-            return path;
+            return EdgePath;
         }
     }
 }

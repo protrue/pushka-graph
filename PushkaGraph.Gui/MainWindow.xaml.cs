@@ -122,10 +122,12 @@ namespace PushkaGraph.Gui
                 {
                     if (!string.IsNullOrWhiteSpace(result.StringResult))
                     {
-                        MessageBox.Show(
-                            result.Number.HasValue
-                                ? result.Number.Value.ToString()
-                                : result.StringResult,
+                        MessageBox.Show(result.StringResult,
+                            GetStringResource("ResultMessageBoxTitle"));
+                    }
+                    else if (result.Number.HasValue)
+                    {
+                        MessageBox.Show(result.Number.ToString(),
                             GetStringResource("ResultMessageBoxTitle"));
                     }
                     if (result.Edges != null)
