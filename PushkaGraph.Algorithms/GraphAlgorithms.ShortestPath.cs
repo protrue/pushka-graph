@@ -36,6 +36,11 @@ namespace PushkaGraph.Algorithms
                 var smallest = nodes[0];
                 nodes.Remove(smallest);
 
+                if (distances[smallest] == int.MaxValue)
+                {
+                    break;
+                }
+
                 if (smallest == end)
                 {
                     path = new List<Vertex>();
@@ -48,10 +53,7 @@ namespace PushkaGraph.Algorithms
                     break;
                 }
 
-                if (distances[smallest] == int.MaxValue)
-                {
-                    break;
-                }
+                
                 foreach (var neighbor in smallest.AdjacentVertices)
                 {
                     var alt = distances[smallest] + neighbor.GetEdgeBy(smallest).Weight;
