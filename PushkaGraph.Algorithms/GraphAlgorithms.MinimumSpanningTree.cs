@@ -15,7 +15,7 @@ namespace PushkaGraph.Algorithms
                 var edges = usedVerticesList[i].IncidentEdges;
                 for (int j = 0; j < edges.Length; j++)
                 {
-                    if ((edges[j].Weight < minEdge) && !usedEdgesList.Contains(edges[j]))
+                    if ((edges[j].Weight < minEdge) && !usedEdgesList.Contains(edges[j]) && (!usedVerticesList.Contains(edges[j].FirstVertex) || !usedVerticesList.Contains(edges[j].SecondVertex)))
                     {
                         minEdge = edges[j].Weight;
                         edge = edges[j];

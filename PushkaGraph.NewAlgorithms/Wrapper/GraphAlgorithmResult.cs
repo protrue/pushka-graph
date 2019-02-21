@@ -10,6 +10,8 @@ namespace PushkaGraph.NewAlgorithms.Wrapper
 
         public Edge[] Edges { get; }
 
+        public bool IsSequential { get; set; }
+
         public string StringResult { get; }
 
         public GraphAlgorithmResult(int? number = null, Vertex[] vertices = null,
