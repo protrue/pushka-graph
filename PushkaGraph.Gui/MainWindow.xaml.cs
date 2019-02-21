@@ -146,6 +146,8 @@ namespace PushkaGraph.Gui
                 };
                 button.Click += (sender, args) =>
                 {
+                    if (_currentAction == InterfaceAction.PerformAlgorithm)
+                        return;
                     ColorizeEdges(_graph.Edges, Brushes.Black);
                     ColorizeVertices(_graph.Vertices, Brushes.White);
                     ChangeAction(InterfaceAction.PerformAlgorithm);
@@ -442,6 +444,8 @@ namespace PushkaGraph.Gui
         /// <param name="e"></param>
         private void ToolbarButtonClick(object sender, EventArgs e)
         {
+            if (_currentAction == InterfaceAction.PerformAlgorithm)
+                return;
             var button = (Button)sender;
             if (Equals(sender, CreateVertexButton))
                 ChangeAction(InterfaceAction.VertexEdit);
@@ -479,6 +483,12 @@ namespace PushkaGraph.Gui
 
             if (Equals(sender, CleanButton))
                 CleanStructures(true);
+
+            if (Equals(sender, ResetColorButton))
+            {
+                ColorizeEdges(_graph.Edges, Brushes.Black);
+                ColorizeVertices(_graph.Vertices, Brushes.White);
+            }
         }
 
         private void ClearCreateEdgeActionState()
