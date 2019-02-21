@@ -33,9 +33,7 @@ namespace PushkaGraph.Tests
         {
             var graph = new Graph(2);
             graph.AddEdge(graph.Vertices[0], graph.Vertices[1]);
-            var mst = graph.MST();
-
-            Assert.AreEqual(1, mst);
+            checkMST(graph, new List<Edge>(graph.MST()));
         }
 
         private void checkMST(Graph graph, List<Edge> path)
@@ -78,7 +76,7 @@ namespace PushkaGraph.Tests
         [TestMethod]
         public void Mst3Full()
         {
-            var graph = new Graph(3);
+            var graph = new Graph(4);
 
             graph.AddEdge(graph.Vertices[0], graph.Vertices[1], 2);
             graph.AddEdge(graph.Vertices[0], graph.Vertices[2], 3);
