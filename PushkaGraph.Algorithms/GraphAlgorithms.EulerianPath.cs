@@ -19,12 +19,11 @@ namespace PushkaGraph.Algorithms
          *  For the case 1:
          *     1) start from any vertex
          *     2) go to another vertex by any unused edge
-         *     3) if current vertex hasn't any unused incident edges then rollback to previous vertex
+         *     3) if current vertex hasn't any unused incident edges then rollback to previous vertex and add current to answer
          *
          *  For the case 2:
          *     1) add a fictive edge between two vertices with odd degrees
-         *     2) solve as in case 1
-         *     3) break the found cycle by deletion of the fictive edge 
+         *     2) solve as in case 1, but start in add degree vertex
          */
         public static IEnumerable<Edge> EulerianPath(this Graph graph)
         {
@@ -46,12 +45,10 @@ namespace PushkaGraph.Algorithms
             var usedEdges = new HashSet<Edge>();
             var usedFictiveEdge = false;
 
-            // Have to split path into two parts: before the use of fictive edge and after
-            var eulerianPathPart1 = new List<Edge>();
-            var eulerianPathPart2 = new List<Edge>();
+            var verticies = new List<Vertex>();
 
             // Start with any vertex
-            stack.Push(graph.Vertices.First());
+            stack.Push(oddDegreeVertices.Count == 0 ? graph.Vertices.First() : oddDegreeVertices.First());
 
             while (stack.Count != 0)
             {
@@ -79,12 +76,6 @@ namespace PushkaGraph.Algorithms
 
                     stack.Push(edge.GetAdjacentVertexTo(currentVertex));
 
-                    // Decide which part of the path is active now
-                    if (!usedFictiveEdge)
-                        eulerianPathPart1.Add(edge);
-                    else
-                        eulerianPathPart2.Add(edge);
-
                     usedEdges.Add(edge);
 
                     break;
@@ -92,19 +83,22 @@ namespace PushkaGraph.Algorithms
 
                 // If didn't find any unused edge - rollback
                 if (stack.Peek() == currentVertex)
+                {
                     stack.Pop();
+                    verticies.Add(currentVertex);
+                }
             }
-
-            /*  The eulerian cycle now is:
-                eulerianPathPart1 + fictiveEdge(if present) + eulerianPathPart2
-                To break the cycle by fictive edge we need to add all the edges of part 2 before part1 in reveres order
-            */
             
-            eulerianPathPart2.Reverse();
-
-            var eulerianPath = eulerianPathPart2;
-            eulerianPath.AddRange(eulerianPathPart1);
-
+            var eulerianPath = new List<Edge>();
+            
+            for (int i = 1; i < verticies.Count; i++)
+            {
+                eulerianPath.Add(graph.Edges.First(x => x.IsIncidentTo(verticies[i - 1]) && x.IsIncidentTo(verticies[i])));
+            }
+            
+            if (oddDegreeVertices.Count > 0)
+                eulerianPath.RemoveAt(eulerianPath.Count - 1);
+            
             // Return null in case some edges weren't reached (in case of disconnected graphs)
             return eulerianPath.Count == graph.Edges.Length ? eulerianPath : null;
         }
