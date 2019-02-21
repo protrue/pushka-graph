@@ -141,6 +141,31 @@ namespace PushkaGraph.Tests
             Assert.AreEqual(3, connComponentsCount);
         }
 
+        [TestMethod]
+        public void ConnectedComponents_ThreeСomponentsRemoveAndAddVertex()
+        {
+            var graph = new Graph(6);
+
+            var vertex2 = graph.Vertices[2];
+            var vertex3 = graph.Vertices[3];
+            var vertex4 = graph.Vertices[4];
+
+            graph.AddEdge(graph.Vertices[0], graph.Vertices[1]);
+            graph.AddEdge(graph.Vertices[2], graph.Vertices[3]);
+            graph.AddEdge(graph.Vertices[2], graph.Vertices[4]);
+            graph.AddEdge(graph.Vertices[3], graph.Vertices[4]);
+
+            graph.DeleteVertex(vertex2);
+            graph.DeleteVertex(vertex3);
+
+            var vertex6 = graph.AddVertex();
+
+            graph.AddEdge(vertex4, vertex6);
+
+            var connComponentsCount = graph.ConnectedComponentsCount();
+            Assert.AreEqual(3, connComponentsCount);
+        }
+
         private void checkEulerianPath(Graph graph, List<Edge> path)
         {
             var selectedEdges = new HashSet<Edge>(path);
