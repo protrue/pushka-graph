@@ -195,6 +195,7 @@ namespace PushkaGraph.Gui
                     Container.Children.Add(weightTextBox);
 
                     _currentCreateEdgeActionState = CreateEdgeActionState.SelectFirstVertex;
+                    _movingLine = null;
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();

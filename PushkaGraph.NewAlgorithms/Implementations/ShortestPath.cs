@@ -18,7 +18,7 @@ namespace PushkaGraph.NewAlgorithms.Implementations
         public override Tuple<Type, int>[] RequiredParameters => new[]
         {
             Tuple.Create(typeof(Graph), 1),
-            Tuple.Create(typeof(Vertex), 1)
+            Tuple.Create(typeof(Vertex), 2)
         };
 
         // Указываем типы, которые алгоритм возвращает как результат своего выполнения
@@ -28,8 +28,8 @@ namespace PushkaGraph.NewAlgorithms.Implementations
         {
             // Извлекаем из параметров нужные штуки
             var graph = parameters.Graph;
-            var begin = graph.Vertices[0];
-            var end = graph.Vertices[1];
+            var begin = parameters.Vertices[0];
+            var end = parameters.Vertices[1];
 
             // Вызываем написанный extension метод
             var shortestPath = graph.ShortestPath(begin, end)?.ToArray();

@@ -30,6 +30,10 @@ namespace PushkaGraph.Gui
 
         private const string SelectedTag = "Selected";
 
+        private List<Vertex> _algorithmVertices;
+        private int _algorithmVerticesCount;
+        private GraphAlgorithm _currentAlgorithm;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -49,6 +53,31 @@ namespace PushkaGraph.Gui
         }
 
         public string GetStringResource(string name) => GuiResources.ResourceManager.GetString(name);
+
+        private void ChangeAction(InterfaceAction action)
+        {
+            foreach (var button in Toolbar.Children.OfType<Button>())
+            {
+                button.Tag = null;
+            }
+            ClearCreateEdgeActionState();
+            switch (action)
+            {
+                case InterfaceAction.VertexEdit:
+                    CreateVertexButton.Tag = SelectedTag;
+                    _currentAction = InterfaceAction.VertexEdit;
+                    break;
+                case InterfaceAction.EdgeEdit:
+                    CreateEdgeButton.Tag = SelectedTag;
+                    _currentAction = InterfaceAction.EdgeEdit;
+                    break;
+                case InterfaceAction.PerformAlgorithm:
+                    _currentAction = InterfaceAction.PerformAlgorithm;
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(action), action, null);
+            }
+        }
 
         private void ColorizedEdgesAnimation(IEnumerable<Edge> edges, Brush brush)
         {
@@ -91,17 +120,21 @@ namespace PushkaGraph.Gui
             {
                 algorithm.Performed += result =>
                 {
-                    MessageBox.Show(
-                        !string.IsNullOrWhiteSpace(result.StringResult)
-                            ? result.StringResult
-                            : (result.Number.HasValue
+                    if (!string.IsNullOrWhiteSpace(result.StringResult))
+                    {
+                        MessageBox.Show(
+                            result.Number.HasValue
                                 ? result.Number.Value.ToString()
-                                : string.Empty),
-                        GetStringResource("ResultMessageBoxTitle"));
+                                : result.StringResult,
+                            GetStringResource("ResultMessageBoxTitle"));
+                    }
                     if (result.Edges != null)
                         ColorizedEdgesAnimation(result.Edges, Brushes.Blue);
                     if (result.Vertices != null)
                         ColorizeVertices(result.Vertices, Brushes.Red);
+                    Dispatcher.Invoke(DispatcherPriority.Normal,
+                        (ThreadStart) delegate { ChangeAction(InterfaceAction.VertexEdit); });
+
                 };
                 var button = new Button
                 {
@@ -113,8 +146,23 @@ namespace PushkaGraph.Gui
                 {
                     ColorizeEdges(_graph.Edges, Brushes.Black);
                     ColorizeVertices(_graph.Vertices, Brushes.White);
-                    var parameters = new GraphAlgorithmParameters(_graph);
-                    algorithm.PerformAlgorithmAsync(parameters);
+                    ChangeAction(InterfaceAction.PerformAlgorithm);
+                    _algorithmVertices = null;
+                    foreach (var parametr in algorithm.RequiredParameters)
+                    {
+                        if (parametr.Item1 == typeof(Vertex))
+                        {
+                            _algorithmVerticesCount = parametr.Item2;
+                            _algorithmVertices = new List<Vertex>();
+                        }
+                    }
+
+                    if (algorithm.RequiredParameters.Length == 1)
+                    {
+                        var parameters = new GraphAlgorithmParameters(_graph);
+                        algorithm.PerformAlgorithmAsync(parameters);
+                    }
+                    _currentAlgorithm = algorithm;
                 };
                 Toolbar.Children.Add(button);
             }
@@ -131,6 +179,7 @@ namespace PushkaGraph.Gui
             _lines.Clear();
             _edgeWeightMapping.Clear();
             _weightEdgeMapping.Clear();
+            _algorithmVertices = null;
             _currentCreateEdgeActionState = CreateEdgeActionState.SelectFirstVertex;
         }
 
@@ -148,6 +197,8 @@ namespace PushkaGraph.Gui
                     CreateVertex(sender, e);
                     break;
                 case InterfaceAction.EdgeEdit:
+                    break;
+                case InterfaceAction.PerformAlgorithm:
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
@@ -168,6 +219,8 @@ namespace PushkaGraph.Gui
                 case InterfaceAction.EdgeEdit:
                     if (_currentCreateEdgeActionState == CreateEdgeActionState.SelectSecondVertex)
                         AbortCreateEdgeAction();
+                    break;
+                case InterfaceAction.PerformAlgorithm:
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
@@ -193,6 +246,8 @@ namespace PushkaGraph.Gui
                     if (_currentCreateEdgeActionState == CreateEdgeActionState.SelectSecondVertex)
                         UpdateEdgeEndPosition(cursorPosition);
                     break;
+                case InterfaceAction.PerformAlgorithm:
+                    break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
@@ -214,6 +269,19 @@ namespace PushkaGraph.Gui
                 case InterfaceAction.EdgeEdit:
                     CreateEdge(ellipse, e.GetPosition(Container));
                     break;
+                case InterfaceAction.PerformAlgorithm:
+                    if (_algorithmVerticesCount-- > 0)
+                    {
+                        ColorizeVertices(new[] { _ellipses[ellipse] }, Brushes.Red);
+                        _algorithmVertices.Add(_ellipses[ellipse]);
+                    }
+
+                    if (_algorithmVerticesCount == 0)
+                    {
+                        var parameters = new GraphAlgorithmParameters(_graph, _algorithmVertices.ToArray());
+                        _currentAlgorithm.PerformAlgorithmAsync(parameters);
+                    }
+                    break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
@@ -227,6 +295,8 @@ namespace PushkaGraph.Gui
                     StopMovingVertex();
                     break;
                 case InterfaceAction.EdgeEdit:
+                    break;
+                case InterfaceAction.PerformAlgorithm:
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
@@ -248,6 +318,8 @@ namespace PushkaGraph.Gui
                     RemoveVertex(ellipse);
                     break;
                 case InterfaceAction.EdgeEdit:
+                    break;
+                case InterfaceAction.PerformAlgorithm:
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
@@ -272,6 +344,8 @@ namespace PushkaGraph.Gui
                         break;
                     }
                     RemoveEdge((Line)sender);
+                    break;
+                case InterfaceAction.PerformAlgorithm:
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
@@ -368,20 +442,10 @@ namespace PushkaGraph.Gui
         {
             var button = (Button)sender;
             if (Equals(sender, CreateVertexButton))
-            {
-                _currentAction = InterfaceAction.VertexEdit;
-                CreateEdgeButton.Tag = null;
-                _currentCreateEdgeActionState = CreateEdgeActionState.SelectFirstVertex;
-                Container.Children.Remove(_movingLine);
-                button.Tag = "Selected";
-            }
+                ChangeAction(InterfaceAction.VertexEdit);
 
             if (Equals(sender, CreateEdgeButton))
-            {
-                _currentAction = InterfaceAction.EdgeEdit;
-                CreateVertexButton.Tag = null;
-                button.Tag = "Selected";
-            }
+                ChangeAction(InterfaceAction.EdgeEdit);
 
             if (Equals(sender, ExportButton))
             {
@@ -413,6 +477,12 @@ namespace PushkaGraph.Gui
 
             if (Equals(sender, CleanButton))
                 CleanStructures(true);
+        }
+
+        private void ClearCreateEdgeActionState()
+        {
+            _currentCreateEdgeActionState = CreateEdgeActionState.SelectFirstVertex;
+            Container.Children.Remove(_movingLine);
         }
     }
 }
