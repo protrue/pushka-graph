@@ -3,6 +3,7 @@
     public enum InterfaceAction
     {
         VertexEdit,
-        EdgeEdit
+        EdgeEdit,
+        PerformAlgorithm
     }
 }
